@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>登陆</title>
+    <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
+    <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/easyui/jquery.easyui.min.js}"></script>
+</head>
+<body onkeydown="keyLogin();">
+
+<div id="dd">
+    <form id="ff" method="post" action="ttt" style="text-align: center;margin-top: 30px;line-height: 3;">
+        <div>
+            <label for="username">用户名:</label>
+            <input class="easyui-textbox" type="text" name="username" id="username" data-options="missingMessage:'请输入用户名'" />
+        </div>
+        <div>
+            <label for="password">密&nbsp;&nbsp;&nbsp;码:</label>
+            <input class="easyui-textbox" type="password" name="password" id = "password" data-options="missingMessage:'请输入密码'" />
+        </div>
+        <div>
+            <a id="login" href="javascript:login();" class="easyui-linkbutton" data-options="" style="width: 50px;">登陆</a>
+            <a id="clear" href="javascript:clearText();" class="easyui-linkbutton" data-options="" style="width: 50px;">清空</a>
+        </div>
+    </form>
+</div>
+
+
+</body>
+<script type="text/javascript">
+    $('#dd').dialog({
+        title: '登陆 ',
+        width: 400,
+        height: 200,
+        closed: false,
+        closable:false,
+        maximizable:true,
+        minimizable:true,
+        draggable:false,
+        cache: false,
+        modal: true
+    });
+    function clearText(){
+        $("#ff").form('clear');
+    }
+
+    function keyLogin() {
+        if (event.keyCode==13){
+            login();
+        }
+    }
+
+    function login(){
+        var uname = $('#username').textbox("getValue");
+        var password =$('#password').textbox("getValue");
+        if(uname==''){
+            $.messager.show({
+                title:'系统消息',
+                msg:'用户名不能为空',
+                timeout:3000,
+                showType:'slide'
+            });
+            return false;
+        }
+        if(password==''){
+            $.messager.show({
+                title:'系统消息',
+                msg:'密码不能为空',
+                timeout:3000,
+                showType:'slide'
+            });
+            return false;
+        }
+        $.ajax({
+            url : 'user/checkLogin',
+            method:'post',
+            data : {
+                username:uname,
+                password:password
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.code!='00'){
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:data.msg,
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }else if(data.code=='00'){
+                    location.href = "goResourceView";
+                }
+            },
+            error:function (a,b,c) {
+                $.messager.show({
+                    title:'系统消息',
+                    msg:'系统异常,联系一咻工作人员!',
+                    timeout:3000,
+                    showType:'slide'
+                });
+            }
+        });
+    }
+</script>
+</html>

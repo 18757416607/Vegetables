@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>资源信息</title>
+    <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
+    <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/easyui/jquery.easyui.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/easyui/locale/easyui-lang-zh_CN.js}"></script>
+    <style>
+        *{padding: 0px;margin:0px;}
+        .a1{
+            width:100%;border: 0px solid red;border-radius: 5px;font-size: 18px;text-align: center;background-color: #ddd;color: #333;
+        }
+        .a1 a{text-decoration: none;color:#fff;line-height: 2em;}
+        .a1:active{
+            background:#ccc;
+        }
+    </style>
+</head>
+<script type="text/javascript">
+    document.oncontextmenu = function(){
+        return false;
+    }
+    //修改日历框的显示格式
+    function formatter(){
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute =  date.getMinutes();
+        var second = date.getSeconds();
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        hour = hour < 10 ? '0' + hour : hour;
+        minute = minute < 10 ? "0" + minute : minute;
+        second = second < 10 ? "0" + second : second;
+        return year + "-" + month + "-" + day + " " + hour+":"+minute+":"+second;
+    }
+
+    function formatter1(){
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute =  date.getMinutes();
+        var second = date.getSeconds();
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        return year + "-" + month + "-" + day + " 23:59:59";
+    }
+
+
+    function getCurrDate() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute =  date.getMinutes();
+        var second = date.getSeconds();
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        hour = hour < 10 ? '0' + hour : hour;
+        minute = minute < 10 ? "0" + minute : minute;
+        second = second < 10 ? "0" + second : second;
+        var dd =  year + "-" + month + "-" + day + " " + hour+":"+minute+":"+second;
+        return dd;
+    }
+
+    function getCurrLastDate() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        month = month < 10 ? '0' + month : month;
+        day = day < 10 ? '0' + day : day;
+        var dd =  year + "-" + month + "-" + day + " 23:59:59";
+        return dd;
+    }
+
+    /**
+     * easyui  格式化列
+     * @param value
+     * @param row
+     * @param index
+     * @returns {string}
+     */
+    function diyFormatter(value,row,index) {
+        return "<span title='"+value+"'>"+value+"</span>";
+    }
+
+</script>
+<body class="easyui-layout">
+<div data-options="region:'west',title:'资源消息',split:true" style="width:530px;">
+
+    <div id="aa" class="easyui-accordion"  data-options="fit:true,border:false" style="padding: 10px;">
+        <div title="白名单" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+            <p class="a1">
+                <a href = "javascript:getWhiteList();">白名单列表</a>
+            </p>
+            <p class="a1" style="margin-top: 15px;">
+                <a href = "javascript:whiteImport();">白名单导入</a>
+            </p>
+            <p class="a1" style="margin-top: 15px;">
+                <a href = "javascript:templateDown();">白名单模板下载</a>
+            </p>
+        </div>
+        <div title="违停车辆信息(默认显示当天)" data-options="iconCls:'icon-reload',selected:true" style="padding:10px;">
+            开始日期：<input class="easyui-datetimebox" name="beginDate" id = "beginDate"
+                        data-options="required:true,showSeconds:false,editable:false" value="getCurrDate();" style="width:150px">
+            结束日期:<input class="easyui-datetimebox" name="endDate" id = "endDate"
+                        data-options="required:true,showSeconds:false,editable:false" value="getCurrLastDate();" style="width:150px">&nbsp;&nbsp;&nbsp;&nbsp;
+            <a id="btn" href="javascript:filterResourceTree();" class="easyui-linkbutton">&nbsp;过&nbsp;滤&nbsp;</a>
+            <ul id ="tt"></ul>
+        </div>
+    </div>
+
+
+</div>
+<div data-options="region:'center',title:'详细信息'">
+    <div id = "bb" style="display: none;width: 100%;height: 100%">
+
+
+        <table id = "dg" style="width: 100%;height: 100%;margin: 0 auto" class="easyui-datagrid" data-options="
+            url:'',
+            singleSelect:true,
+            striped:true,
+            rownumbers:true,
+            loadMsg:'数据处理中...',
+            border:false
+        ">
+            <thead>
+                <tr>
+                    <th data-options="field:'id',hidden:true,width:180,align:'center',halign:'center',formatter: diyFormatter">编号</th>
+                    <th data-options="field:'realname',width:180,align:'center',halign:'center',formatter: diyFormatter">姓名</th>
+                    <th data-options="field:'phone',width:180,align:'center',halign:'center',formatter: diyFormatter">手机号</th>
+                    <th data-options="field:'platenum',width:180,align:'center',halign:'center',formatter: diyFormatter">车牌号</th>
+                    <th data-options="field:'dept',width:180,align:'center',halign:'center',formatter: diyFormatter">部门</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+    <div id = "dd" style="display: none;margin: 0 auto;padding-top: 50px;">
+        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">车牌号：<span style="color: red;" id="platenum"></span></p>
+        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">描述：<span style="color: red;" id = "description"></span></p>
+        <img style="margin-left:5em;" id = "img" src=""/>
+    </div>
+</div>
+
+<div id="mm" class="easyui-menu" style="width:120px;">
+    <div data-options="iconCls:'icon-edit'" onclick="edit();">修改</div>
+    <div class="menu-sep"></div>
+    <div data-options="iconCls:'icon-del'" onclick="del();">删除</div>
+</div>
+</body>
+
+<div id="dialog" >
+        <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
+            <tr><td>姓名：</td><td><input class = "easyui-textbox" id="sub_realname" name = "sub_realname" data-options="width:150" /><br/></td></tr>
+            <tr><td>手机号：</td><td><input class = "easyui-textbox" id="sub_phone" name = "sub_phone"  data-options="width:150"/><br/></td></tr>
+            <tr><td>车牌号：</td><td><input class = "easyui-textbox" id="sub_platenum" name = "sub_platenum"  data-options="width:150"/><br/></td></tr>
+            <tr><td>部门：</td><td><input class = "easyui-textbox" id="sub_dept" name = "sub_dept"  data-options="width:150"/><br/></td></tr>
+            <tr><td></td><td><br/><a id="saveBtn" href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+        </table>
+</div>
+
+
+<div id="importdialog" style="display: none">
+    <form  method="post" id="uploadForm" enctype="multipart/form-data" style = "padding:26px;">
+        选择白名单excel：<input class="easyui-filebox" style="width: 200px" id = "excel"  name="excel" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a id="upload" href="javascript:upload();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;上&nbsp;&nbsp;传&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        resourceTree("","");
+    });
+
+    /**
+     * 白名单导入
+     **/
+    function whiteImport() {
+        $('#importdialog').css("display","block");
+        $('#importdialog').window({
+            title:'详细信息',
+            width:500,
+            height:120,
+            modal:true
+        });
+        $('#importdialog').dialog('open');
+    }
+
+    function upload() {
+        $('#uploadForm').form('submit', {
+            url:'user/whiteImport',
+            onSubmit: function(){
+                var val = $('#excel').filebox('getValue');
+                val = val.substr(val.indexOf(".")+1,val.length);
+                if(val=='xls'||val=='xlsx'){
+
+                }else{
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'请导入excel格式文件!',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                    return false;
+                }
+            },
+            success:function(data){
+                if(data=="00"){
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'白名单导入成功!',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                    getWhiteList();
+                    $('#importdialog').dialog('close');
+                }else{
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'白名单导入失败,请重新操作或联系一咻工作人员!',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 白名单模板下载
+     **/
+    function templateDown() {
+        location.href = "user/templateDown";
+    }
+
+    //修改
+    function edit(){
+        $('#detail').css("display","block");
+        $('#dialog').window({
+            title:'详细信息',
+            width:300,
+            height:230,
+            modal:true
+        });
+        $('#sub_realname').textbox("setValue",row_data.realname);
+        $('#sub_phone').textbox("setValue",row_data.phone);
+        $('#sub_platenum').textbox("setValue",row_data.platenum);
+        $('#sub_dept').textbox("setValue",row_data.dept);
+        $('#dialog').dialog('open');
+    }
+
+    //确认修改
+    function editSave() {
+        $.ajax({
+            url:'user/updateWhite',
+            method:'post',
+            data:{
+                realname:$('#sub_realname').textbox('getValue'),
+                phone:$('#sub_phone').textbox('getValue'),
+                platenum:$('#sub_platenum').textbox('getValue'),
+                dept:$('#sub_dept').textbox('getValue'),
+                id:row_data.id,
+            },
+            success : function(data){
+                if(data=="00"){
+                    $('#dialog').dialog("close");
+                    $('#dg').datagrid('reload');
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'修改成功',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }else{
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'修改失败',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }
+            },
+            error : function(a,b,c){
+                $.messager.show({
+                    title:'系统消息',
+                    msg:'修改异常',
+                    timeout:3000,
+                    showType:'slide'
+                });
+            }
+        });
+    }
+
+    //删除
+    function del() {
+        $.messager.confirm('系统确认', '您确定要删除手机号为 ['+row_data.phone+'] 的机主么,请谨慎操作?', function(r){
+            if (r){
+                $.ajax({
+                    url:'user/deleteWhite',
+                    method:'post',
+                    data:{
+                        id:row_data.id
+                    },
+                    success : function(data){
+                        if(data=="00"){
+                            $('#dg').datagrid('reload');
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'删除成功',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }else{
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'删除失败',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }
+                    },
+                    error : function(a,b,c){
+                        $.messager.show({
+                            title:'系统消息',
+                            msg:'删除异常',
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 过滤资源信息
+     */
+    function filterResourceTree() {
+        var beginDate = $('#beginDate').datetimebox('getValue');
+        var endDate = $('#endDate').datetimebox('getValue');
+        resourceTree(beginDate,endDate);
+    }
+
+    /**
+     * 加载资源信息
+     * @param beginDate
+     * @param endDate
+     */
+    function resourceTree(beginDate,endDate) {
+        $('#tt').tree({
+            url: "user/getResourceList?beginDate="+beginDate+"&endDate="+endDate,
+            onClick: function(node){
+                if(typeof(node.children)=='undefined'){
+                    $.ajax({
+                        url:'user/getOneBaseResourceDetail',
+                        method:'post',
+                        data:{
+                            id : node.id
+                        },
+                        success : function (data) {
+                            $('#dd').css("display","block");
+                            $('#bb').css("display","none");
+                            $('#img').attr("src",data.imgurl);
+                            $('#platenum').html(data.platenum);
+                            $('#description').html(data.description);
+                        },
+                        error : function (a,b,c) {
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'获取['+node.text+']车牌号详细信息失败!',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
+    var row_data = {};
+
+    /**
+     * 加载白名单列表
+     */
+    function getWhiteList () {
+        $('#dd').css("display","none");
+        $('#bb').css("display","block");
+        $('#dg').datagrid({
+            url:'user/getWhiteList',
+            onRowContextMenu:function(e, rowIndex, rowData){
+                if(rowData!=null){
+                    $('#mm').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                    row_data = rowData
+                    console.info(row_data);
+                }
+            }
+        });
+    }
+
+
+</script>
+</html>
