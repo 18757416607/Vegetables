@@ -3,7 +3,7 @@ server:
   session:
     timeout: 2
   servlet:
-    context-path: /wharf
+    context-path: /vegetables
 
 weixin:
     appid: 123456
@@ -59,7 +59,7 @@ config:
   lkl_BMCP_jgh: 226161   #上海拉卡拉BMCP机构号
   lkl_jgmy: BwMCO6y8Sikj7Jjq8IGDNBvGm5Z3yK9q  #上海拉卡拉机构密钥
   img_drive: C
-  http_img_url: http://matou.cabin-tech.com:8082/wharf/static/fileImg/
+  http_img_url: http://matou.cabin-tech.com:8082/vegetables/static/fileImg/
 #  prod_url: https://eco.taobao.com/router/rest
 #  app_key: 23305258
 #  app_secret: 29cd2e8efe075b13abe316e8ed87af13
@@ -67,3 +67,9 @@ config:
 #  sms_free_sign_name: 一咻停车
 #  rec_num: 18757416607
 #  sms_template_code: SMS_78595194
+
+
+logging:
+  level:
+    com:
+      vegetables: DEBUG
