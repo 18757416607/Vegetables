@@ -1,4 +1,4 @@
-package com.vegetables.dao;
+package com.vegetables.mapper;
 
 import com.vegetables.pojo.BaseUser;
 import org.apache.ibatis.annotations.Mapper;

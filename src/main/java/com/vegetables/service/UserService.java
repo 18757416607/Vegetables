@@ -1,7 +1,7 @@
 package com.vegetables.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.vegetables.dao.UserMapper;
+import com.vegetables.mapper.UserMapper;
 import com.vegetables.pojo.BaseUser;
 import com.vegetables.pojo.Config;
 import com.vegetables.pojo.Result;
