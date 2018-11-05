@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>资源信息</title>
+    <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
+    <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/easyui/jquery.easyui.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/easyui/locale/easyui-lang-zh_CN.js}"></script>
+    <style>
+        *{padding: 0px;margin:0px;}
+        .a1{
+            width:100%;border: 0px solid red;border-radius: 5px;font-size: 18px;text-align: center;background-color: #ddd;color: #333;
+        }
+        .a1 a{text-decoration: none;color:#fff;line-height: 2em;}
+        .a1:active{
+            background:#ccc;
+        }
+    </style>
+</head>
+<script type="text/javascript">
+    document.oncontextmenu = function(){
+        return false;
+    }
+
+    /**
+     * easyui  格式化列
+     * @param value
+     * @param row
+     * @param index
+     * @returns {string}
+     */
+    function diyFormatter(value,row,index) {
+        return "<span title='"+value+"'>"+value+"</span>";
+    }
+
+</script>
+<body class="easyui-layout">
+<div data-options="region:'west',title:'资源消息',split:true" style="width:230px;">
+
+    <div id="aa" class="easyui-accordion"  data-options="fit:true,border:false" style="padding: 10px;">
+        <div title="基础信息" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+            <p class="a1">
+                <a href = "javascript:getBaseVegetablesQuotation();">蔬菜行情列表</a>
+            </p>
+        </div>
+    </div>
+
+
+</div>
+<div data-options="region:'center',title:'详细信息'">
+    <div id = "detailinfo" style="display: none;width: 100%;height: 100%">
+
+
+        <table id = "dg" style="width: 100%;height: 100%;margin: 0 auto" class="easyui-datagrid" data-options="
+            url:'',
+            singleSelect:true,
+            striped:true,
+            rownumbers:true,
+            loadMsg:'数据处理中...',
+            border:false,
+            toolbar: '#toolbar'
+        ">
+            <thead>
+                <tr>
+                    <th data-options="field:'q_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">行情编号</th>
+                    <th data-options="field:'c_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜种类</th>
+                    <th data-options="field:'v_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜名称</th>
+                    <th data-options="field:'s_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜进货来源</th>
+                    <th data-options="field:'q_investigation_date',width:130,align:'center',halign:'center',formatter: diyFormatter">调查时间</th>
+                    <th data-options="field:'q_investigation_price',width:100,align:'center',halign:'center',formatter: diyFormatter">调查价格</th>
+                    <th data-options="field:'q_price_increase',width:100,align:'center',halign:'center',formatter: diyFormatter">价格涨幅</th>
+                    <th data-options="field:'q_del',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
+                    <th data-options="field:'q_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
+                    <th data-options="field:'q_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div id="toolbar">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" style="color: red;">新增</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" style="color: red;">修改</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true" style="color: red;">删除</a>
+    </div>
+
+
+    <div id = "dd" style="display: none;margin: 0 auto;padding-top: 50px;">
+        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">车牌号：<span style="color: red;" id="platenum"></span></p>
+        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">描述：<span style="color: red;" id = "description"></span></p>
+        <img style="margin-left:5em;" id = "img" src=""/>
+    </div>
+</div>
+
+<div id="mm" class="easyui-menu" style="width:120px;">
+    <div data-options="iconCls:'icon-edit'" onclick="edit();" style="color: red;">新增</div>
+    <div class="menu-sep"></div>
+    <div data-options="iconCls:'icon-edit'" onclick="edit();" style="color: red;">修改</div>
+    <div class="menu-sep"></div>
+    <div data-options="iconCls:'icon-del'" onclick="del();" style="color: red;">删除</div>
+</div>
+</body>
+
+<div id="dialog" >
+        <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
+            <tr><td>姓名：</td><td><input class = "easyui-textbox" id="sub_realname" name = "sub_realname" data-options="width:150" /><br/></td></tr>
+            <tr><td>手机号：</td><td><input class = "easyui-textbox" id="sub_phone" name = "sub_phone"  data-options="width:150"/><br/></td></tr>
+            <tr><td>车牌号：</td><td><input class = "easyui-textbox" id="sub_platenum" name = "sub_platenum"  data-options="width:150"/><br/></td></tr>
+            <tr><td>部门：</td><td><input class = "easyui-textbox" id="sub_dept" name = "sub_dept"  data-options="width:150"/><br/></td></tr>
+            <tr><td></td><td><br/><a id="saveBtn" href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+        </table>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(function () {
+        resourceTree("","");
+    });
+
+    //修改
+    function edit(){
+        $('#detail').css("display","block");
+        $('#dialog').window({
+            title:'详细信息',
+            width:300,
+            height:230,
+            modal:true
+        });
+        $('#sub_realname').textbox("setValue",row_data.realname);
+        $('#sub_phone').textbox("setValue",row_data.phone);
+        $('#sub_platenum').textbox("setValue",row_data.platenum);
+        $('#sub_dept').textbox("setValue",row_data.dept);
+        $('#dialog').dialog('open');
+    }
+
+    //确认修改
+    function editSave() {
+        $.ajax({
+            url:'user/updateWhite',
+            method:'post',
+            data:{
+                realname:$('#sub_realname').textbox('getValue'),
+                phone:$('#sub_phone').textbox('getValue'),
+                platenum:$('#sub_platenum').textbox('getValue'),
+                dept:$('#sub_dept').textbox('getValue'),
+                id:row_data.id,
+            },
+            success : function(data){
+                if(data=="00"){
+                    $('#dialog').dialog("close");
+                    $('#dg').datagrid('reload');
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'修改成功',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }else{
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'修改失败',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }
+            },
+            error : function(a,b,c){
+                $.messager.show({
+                    title:'系统消息',
+                    msg:'修改异常',
+                    timeout:3000,
+                    showType:'slide'
+                });
+            }
+        });
+    }
+
+    //删除
+    function del() {
+        $.messager.confirm('系统确认', '您确定要删除手机号为 ['+row_data.phone+'] 的机主么,请谨慎操作?', function(r){
+            if (r){
+                $.ajax({
+                    url:'user/deleteWhite',
+                    method:'post',
+                    data:{
+                        id:row_data.id
+                    },
+                    success : function(data){
+                        if(data=="00"){
+                            $('#dg').datagrid('reload');
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'删除成功',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }else{
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'删除失败',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }
+                    },
+                    error : function(a,b,c){
+                        $.messager.show({
+                            title:'系统消息',
+                            msg:'删除异常',
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
+    /**
+     * 过滤资源信息
+     */
+    function filterResourceTree() {
+        var beginDate = $('#beginDate').datetimebox('getValue');
+        var endDate = $('#endDate').datetimebox('getValue');
+        resourceTree(beginDate,endDate);
+    }
+
+    /**
+     * 加载资源信息
+     * @param beginDate
+     * @param endDate
+     */
+    function resourceTree(beginDate,endDate) {
+        $('#tt').tree({
+            url: "quotation/getBaseVegetablesQuotation",
+            onClick: function(node){
+                if(typeof(node.children)=='undefined'){
+                    $.ajax({
+                        url:'user/getOneBaseResourceDetail',
+                        method:'post',
+                        data:{
+                            id : node.id
+                        },
+                        success : function (data) {
+                            $('#dd').css("display","block");
+                            $('#bb').css("display","none");
+                            $('#img').attr("src",data.imgurl);
+                            $('#platenum').html(data.platenum);
+                            $('#description').html(data.description);
+                        },
+                        error : function (a,b,c) {
+                            $.messager.show({
+                                title:'系统消息',
+                                msg:'获取['+node.text+']车牌号详细信息失败!',
+                                timeout:3000,
+                                showType:'slide'
+                            });
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
+    var row_data = {};
+
+    /**
+     * 加载白名单列表
+     */
+    function getBaseVegetablesQuotation () {
+        $('#detailinfo').css("display","block");
+        $('#dg').datagrid({
+            url:'quotation/getBaseVegetablesQuotation',
+            onRowContextMenu:function(e, rowIndex, rowData){
+                if(rowData!=null){
+                    $('#mm').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                    row_data = rowData
+                    console.info(row_data);
+                }
+            }
+        });
+    }
+
+
+</script>
+</html>

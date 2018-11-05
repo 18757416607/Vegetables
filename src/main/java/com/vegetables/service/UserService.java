@@ -43,6 +43,10 @@ public class UserService {
         return ResultUtil.requestSuccess("登陆成功");
     }
 
+    public static void main(String[] args) {
+        System.out.println(MD5.MD5("1"));
+    }
+
     /**
      * 根据userName查询user信息
      * @param param

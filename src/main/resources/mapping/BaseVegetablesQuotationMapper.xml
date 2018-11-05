@@ -4,9 +4,12 @@
 
     <!-- 查询蔬菜行情信息 -->
     <select id="getBaseVegetablesQuotation" parameterType="java.util.Map" resultType="java.util.Map">
+
+        SELECT temp.*,bvv.v_name FROM (
         SELECT vvqc.*,bvps.s_name FROM (
         SELECT bvq.*,bvc.c_name FROM (
-        select q_id,v_id,s_id,q_investigation_date,q_investigation_price,q_price_increase,q_del,q_updatetime,q_createtime from base_vegetables_quotation
+        select q_id,v_id,s_id,DATE_FORMAT(q_investigation_date,'%Y-%m-%d %H:%i:%S') q_investigation_date,q_investigation_price,q_price_increase,q_del,
+        DATE_FORMAT(q_updatetime,'%Y-%m-%d %H:%i:%S') q_updatetime,DATE_FORMAT(q_createtime,'%Y-%m-%d %H:%i:%S') q_createtime from base_vegetables_quotation
         <where>
             <if test="q_id != null">and q_id = #{q_id}</if>
             <if test="v_id != null">and v_id = #{v_id}</if>
@@ -17,9 +20,11 @@
             <if test="q_del != null">and q_del = #{q_del}</if>
             <if test="q_updatetime != null">and q_updatetime BETWEEN #{q_start_updatetime} and #{q_end_updatetime}</if>
             <if test="q_createtime != null">and q_createtime BETWEEN #{q_start_createtime} and #{q_end_createtime}</if>
-        </where> )
-        bvq INNER JOIN base_vegetables_category bvc on bvq.c_id = bvc.c_id ) vvqc
-        INNER JOIN base_vegetables_purchase_source bvps on vvqc.s_id = bvps.s_id
+        </where>
+        )
+        bvq INNER JOIN base_vegetables_category bvc on bvq.v_id = bvc.c_id ) vvqc
+        INNER JOIN base_vegetables_purchase_source bvps on vvqc.s_id = bvps.s_id ) temp
+        INNER JOIN base_vegetables_varieties bvv on temp.v_id = bvv.v_id
     </select>
     
     
