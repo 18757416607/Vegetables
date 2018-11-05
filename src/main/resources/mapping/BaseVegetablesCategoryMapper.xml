@@ -17,8 +17,8 @@
 
     <!-- 添加蔬菜类别信息 -->
     <insert id="addBaseVegetablesCategory" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_category(c_name,v_updatetime,v_createtime)
-        VALUES (#{c_name},now(),now())
+        INSERT INTO base_vegetables_category(c_name,c_del,c_updatetime,c_createtime)
+        VALUES (#{c_name},#{c_del},now(),now())
     </insert>
 
     <!-- 修改蔬菜类别信息 -->

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vegetables.mapper.BaseVegetablesPurchaseSourceMapper">
+
+
+    <!-- 查询蔬菜进货来源信息 -->
+    <select id="getBaseVegetablesPurchaseSource" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT s_id,s_name,s_is_purchase,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
+        <where>
+            <if test="s_id != null">and s_id = #{s_id}</if>
+            <if test="s_name !=null and s_name != ''">and s_name CONCAT('%',#{s_name},'%')</if>
+            <if test="s_is_purchase !=null and s_is_purchase != ''">and s_is_purchase = #{s_is_purchase}</if>
+            <if test="s_del !=null and s_del != ''">and s_del = #{s_del}</if>
+            <if test="s_updatetime !=null and s_updatetime != ''">and s_updatetime BETWEEN #{s_updatetime} AND #{s_updatetime}</if>
+            <if test="s_createtime !=null and s_createtime != ''">and s_createtime BETWEEN #{s_createtime} AND #{s_createtime}</if>
+        </where>
+    </select>
+
+
+    <!-- 添加蔬菜进货来源信息 -->
+    <insert id="addBaseVegetablesPurchaseSource" parameterType="java.util.Map">
+        INSERT INTO base_vegetables_purchase_source(s_name,s_is_purchase,s_del,s_updatetime,s_createtime)
+        VALUES (#{s_name},#{s_is_purchase},#{s_del},now(),now())
+    </insert>
+
+    <!-- 修改蔬菜进货来源信息 -->
+    <update id="updateBaseVegetablesPurchaseSource" parameterType="java.util.Map">
+        UPDATE base_vegetables_purchase_source
+        <set>
+            <if test="s_name != null and s_name != ''">s_name = #{s_name},</if>
+            <if test="s_is_purchase != null">s_is_purchase = #{s_is_purchase},</if>
+            <if test="s_del != null">s_del = #{s_del},</if>
+            s_updatetime = now()
+        </set>
+        WHEN s_id = #{s_id}
+    </update>
+
+
+</mapper>

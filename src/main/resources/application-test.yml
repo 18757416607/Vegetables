@@ -16,12 +16,9 @@ spring:
     datasource:
         driver-class-name: com.mysql.jdbc.Driver
         type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://121.196.222.188:3306/wharf_db?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://47.92.4.251:3306/vegetables?useUnicode=true&characterEncoding=utf8
         username: root
-        password: cabin8879576
-#        url: jdbc:mysql://rm-bp136s27et5bnt726o.mysql.rds.aliyuncs.com:3306/parking?useUnicode=true&characterEncoding=utf8
-#        username: cabin
-#        password: cabin8879576aA
+        password: root
         # 使用druid数据源
         filters: stat
         maxActive: 20
