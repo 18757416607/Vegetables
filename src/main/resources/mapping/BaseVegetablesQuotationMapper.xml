@@ -15,10 +15,16 @@
             <if test="v_id != null">and v_id = #{v_id}</if>
             <if test="s_id != null">and s_id = #{s_id}</if>
             <if test="q_investigation_date != null">and q_investigation_date  BETWEEN #{q_start_investigation_date} and #{q_end_investigation_date}</if>
-            <if test="q_investigation_price != null">and q_investigation_price BETWEEN #{q_start_investigation_price} AND #{q_end_investigation_price}</if>
-            <if test="q_price_increase != null">and q_price_increase BETWEEN #{q_start_price_increase} AND #{q_end_price_increase}</if>
+            <if test="(q_start_investigation_price != null and q_start_investigation_price != '') and (q_end_investigation_price != null and q_end_investigation_price != '')">and q_investigation_price BETWEEN #{q_start_investigation_price} AND #{q_end_investigation_price}</if>
+            <if test="(q_start_investigation_price != null and q_start_investigation_price != '') and (q_end_investigation_price == null or q_end_investigation_price =='')">and q_investigation_price &lt;= #{q_start_investigation_price}</if>
+            <if test="(q_start_investigation_price == null or q_start_investigation_price == '') and (q_end_investigation_price != null and q_end_investigation_price !='')">and q_investigation_price &lt;= #{q_end_investigation_price}</if>
+            <if test="(q_start_price_increase != null and q_start_price_increase != '') and (q_end_price_increase != null and q_end_price_increase != '')">and q_price_increase BETWEEN #{q_start_price_increase} AND #{q_end_price_increase}</if>
+            <if test="(q_start_price_increase != null and q_start_price_increase != '') and (q_end_price_increase == null or q_end_price_increase == '')">and q_price_increase &lt;= #{q_start_price_increase}</if>
+            <if test="(q_start_price_increase == null or q_start_price_increase == '') and (q_end_price_increase != null and q_end_price_increase != '')">and q_price_increase &lt;= #{q_end_price_increase}</if>
             <if test="q_del != null">and q_del = #{q_del}</if>
-            <if test="q_updatetime != null">and q_updatetime BETWEEN #{q_start_updatetime} and #{q_end_updatetime}</if>
+            <if test="(q_start_updatetime != null and q_start_updatetime != '') and (q_end_updatetime != null and q_end_updatetime != '')">and q_updatetime BETWEEN #{q_start_updatetime} and #{q_end_updatetime}</if>
+            <if test="(q_start_updatetime != null and q_start_updatetime != '') and (q_end_updatetime == null or q_end_updatetime ='')">and q_updatetime &lt;= #{q_start_updatetime}</if>
+            <if test="(q_start_updatetime == null or q_start_updatetime =='') and (q_end_updatetime != null and q_end_updatetime != '')">and q_updatetime &lt;= #{q_end_updatetime}</if>
             <if test="q_createtime != null">and q_createtime BETWEEN #{q_start_createtime} and #{q_end_createtime}</if>
         </where>
         )

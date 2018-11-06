@@ -34,7 +34,8 @@ public class BaseVegetablesQuotationController {
      */
     @PostMapping(value = "/getBaseVegetablesQuotation")
     public List<Map<String,Object>> getBaseVegetablesQuotation(String paramStr) throws IOException {
-        if(paramStr!=null&&"".equals(paramStr)){
+        System.out.println(paramStr);
+        if(paramStr!=null&&!"".equals(paramStr)){
             return quotationService.getBaseVegetablesQuotation(JacksonUtils.strToMap(paramStr));
         }else{
             return quotationService.getBaseVegetablesQuotation(null);

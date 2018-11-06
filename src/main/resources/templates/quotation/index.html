@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <title>资源信息</title>
     <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/icon.css}" />
     <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{static/easyui/jquery.easyui.min.js}"></script>
     <script type="text/javascript" th:src="@{static/easyui/locale/easyui-lang-zh_CN.js}"></script>
@@ -35,12 +36,28 @@
         return "<span title='"+value+"'>"+value+"</span>";
     }
 
+    /**
+     * 格式化日期
+     * @param date
+     * @returns {string}
+     */
+    $.fn.datebox.defaults.formatter = function(date){
+        var y = date.getFullYear();
+        var m = date.getMonth()+1;
+        var d = date.getDate();
+
+        var hour = date.getHours(); // 时
+        var minutes = date.getMinutes(); // 分
+        var seconds = date.getSeconds() //秒
+        return y+"-"+m+"-"+d;
+    }
+
 </script>
 <body class="easyui-layout">
 <div data-options="region:'west',title:'资源消息',split:true" style="width:230px;">
 
     <div id="aa" class="easyui-accordion"  data-options="fit:true,border:false" style="padding: 10px;">
-        <div title="基础信息" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+        <div title="基础信息" style="overflow:auto;padding:10px;">
             <p class="a1">
                 <a href = "javascript:getBaseVegetablesQuotation();">蔬菜行情列表</a>
             </p>
@@ -80,9 +97,32 @@
     </div>
 
     <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" style="color: red;">新增</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" style="color: red;">修改</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true" style="color: red;">删除</a>
+        <div style="padding: 5px;">
+            <div>
+                调查价格(开始区间)&nbsp;:&nbsp;<input class="easyui-textbox" id = "q_start_investigation_price" name="q_start_investigation_price" placeholder="输入调查价格(开始区间)" />&nbsp;-
+                <input class="easyui-textbox" id = "q_end_investigation_price" name="q_end_investigation_price" placeholder="输入调查价格(结束区间)" />
+            </div>
+            <div>
+                价格涨幅(开始区间)&nbsp;:&nbsp;<input class="easyui-textbox" id = "q_start_price_increase" name="q_start_price_increase" placeholder="输入价格涨幅(开始区间)" />&nbsp;-
+                <input class="easyui-textbox" id = "q_end_price_increase" name="q_end_price_increase" placeholder="输入价格涨幅(结束区间)" />
+            </div>
+            <div>
+                是否逻辑删除&nbsp;:&nbsp;<select id="q_del" class="easyui-combobox" name="q_del" data-options="editable:false,disable:true" style="width:200px;">
+                    <option value="">请选择</option>
+                    <option value="01">已删除</option>
+                    <option value="00">未删除</option>
+                </select>
+            </div>
+            <div>
+                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datetimebox" id ="q_start_updatetime" name="q_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
+                <input class="easyui-datetimebox" id ="q_end_updatetime" name="q_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
+            </div>
+            <a href="javascript:void(0)" onclick="filterDate();" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" style="color: red;">条件过滤</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="color: red;">新增</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="color: red;">修改</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="color: red;">删除</a>
+        </div>
+
     </div>
 
 
@@ -94,11 +134,11 @@
 </div>
 
 <div id="mm" class="easyui-menu" style="width:120px;">
-    <div data-options="iconCls:'icon-edit'" onclick="edit();" style="color: red;">新增</div>
+    <div href="javascript:void(0)" data-options="iconCls:'icon-add'" onclick="add();" style="color: red;">新增</div>
     <div class="menu-sep"></div>
-    <div data-options="iconCls:'icon-edit'" onclick="edit();" style="color: red;">修改</div>
+    <div href="javascript:void(0)" data-options="iconCls:'icon-edit'" onclick="edit();" style="color: red;">修改</div>
     <div class="menu-sep"></div>
-    <div data-options="iconCls:'icon-del'" onclick="del();" style="color: red;">删除</div>
+    <div href="javascript:void(0)" data-options="iconCls:'icon-clear'" onclick="del();" style="color: red;">删除</div>
 </div>
 </body>
 
@@ -119,6 +159,64 @@
     $(function () {
         resourceTree("","");
     });
+
+    /**
+     * 加载列表信息
+     */
+    function getBaseVegetablesQuotation () {
+        $('#detailinfo').css("display","block");
+        $('#dg').datagrid({
+            url:'quotation/getBaseVegetablesQuotation',
+            onRowContextMenu:function(e, rowIndex, rowData){
+                if(rowData!=null){
+                    $('#mm').menu('show', {
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                    row_data = rowData
+                    console.info(row_data);
+                }
+            }
+        });
+    }
+
+    /**
+     * 过滤数据
+     * */
+    function filterDate() {
+        var q_start_investigation_price = $('#q_start_investigation_price').textbox("getValue");
+        var q_end_investigation_price = $('#q_end_investigation_price').textbox("getValue");
+        var q_start_price_increase = $('#q_start_price_increase').textbox("getValue");
+        var q_end_price_increase = $('#q_end_price_increase').textbox("getValue");
+        var q_del = $('#q_del').combobox("getValue");
+        var q_start_updatetime = $('#q_start_updatetime').datetimebox("getValue");
+        var q_end_updatetime = $('#q_end_updatetime').datetimebox("getValue");
+
+        var obj = {
+            q_start_investigation_price: q_start_investigation_price,
+            q_end_investigation_price: q_end_investigation_price,
+            q_start_price_increase: q_start_price_increase,
+            q_end_price_increase: q_end_price_increase,
+            q_del: q_del,
+            q_start_updatetime: q_start_updatetime,
+            q_end_updatetime: q_end_updatetime
+        }
+
+        $('#dg').datagrid('load',{
+            paramStr:JSON.stringify(obj)
+        });
+
+        /*alert("q_start_investigation_price:"+q_start_investigation_price);
+        alert("q_end_investigation_price:"+q_end_investigation_price);
+        alert("q_start_price_increase:"+q_start_price_increase);
+        alert("q_end_price_increase:"+q_end_price_increase);
+        alert("q_del:"+q_del);
+        alert("q_start_updatetime:"+q_start_updatetime);
+        alert("q_end_updatetime:"+q_end_updatetime);*/
+
+
+    }
+
 
     //修改
     function edit(){
@@ -269,25 +367,7 @@
 
     var row_data = {};
 
-    /**
-     * 加载白名单列表
-     */
-    function getBaseVegetablesQuotation () {
-        $('#detailinfo').css("display","block");
-        $('#dg').datagrid({
-            url:'quotation/getBaseVegetablesQuotation',
-            onRowContextMenu:function(e, rowIndex, rowData){
-                if(rowData!=null){
-                    $('#mm').menu('show', {
-                        left: e.pageX,
-                        top: e.pageY
-                    });
-                    row_data = rowData
-                    console.info(row_data);
-                }
-            }
-        });
-    }
+
 
 
 </script>
