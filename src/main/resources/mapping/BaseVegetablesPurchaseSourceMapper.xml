@@ -16,6 +16,12 @@
         </where>
     </select>
 
+    <!--
+     -->
+    <select id="getBaseVegetablesPurchaseSourceCombobox" resultType="java.util.Map">
+        SELECT s_id id,s_name text FROM base_vegetables_purchase_source
+    </select>
+
 
     <!-- 添加蔬菜进货来源信息 -->
     <insert id="addBaseVegetablesPurchaseSource" parameterType="java.util.Map">

@@ -24,6 +24,12 @@ public interface BaseVegetablesVarietiesMapper {
      */
     public List<Map<String,Object>> getBaseVegetablesVarieties(Map<String,Object> param);
 
+    /**
+     * 获取蔬菜品种下拉列表信息
+     * @return
+     */
+    public List<Map<String,Object>> getBaseVegetablesVarietiesCombobox();
+
 
     /**
      * 添加蔬菜品种信息

@@ -59,7 +59,7 @@
     <div id="aa" class="easyui-accordion"  data-options="fit:true,border:false" style="padding: 10px;">
         <div title="基础信息" style="overflow:auto;padding:10px;">
             <p class="a1">
-                <a href = "javascript:getBaseVegetablesQuotation();">蔬菜行情列表</a>
+                <a href = "javascript:getBaseVegetablesQuotation();">蔬菜行情模块</a>
             </p>
         </div>
     </div>
@@ -114,13 +114,14 @@
                 </select>
             </div>
             <div>
-                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datetimebox" id ="q_start_updatetime" name="q_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
-                <input class="easyui-datetimebox" id ="q_end_updatetime" name="q_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
+                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datebox" id ="q_start_updatetime" name="q_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
+                <input class="easyui-datebox" id ="q_end_updatetime" name="q_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
             </div>
+            <a href="javascript:void(0)" onclick="add();" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="color: red;">新增</a>
+            <a href="javascript:void(0)" onclick="edit();" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="color: red;">修改</a>
+            <a href="javascript:void(0)" onclick="del();" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="color: red;">删除</a>
             <a href="javascript:void(0)" onclick="filterDate();" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" style="color: red;">条件过滤</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="color: red;">新增</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="color: red;">修改</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="color: red;">删除</a>
+            <a href="javascript:void(0)" onclick="clearfilterDate();" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" style="color: red;">清空条件过滤</a>
         </div>
 
     </div>
@@ -142,12 +143,19 @@
 </div>
 </body>
 
-<div id="dialog" >
+<div id="editDialog" >
         <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
-            <tr><td>姓名：</td><td><input class = "easyui-textbox" id="sub_realname" name = "sub_realname" data-options="width:150" /><br/></td></tr>
-            <tr><td>手机号：</td><td><input class = "easyui-textbox" id="sub_phone" name = "sub_phone"  data-options="width:150"/><br/></td></tr>
-            <tr><td>车牌号：</td><td><input class = "easyui-textbox" id="sub_platenum" name = "sub_platenum"  data-options="width:150"/><br/></td></tr>
-            <tr><td>部门：</td><td><input class = "easyui-textbox" id="sub_dept" name = "sub_dept"  data-options="width:150"/><br/></td></tr>
+            <tr><td>蔬菜品种：</td><td><select id="edit_v_id" class="easyui-combobox" name="edit_v_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+            <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+            <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="edit_q_investigation_date" name = "edit_q_investigation_date"  data-options="width:150"/><br/></td></tr>
+            <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
+            <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="edit_q_price_increase" name = "edit_q_price_increase"  data-options="width:150"/><br/></td></tr>
+            <tr><td>是否删除：</td><td>
+                <select id="edit_q_del" class="easyui-combobox" name="edit_q_del" data-options="editable:false,disable:true" style="width:150px;">
+                    <option value="">请选择</option>
+                    <option value="01">已删除</option>
+                    <option value="00">未删除</option>
+                </select>
             <tr><td></td><td><br/><a id="saveBtn" href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
         </table>
 </div>
@@ -189,8 +197,8 @@
         var q_start_price_increase = $('#q_start_price_increase').textbox("getValue");
         var q_end_price_increase = $('#q_end_price_increase').textbox("getValue");
         var q_del = $('#q_del').combobox("getValue");
-        var q_start_updatetime = $('#q_start_updatetime').datetimebox("getValue");
-        var q_end_updatetime = $('#q_end_updatetime').datetimebox("getValue");
+        var q_start_updatetime = $('#q_start_updatetime').datebox("getValue");
+        var q_end_updatetime = $('#q_end_updatetime').datebox("getValue");
 
         var obj = {
             q_start_investigation_price: q_start_investigation_price,
@@ -213,25 +221,87 @@
         alert("q_del:"+q_del);
         alert("q_start_updatetime:"+q_start_updatetime);
         alert("q_end_updatetime:"+q_end_updatetime);*/
+    }
 
-
+    /**
+     * 清空条件过滤
+     **/
+    function clearfilterDate() {
+        $('#q_start_investigation_price').textbox("setValue","");
+        $('#q_end_investigation_price').textbox("setValue","");
+        $('#q_start_price_increase').textbox("setValue","");
+        $('#q_end_price_increase').textbox("setValue","");
+        $('#q_del').combobox("setValue","");
+        $('#q_start_updatetime').datebox("setValue","");
+        $('#q_end_updatetime').datebox("setValue","");
     }
 
 
     //修改
     function edit(){
         $('#detail').css("display","block");
-        $('#dialog').window({
-            title:'详细信息',
-            width:300,
-            height:230,
+        var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
+        console.info(getRows);
+        if(getRows==null){
+            $.messager.show({
+                title:'系统消息',
+                msg:'请选中一行蔬菜行情进行删除!',
+                timeout:5000,
+                showType:'slide'
+            });
+        }
+
+        $('#edit_v_id').combobox({
+            url:'varieties/getVarietiesCombobox',
+            valueField:'id',
+            textField:'text',
+            onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
+                var val = $(this).combobox("getData");
+                for (var item in val) {
+                    console.info(item);
+                    if (item.id == getRows.v_id) {
+                        $(this).combobox("select", val[item].id);
+                    }
+                }
+            }
+        });
+
+        $('#edit_s_id').combobox({
+            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+            valueField:'id',
+            textField:'text',
+            onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
+                var val = $(this).combobox("getData");
+                for (var item in val) {
+                    console.info(item);
+                    if (item.id == getRows.v_id) {
+                        $(this).combobox("select", val[item].id);
+                    }
+                }
+            }
+        });
+
+
+
+        //$("#edit_v_id").combobox("select",2);
+
+
+        $('#editDialog').window({
+            title:'编辑蔬菜行情详细信息',
+            width:330,
+            height:305,
             modal:true
         });
-        $('#sub_realname').textbox("setValue",row_data.realname);
-        $('#sub_phone').textbox("setValue",row_data.phone);
-        $('#sub_platenum').textbox("setValue",row_data.platenum);
-        $('#sub_dept').textbox("setValue",row_data.dept);
-        $('#dialog').dialog('open');
+
+        $('#edit_v_id').textbox("setValue",getRows.v_id);
+        $('#edit_s_id').textbox("setValue",getRows.s_id);
+        $('#edit_q_investigation_date').datetimebox("setValue",getRows.q_investigation_date);
+        $('#edit_q_investigation_price').textbox("setValue",getRows.q_investigation_price);
+        $('#edit_q_price_increase').textbox("setValue",getRows.q_price_increase);
+        $('#edit_q_del').combobox("setValue",getRows.q_del);
+
+
+        $('#editDialog').dialog('open');
     }
 
     //确认修改

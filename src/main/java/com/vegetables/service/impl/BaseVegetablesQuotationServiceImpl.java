@@ -33,6 +33,7 @@ public class BaseVegetablesQuotationServiceImpl implements BaseVegetablesQuotati
     }
 
 
+
     /**
      * 添加蔬菜行情信息
      * @param param

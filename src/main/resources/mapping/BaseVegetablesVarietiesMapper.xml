@@ -33,6 +33,11 @@
             <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
         </where>-->
     </select>
+
+    <!-- 获取蔬菜品种下拉列表信息 -->
+    <select id="getBaseVegetablesVarietiesCombobox" resultType="java.util.Map">
+        select v_id id,v_name text from base_vegetables_varieties;
+    </select>
     
     
     <!-- 添加蔬菜品种信息 -->
