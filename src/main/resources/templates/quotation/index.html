@@ -281,11 +281,6 @@
             }
         });
 
-
-
-        //$("#edit_v_id").combobox("select",2);
-
-
         $('#editDialog').window({
             title:'编辑蔬菜行情详细信息',
             width:330,
@@ -299,22 +294,32 @@
         $('#edit_q_investigation_price').textbox("setValue",getRows.q_investigation_price);
         $('#edit_q_price_increase').textbox("setValue",getRows.q_price_increase);
         $('#edit_q_del').combobox("setValue",getRows.q_del);
-
-
         $('#editDialog').dialog('open');
     }
 
     //确认修改
     function editSave() {
+        var edit_v_id = $('#edit_v_id').textbox("getValue");
+        var edit_s_id = $('#edit_s_id').textbox("getValue");
+        var edit_q_investigation_date = $('#edit_q_investigation_date').datetimebox("getValue");
+        var edit_q_investigation_price = $('#edit_q_investigation_price').textbox("getValue");
+        var edit_q_price_increase = $('#edit_q_price_increase').textbox("getValue");
+        var edit_q_del = $('#edit_q_del').combobox("getValue");
+
+        var obj = {
+            edit_v_id : edit_v_id,
+            edit_s_id : edit_s_id,
+            edit_q_investigation_date : edit_q_investigation_date,
+            edit_q_investigation_price : edit_q_investigation_price,
+            edit_q_price_increase : edit_q_price_increase,
+            edit_q_del : edit_q_del
+        }
+
         $.ajax({
-            url:'user/updateWhite',
+            url:'quotation/BaseVegetablesQuotation',
             method:'post',
             data:{
-                realname:$('#sub_realname').textbox('getValue'),
-                phone:$('#sub_phone').textbox('getValue'),
-                platenum:$('#sub_platenum').textbox('getValue'),
-                dept:$('#sub_dept').textbox('getValue'),
-                id:row_data.id,
+                paramStr:JSON.stringify(obj)
             },
             success : function(data){
                 if(data=="00"){

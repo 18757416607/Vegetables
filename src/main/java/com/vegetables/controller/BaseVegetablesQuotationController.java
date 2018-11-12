@@ -1,7 +1,10 @@
 package com.vegetables.controller;
 
+import com.vegetables.exception.MyException;
+import com.vegetables.pojo.Result;
 import com.vegetables.service.BaseVegetablesQuotationService;
 import com.vegetables.util.JacksonUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +25,7 @@ public class BaseVegetablesQuotationController {
     @Autowired
     private BaseVegetablesQuotationService quotationService;
 
-
+    private Logger logger = Logger.getLogger(BaseVegetablesQuotationController.class);
 
     /**
      * 查询蔬菜行情信息
@@ -40,7 +43,43 @@ public class BaseVegetablesQuotationController {
         }else{
             return quotationService.getBaseVegetablesQuotation(null);
         }
+    }
 
+    /**
+     *  修改蔬菜行情信息
+     * @param paramStr
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/BaseVegetablesQuotation")
+    public Result editBaseVegetablesQuotation(String paramStr) throws Exception{
+        logger.info("进入修改蔬菜行情信息-->controller-->参数:"+paramStr);
+        Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
+        if(paramMap.get("edit_v_id")==null||"".equals(paramMap.get("edit_v_id"))){
+            logger.info("修改蔬菜行情信息-->controller-->[蔬菜品种]为空");
+            throw new MyException("请选择蔬菜品种","01");
+        }
+        if(paramMap.get("edit_s_id")==null||"".equals(paramMap.get("edit_s_id"))){
+            logger.info("修改蔬菜行情信息-->controller-->[进货来源]为空");
+            throw new MyException("请选择进货来源","01");
+        }
+        if(paramMap.get("edit_q_investigation_date")==null||"".equals(paramMap.get("edit_q_investigation_date"))){
+            logger.info("修改蔬菜行情信息-->controller-->[调查时间]为空");
+            throw new MyException("请填写调查时间","01");
+        }
+        if(paramMap.get("edit_q_investigation_price")==null||"".equals(paramMap.get("edit_q_investigation_price"))){
+            logger.info("修改蔬菜行情信息-->controller-->[调查价格]为空");
+            throw new MyException("请填写调查价格","01");
+        }
+        if(paramMap.get("edit_q_price_increase")==null||"".equals(paramMap.get("edit_q_price_increase"))){
+            logger.info("修改蔬菜行情信息-->controller-->[价格涨幅]为空");
+            throw new MyException("请填写价格涨幅","01");
+        }
+        if(paramMap.get("edit_q_del")==null||"".equals(paramMap.get("edit_q_del"))){
+            logger.info("修改蔬菜行情信息-->controller-->[是否删除]为空");
+            throw new MyException("请选择是否删除","01");
+        }
+        return null;
     }
 
 
