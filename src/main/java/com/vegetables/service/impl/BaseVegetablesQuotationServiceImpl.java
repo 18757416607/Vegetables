@@ -1,7 +1,9 @@
 package com.vegetables.service.impl;
 
 import com.vegetables.mapper.BaseVegetablesQuotationMapper;
+import com.vegetables.pojo.Result;
 import com.vegetables.service.BaseVegetablesQuotationService;
+import com.vegetables.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +44,12 @@ public class BaseVegetablesQuotationServiceImpl implements BaseVegetablesQuotati
      * @return
      */
     @Override
-    public int addBaseVegetablesQuotation(Map<String, Object> param) {
-        return 0;
+    public Result addBaseVegetablesQuotation(Map<String, Object> param) throws Exception{
+        int updateCount = quotationMapper.addBaseVegetablesQuotation(param);
+        if(updateCount>0){
+            return ResultUtil.requestSuccess("添加操作成功");
+        }
+        return ResultUtil.requestSuccess(null,"添加操作受影响0行","02");
     }
 
 
@@ -56,7 +62,11 @@ public class BaseVegetablesQuotationServiceImpl implements BaseVegetablesQuotati
      * @return
      */
     @Override
-    public int updateBaseVegetablesQuotation(Map<String, Object> param) {
-        return 0;
+    public Result updateBaseVegetablesQuotation(Map<String, Object> param) throws Exception{
+        int updateCount = quotationMapper.updateBaseVegetablesQuotation(param);
+        if(updateCount>0){
+            return ResultUtil.requestSuccess("修改操作成功");
+        }
+        return ResultUtil.requestSuccess(null,"修改操作受影响0行","02");
     }
 }

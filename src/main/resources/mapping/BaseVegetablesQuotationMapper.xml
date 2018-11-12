@@ -11,7 +11,7 @@
         CASE q_del
         WHEN '00' THEN '可用'
         WHEN '01' THEN '已删除'
-        END q_del,
+        END q_del_name,q_del,
         DATE_FORMAT(q_updatetime,'%Y-%m-%d %H:%i:%S') q_updatetime,DATE_FORMAT(q_createtime,'%Y-%m-%d %H:%i:%S') q_createtime from base_vegetables_quotation
         <where>
             <if test="q_id != null">and q_id = #{q_id}</if>
@@ -40,22 +40,22 @@
     <!-- 添加蔬菜行情信息 -->
     <insert id="addBaseVegetablesQuotation" parameterType="java.util.Map">
         INSERT INTO base_vegetables_quotation(v_id,s_id,q_investigation_date,q_investigation_price,q_price_increase,q_del,q_updatetime,q_createtime)
-        VALUES (#{v_id},#{s_id},#{q_investigation_date},#{q_investigation_price},#{q_price_increase},#{q_del},now(),now())
+        VALUES (#{add_v_id},#{add_s_id},#{add_q_investigation_date},#{add_q_investigation_price},#{add_q_price_increase},#{add_q_del},now(),now())
     </insert>
 
     <!-- 修改蔬菜行情信息 -->
     <update id="updateBaseVegetablesQuotation" parameterType="java.util.Map">
         UPDATE base_vegetables_quotation
         <set>
-            <if test="v_id != null">v_id = #{v_id},</if>
-            <if test="s_id != null">s_id = #{s_id},</if>
-            <if test="q_investigation_date != null and q_investigation_date != ''">q_investigation_date = #{q_investigation_date},</if>
-            <if test="q_investigation_price != null">q_investigation_price = #{q_investigation_price},</if>
-            <if test="q_price_increase != null">q_price_increase = #{q_price_increase},</if>
-            <if test="v_del != null">v_del = #{v_del},</if>
+            <if test="edit_v_id != null">v_id = #{edit_v_id},</if>
+            <if test="edit_s_id != null">s_id = #{edit_s_id},</if>
+            <if test="edit_q_investigation_date != null and edit_q_investigation_date != ''">q_investigation_date = #{edit_q_investigation_date},</if>
+            <if test="edit_q_investigation_price != null">q_investigation_price = #{edit_q_investigation_price},</if>
+            <if test="edit_q_price_increase != null">q_price_increase = #{edit_q_price_increase},</if>
+            <if test="edit_q_del != null">q_del = #{edit_q_del},</if>
             q_updatetime = now()
         </set>
-        WHEN q_id = #{q_id}
+        WHERE q_id = #{q_id}
     </update>
 
 

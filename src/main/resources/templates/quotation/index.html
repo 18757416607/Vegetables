@@ -88,7 +88,7 @@
                     <th data-options="field:'q_investigation_date',width:130,align:'center',halign:'center',formatter: diyFormatter">调查时间</th>
                     <th data-options="field:'q_investigation_price',width:100,align:'center',halign:'center',formatter: diyFormatter">调查价格</th>
                     <th data-options="field:'q_price_increase',width:100,align:'center',halign:'center',formatter: diyFormatter">价格涨幅</th>
-                    <th data-options="field:'q_del',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
+                    <th data-options="field:'q_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
                     <th data-options="field:'q_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
                     <th data-options="field:'q_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
                 </tr>
@@ -145,28 +145,39 @@
 
 <div id="editDialog" >
         <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
-            <tr><td>蔬菜品种：</td><td><select id="edit_v_id" class="easyui-combobox" name="edit_v_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
             <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
             <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="edit_q_investigation_date" name = "edit_q_investigation_date"  data-options="width:150"/><br/></td></tr>
             <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
             <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="edit_q_price_increase" name = "edit_q_price_increase"  data-options="width:150"/><br/></td></tr>
             <tr><td>是否删除：</td><td>
                 <select id="edit_q_del" class="easyui-combobox" name="edit_q_del" data-options="editable:false,disable:true" style="width:150px;">
-                    <option value="">请选择</option>
+                    <option value="00">可用</option>
                     <option value="01">已删除</option>
-                    <option value="00">未删除</option>
                 </select>
-            <tr><td></td><td><br/><a id="saveBtn" href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+            <tr><td></td><td><br/><a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
         </table>
+</div>
+
+<div id="addDialog" >
+    <table id = "addDetail" style="display: none;padding: 25px 0px 0px 36px;">
+        <tr><td>蔬菜名称：</td><td><select id="add_v_id" class="easyui-combobox" name="add_v_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>进货来源：</td><td><select id="add_s_id" class="easyui-combobox" name="add_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="add_q_investigation_date" name = "add_q_investigation_date"  data-options="width:150"/><br/></td></tr>
+        <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="add_q_investigation_price" name = "add_q_investigation_price"  data-options="width:150"/><br/></td></tr>
+        <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="add_q_price_increase" name = "add_q_price_increase"  data-options="width:150"/><br/></td></tr>
+        <tr><td>是否删除：</td><td>
+            <select id="add_q_del" class="easyui-combobox" name="add_q_del" data-options="editable:false,disable:true" style="width:150px;">
+                <option value="00">可用</option>
+                <option value="01">已删除</option>
+            </select>
+        <tr><td></td><td><br/><a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+    </table>
 </div>
 
 
 
 
 <script type="text/javascript">
-    $(function () {
-        resourceTree("","");
-    });
 
     /**
      * 加载列表信息
@@ -236,12 +247,44 @@
         $('#q_end_updatetime').datebox("setValue","");
     }
 
+    var opt_flag = true;
+
+    /**
+     * 添加
+     * */
+    function add(){
+        opt_flag = true;
+
+        $('#addDetail').css("display","block");
+        $('#add_v_id').combobox({
+         url:'varieties/getVarietiesCombobox',
+             valueField:'id',
+             textField:'text'
+         });
+
+        $('#add_s_id').combobox({
+            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+            valueField:'id',
+            textField:'text'
+        });
+
+        $('#addDialog').window({
+            title:'添加蔬菜行情详细信息',
+            width:310,
+            height:280,
+            modal:true
+        });
+        $('#addDialog').dialog('open');
+    }
+
+
+
 
     //修改
     function edit(){
-        $('#detail').css("display","block");
+        opt_flag = false;
+
         var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
-        console.info(getRows);
         if(getRows==null){
             $.messager.show({
                 title:'系统消息',
@@ -249,9 +292,10 @@
                 timeout:5000,
                 showType:'slide'
             });
+            return false;
         }
-
-        $('#edit_v_id').combobox({
+        $('#detail').css("display","block");
+        /*$('#edit_v_id').combobox({
             url:'varieties/getVarietiesCombobox',
             valueField:'id',
             textField:'text',
@@ -264,7 +308,7 @@
                     }
                 }
             }
-        });
+        });*/
 
         $('#edit_s_id').combobox({
             url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
@@ -283,12 +327,12 @@
 
         $('#editDialog').window({
             title:'编辑蔬菜行情详细信息',
-            width:330,
-            height:305,
+            width:310,
+            height:280,
             modal:true
         });
 
-        $('#edit_v_id').textbox("setValue",getRows.v_id);
+        //$('#edit_v_id').textbox("setValue",getRows.v_id);
         $('#edit_s_id').textbox("setValue",getRows.s_id);
         $('#edit_q_investigation_date').datetimebox("setValue",getRows.q_investigation_date);
         $('#edit_q_investigation_price').textbox("setValue",getRows.q_investigation_price);
@@ -297,83 +341,158 @@
         $('#editDialog').dialog('open');
     }
 
-    //确认修改
+
+    //确认修改或新增
     function editSave() {
-        var edit_v_id = $('#edit_v_id').textbox("getValue");
-        var edit_s_id = $('#edit_s_id').textbox("getValue");
-        var edit_q_investigation_date = $('#edit_q_investigation_date').datetimebox("getValue");
-        var edit_q_investigation_price = $('#edit_q_investigation_price').textbox("getValue");
-        var edit_q_price_increase = $('#edit_q_price_increase').textbox("getValue");
-        var edit_q_del = $('#edit_q_del').combobox("getValue");
+        if(opt_flag){ //新增
 
-        var obj = {
-            edit_v_id : edit_v_id,
-            edit_s_id : edit_s_id,
-            edit_q_investigation_date : edit_q_investigation_date,
-            edit_q_investigation_price : edit_q_investigation_price,
-            edit_q_price_increase : edit_q_price_increase,
-            edit_q_del : edit_q_del
-        }
+            var add_v_id = $('#add_v_id').combobox("getValue");
+            var add_s_id = $('#add_s_id').combobox("getValue");
+            var add_q_investigation_date = $('#add_q_investigation_date').datetimebox("getValue");
+            var add_q_investigation_price = $('#add_q_investigation_price').textbox("getValue");
+            var add_q_price_increase = $('#add_q_price_increase').textbox("getValue");
+            var add_q_del = $('#add_q_del').combobox("getValue");
 
-        $.ajax({
-            url:'quotation/BaseVegetablesQuotation',
-            method:'post',
-            data:{
-                paramStr:JSON.stringify(obj)
-            },
-            success : function(data){
-                if(data=="00"){
-                    $('#dialog').dialog("close");
-                    $('#dg').datagrid('reload');
+            var obj = {
+                add_v_id : add_v_id,
+                add_s_id : add_s_id,
+                add_q_investigation_date : add_q_investigation_date,
+                add_q_investigation_price : add_q_investigation_price,
+                add_q_price_increase : add_q_price_increase,
+                add_q_del : add_q_del
+            }
+
+            $.ajax({
+                url:'quotation/addBaseVegetablesQuotation',
+                method:'post',
+                data:{
+                    paramStr:JSON.stringify(obj)
+                },
+                success : function(data){
+                    if(data.code=="00"){
+                        $('#addDialog').dialog("close");
+                        $('#dg').datagrid('reload');
+                        $.messager.show({
+                            title:'系统消息',
+                            msg:data.msg,
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }else{
+                        $.messager.show({
+                            title:'系统消息',
+                            msg:data.msg,
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }
+                },
+                error : function(a,b,c){
                     $.messager.show({
                         title:'系统消息',
-                        msg:'修改成功',
-                        timeout:3000,
-                        showType:'slide'
-                    });
-                }else{
-                    $.messager.show({
-                        title:'系统消息',
-                        msg:'修改失败',
+                        msg:'修改异常',
                         timeout:3000,
                         showType:'slide'
                     });
                 }
-            },
-            error : function(a,b,c){
-                $.messager.show({
-                    title:'系统消息',
-                    msg:'修改异常',
-                    timeout:3000,
-                    showType:'slide'
-                });
+            });
+        }else if(!opt_flag){ //修改
+            var edit_s_id = $('#edit_s_id').combobox("getValue");
+            var edit_q_investigation_date = $('#edit_q_investigation_date').datetimebox("getValue");
+            var edit_q_investigation_price = $('#edit_q_investigation_price').textbox("getValue");
+            var edit_q_price_increase = $('#edit_q_price_increase').textbox("getValue");
+            var edit_q_del = $('#edit_q_del').combobox("getValue");
+
+            var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
+            var obj = {
+                q_id : getRows.q_id,
+                edit_s_id : edit_s_id,
+                edit_q_investigation_date : edit_q_investigation_date,
+                edit_q_investigation_price : edit_q_investigation_price,
+                edit_q_price_increase : edit_q_price_increase,
+                edit_q_del : edit_q_del
             }
-        });
+            $.ajax({
+                url:'quotation/editBaseVegetablesQuotation',
+                method:'post',
+                data:{
+                    paramStr:JSON.stringify(obj)
+                },
+                success : function(data){
+                    if(data.code=="00"){
+                        $('#editDialog').dialog("close");
+                        $('#dg').datagrid('reload');
+                        $.messager.show({
+                            title:'系统消息',
+                            msg: data.msg,
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }else{
+                        $.messager.show({
+                            title:'系统消息',
+                            msg:data.msg,
+                            timeout:3000,
+                            showType:'slide'
+                        });
+                    }
+                },
+                error : function(a,b,c){
+                    $.messager.show({
+                        title:'系统消息',
+                        msg:'修改异常',
+                        timeout:3000,
+                        showType:'slide'
+                    });
+                }
+            });
+        }else{
+            $.messager.show({
+                title:'系统消息',
+                msg:'无效操作',
+                timeout:3000,
+                showType:'slide'
+            });
+        }
+
+
     }
 
     //删除
     function del() {
-        $.messager.confirm('系统确认', '您确定要删除手机号为 ['+row_data.phone+'] 的机主么,请谨慎操作?', function(r){
+        var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
+        if(getRows==null){
+            $.messager.show({
+                title:'系统消息',
+                msg:'请选中一行蔬菜行情进行删除!',
+                timeout:5000,
+                showType:'slide'
+            });
+            return false;
+        }
+
+        $.messager.confirm('系统确认', '您确定要删除蔬菜名称为 ['+getRows.v_name+'] 的市场行情信息么,请谨慎操作?', function(r){
             if (r){
+                var obj = {q_id:getRows.q_id};
                 $.ajax({
-                    url:'user/deleteWhite',
+                    url:'quotation/removeBaseVegetablesQuotation',
                     method:'post',
                     data:{
-                        id:row_data.id
+                        paramStr:JSON.stringify(obj)
                     },
                     success : function(data){
-                        if(data=="00"){
+                        if(data.code=="00"){
                             $('#dg').datagrid('reload');
                             $.messager.show({
                                 title:'系统消息',
-                                msg:'删除成功',
+                                msg:data.msg,
                                 timeout:3000,
                                 showType:'slide'
                             });
                         }else{
                             $.messager.show({
                                 title:'系统消息',
-                                msg:'删除失败',
+                                msg:data.msg,
                                 timeout:3000,
                                 showType:'slide'
                             });
@@ -392,55 +511,6 @@
         });
     }
 
-
-    /**
-     * 过滤资源信息
-     */
-    function filterResourceTree() {
-        var beginDate = $('#beginDate').datetimebox('getValue');
-        var endDate = $('#endDate').datetimebox('getValue');
-        resourceTree(beginDate,endDate);
-    }
-
-    /**
-     * 加载资源信息
-     * @param beginDate
-     * @param endDate
-     */
-    function resourceTree(beginDate,endDate) {
-        $('#tt').tree({
-            url: "quotation/getBaseVegetablesQuotation",
-            onClick: function(node){
-                if(typeof(node.children)=='undefined'){
-                    $.ajax({
-                        url:'user/getOneBaseResourceDetail',
-                        method:'post',
-                        data:{
-                            id : node.id
-                        },
-                        success : function (data) {
-                            $('#dd').css("display","block");
-                            $('#bb').css("display","none");
-                            $('#img').attr("src",data.imgurl);
-                            $('#platenum').html(data.platenum);
-                            $('#description').html(data.description);
-                        },
-                        error : function (a,b,c) {
-                            $.messager.show({
-                                title:'系统消息',
-                                msg:'获取['+node.text+']车牌号详细信息失败!',
-                                timeout:3000,
-                                showType:'slide'
-                            });
-                        }
-                    });
-                }
-
-            }
-        });
-    }
-
-    var row_data = {};
 
 
 

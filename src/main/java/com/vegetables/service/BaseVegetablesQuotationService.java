@@ -1,5 +1,7 @@
 package com.vegetables.service;
 
+import com.vegetables.pojo.Result;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public interface BaseVegetablesQuotationService {
      * @author wqs
      * @return
      */
-    public int addBaseVegetablesQuotation(Map<String,Object> param);
+    public Result addBaseVegetablesQuotation(Map<String,Object> param) throws Exception;
 
 
     /**
@@ -38,7 +40,7 @@ public interface BaseVegetablesQuotationService {
      * @author wqs
      * @return
      */
-    public int updateBaseVegetablesQuotation(Map<String,Object> param);
+    public Result updateBaseVegetablesQuotation(Map<String,Object> param) throws Exception;
 
 
 }
