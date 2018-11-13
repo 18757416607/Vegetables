@@ -4,7 +4,34 @@
 
     <!-- 查询蔬菜品种信息 -->
     <select id="getBaseVegetablesVarieties" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT temp.*,bvpsm.m_name,
+        CASE bvpsm.m_gender
+        WHEN 0 THEN '男'
+        WHEN 1 THEN '女' END m_gender,bvpsm.m_boss_name,bvpsm.m_boss_phone FROM(
         SELECT vvvc.*,bvps.s_name FROM (
+        SELECT bvv.*,bvc.c_name FROM (
+        select v_id,c_id,s_id,v_name,v_price,v_mature_season,v_is_back_season,v_del,v_updatetime,v_createtime from base_vegetables_varieties
+        <where>
+            <if test="c_id != null">and c_id = #{c_id}</if>
+            <if test="s_id != null">and s_id = #{s_id}</if>
+            <if test="v_name != null and v_name != ''">and v_name LIKE CONCAT('%',#{v_name},'%')</if>
+            <if test="(v_start_price != null and v_start_price != '') and (v_end_price != null and v_end_price != '')">and v_price BETWEEN #{v_start_price} AND #{v_end_price}</if>
+            <if test="(v_start_price != null and v_start_price != '') and (v_end_price == null or v_end_price =='')">and v_price &gt;= #{v_start_price}</if>
+            <if test="(v_start_price == null or v_start_price == '') and (v_end_price != null and v_end_price !='')">and v_price &gt;= #{v_end_price}</if>
+            <if test="v_mature_season != null and v_mature_season != ''">and v_mature_season = #{v_mature_season}</if>
+            <if test="v_is_back_season != null">and v_is_back_season = #{v_is_back_season}</if>
+            <if test="v_del != null">and v_del = #{v_del}</if>
+            <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime BETWEEN #{v_start_updatetime} and #{v_end_updatetime}</if>
+            <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime == null or v_end_updatetime =='')">and v_updatetime &gt;= #{v_start_updatetime}</if>
+            <if test="(v_start_updatetime == null or v_start_updatetime =='') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime &gt;= #{v_end_updatetime}</if>
+            <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
+        </where>
+        ) bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc
+        INNER JOIN base_vegetables_purchase_source bvps on vvvc.s_id = bvps.s_id ) temp
+        LEFT JOIN base_vegetables_purchase_source_merchant bvpsm on temp.s_id = bvpsm.s_id
+        WHERE bvpsm.m_del = '00'
+
+        <!-- SELECT vvvc.*,bvps.s_name FROM (
         SELECT bvv.*,bvc.c_name FROM (
         select v_id,c_id,s_id,v_name,v_price,v_mature_season,v_is_back_season,v_del,v_updatetime,v_createtime from base_vegetables_varieties
         <where>
@@ -19,19 +46,8 @@
             <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
         </where> )
         bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc
-        INNER JOIN base_vegetables_purchase_source bvps on vvvc.s_id = bvps.s_id
-        <!--select v_id,c_id,s_id,v_name,v_price,v_mature_season,v_is_back_season,v_del,v_updatetime,v_createtime from base_vegetables_varieties
-        <where>
-            <if test="c_id != null">and c_id = #{c_id}</if>
-            <if test="s_id != null">and s_id = #{s_id}</if>
-            <if test="v_name != null and v_name != ''">and v_name LIKE CONCAT('%',#{v_name},'%')</if>
-            <if test="v_price != null">and v_price  BETWEEN #{v_start_price} and #{v_end_price}</if>
-            <if test="v_mature_season != null and v_mature_season != ''">and v_mature_season = #{v_mature_season}</if>
-            <if test="v_is_back_season != null">and v_is_back_season = #{v_is_back_season}</if>
-            <if test="v_del != null">and v_del = #{v_del}</if>
-            <if test="v_updatetime != null">and v_updatetime BETWEEN #{v_start_updatetime} and #{v_end_updatetime}</if>
-            <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
-        </where>-->
+        INNER JOIN base_vegetables_purchase_source bvps on vvvc.s_id = bvps.s_id -->
+
     </select>
 
     <!-- 获取蔬菜品种下拉列表信息 -->
