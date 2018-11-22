@@ -37,7 +37,6 @@ public class BaseVegetablesQuotationController {
      */
     @PostMapping(value = "/getBaseVegetablesQuotation")
     public List<Map<String,Object>> getBaseVegetablesQuotation(String paramStr) throws IOException {
-        System.out.println(paramStr);
         if(paramStr!=null&&!"".equals(paramStr)){
             return quotationService.getBaseVegetablesQuotation(JacksonUtils.strToMap(paramStr));
         }else{
@@ -120,7 +119,7 @@ public class BaseVegetablesQuotationController {
 
 
     /**
-     *  修改蔬菜行情信息
+     *  删除蔬菜行情信息
      * @param paramStr
      * @return
      * @throws Exception

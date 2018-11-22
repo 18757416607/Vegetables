@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>资源信息</title>
+    <title>蔬菜品种</title>
     <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/icon.css}" />
     <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
@@ -53,23 +53,9 @@
     }
 
 </script>
-<body class="easyui-layout">
-<div data-options="region:'west',title:'资源消息',split:true" style="width:230px;">
-
-    <div id="aa" class="easyui-accordion"  data-options="fit:true,border:false" style="padding: 10px;">
-        <div title="基础信息" style="overflow:auto;padding:10px;">
-            <p class="a1">
-                <a href = "javascript:getBaseVegetablesQuotation();">蔬菜行情模块</a>
-            </p>
-        </div>
-    </div>
-
-
-</div>
-<div data-options="region:'center',title:'详细信息'">
-    <div id = "detailinfo" style="display: none;width: 100%;height: 100%">
-
-
+<body  class="easyui-layout">
+<div data-options="region:'center',border:false">
+    <div id = "detailinfo" style="width: 100%;height: 100%">
         <table id = "dg" style="width: 100%;height: 100%;margin: 0 auto" class="easyui-datagrid" data-options="
             url:'',
             singleSelect:true,
@@ -77,21 +63,28 @@
             rownumbers:true,
             loadMsg:'数据处理中...',
             border:false,
-            toolbar: '#toolbar'
+            toolbar: '#toolbar',
+            border:false
         ">
             <thead>
-                <tr>
-                    <th data-options="field:'q_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">行情编号</th>
-                    <th data-options="field:'c_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜种类</th>
-                    <th data-options="field:'v_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜名称</th>
-                    <th data-options="field:'s_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜进货来源</th>
-                    <th data-options="field:'q_investigation_date',width:130,align:'center',halign:'center',formatter: diyFormatter">调查时间</th>
-                    <th data-options="field:'q_investigation_price',width:100,align:'center',halign:'center',formatter: diyFormatter">调查价格</th>
-                    <th data-options="field:'q_price_increase',width:100,align:'center',halign:'center',formatter: diyFormatter">价格涨幅</th>
-                    <th data-options="field:'q_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
-                    <th data-options="field:'q_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
-                    <th data-options="field:'q_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
-                </tr>
+            <tr>
+                <th data-options="field:'v_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">品种编号</th>
+                <th data-options="field:'c_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜种类</th>
+                <th data-options="field:'v_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜名称</th>
+                <th data-options="field:'v_price',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜价格</th>
+                <th data-options="field:'v_mature_season',width:150,align:'center',halign:'center',formatter: diyFormatter">蔬菜上市季节</th>
+                <th data-options="field:'v_mature_end_season',width:150,align:'center',halign:'center',formatter: diyFormatter">蔬菜下市季节</th>
+                <th data-options="field:'v_is_back_season',width:100,align:'center',halign:'center',formatter: diyFormatter">是否反季节</th>
+                <th data-options="field:'v_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
+                <th data-options="field:'v_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
+                <th data-options="field:'v_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
+                <th data-options="field:'s_name',width:100,align:'center',halign:'center',formatter: diyFormatter">进货来源</th>
+                <th data-options="field:'m_name',width:100,align:'center',halign:'center',formatter: diyFormatter">进货店铺名称</th>
+                <th data-options="field:'m_gender',width:100,align:'center',halign:'center',formatter: diyFormatter">店铺老板性别</th>
+                <th data-options="field:'m_boss_name',width:100,align:'center',halign:'center',formatter: diyFormatter">店铺老板姓名</th>
+                <th data-options="field:'m_boss_phone',width:100,align:'center',halign:'center',formatter: diyFormatter">店铺老板手机号</th>
+
+            </tr>
             </thead>
         </table>
     </div>
@@ -99,23 +92,77 @@
     <div id="toolbar">
         <div style="padding: 5px;">
             <div>
-                调查价格(开始区间)&nbsp;:&nbsp;<input class="easyui-textbox" id = "q_start_investigation_price" name="q_start_investigation_price" placeholder="输入调查价格(开始区间)" />&nbsp;-
-                <input class="easyui-textbox" id = "q_end_investigation_price" name="q_end_investigation_price" placeholder="输入调查价格(结束区间)" />
+                蔬菜名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "v_name" name="v_name" placeholder="输入蔬菜名称" />
             </div>
             <div>
-                价格涨幅(开始区间)&nbsp;:&nbsp;<input class="easyui-textbox" id = "q_start_price_increase" name="q_start_price_increase" placeholder="输入价格涨幅(开始区间)" />&nbsp;-
-                <input class="easyui-textbox" id = "q_end_price_increase" name="q_end_price_increase" placeholder="输入价格涨幅(结束区间)" />
+                蔬菜价格起始区间(数字)&nbsp;:&nbsp;<input class="easyui-textbox" id = "v_start_price" name="v_start_price" placeholder="输入蔬菜价格起始区间" />&nbsp;-
+                蔬菜价格结束区间(数字)&nbsp;:&nbsp;<input class="easyui-textbox" id = "v_end_price" name="v_end_price" placeholder="输入蔬菜价格结束区间" />
             </div>
             <div>
-                是否逻辑删除&nbsp;:&nbsp;<select id="q_del" class="easyui-combobox" name="q_del" data-options="editable:false,disable:true" style="width:200px;">
+                蔬菜上市季节&nbsp;:&nbsp;
+                <select id="v_mature_season" class="easyui-combobox" name="v_mature_season" data-options="editable:false,disable:true" style="width:200px;">
                     <option value="">请选择</option>
-                    <option value="01">已删除</option>
-                    <option value="00">未删除</option>
+                    <option value="1">一月</option>
+                    <option value="2">二月</option>
+                    <option value="3">三月</option>
+                    <option value="4">四月</option>
+                    <option value="5">五月</option>
+                    <option value="6">六月</option>
+                    <option value="7">七月</option>
+                    <option value="8">八月</option>
+                    <option value="9">九月</option>
+                    <option value="10">十月</option>
+                    <option value="11">十一月</option>
+                    <option value="12">十二月</option>
                 </select>
             </div>
             <div>
-                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datebox" id ="q_start_updatetime" name="q_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
-                <input class="easyui-datebox" id ="q_end_updatetime" name="q_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
+                蔬菜上市季节&nbsp;:&nbsp;
+                <select id="v_mature_end_season" class="easyui-combobox" name="v_mature_end_season" data-options="editable:false,disable:true" style="width:200px;">
+                    <option value="">请选择</option>
+                    <option value="1">一月</option>
+                    <option value="2">二月</option>
+                    <option value="3">三月</option>
+                    <option value="4">四月</option>
+                    <option value="5">五月</option>
+                    <option value="6">六月</option>
+                    <option value="7">七月</option>
+                    <option value="8">八月</option>
+                    <option value="9">九月</option>
+                    <option value="10">十月</option>
+                    <option value="11">十一月</option>
+                    <option value="12">十二月</option>
+                </select>
+            </div>
+            <div>
+                是否反季节&nbsp;:&nbsp;<select id="v_is_back_season" class="easyui-combobox" name="v_is_back_season" data-options="editable:false,disable:true" style="width:200px;">
+                <option value="">请选择</option>
+                <option value="01">是</option>
+                <option value="00">否</option>
+            </select>
+            </div>
+            <div>
+                进货来源&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox'" id = "s_id" name="s_id" placeholder="输入进货来源" />
+            </div>
+            <div>
+                进货店铺名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_name" name="m_name" placeholder="输入进货店铺名称" />
+            </div>
+            <div>
+                店铺老板姓名(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_boss_name" name="m_boss_name" placeholder="输入店铺老板姓名" />
+            </div>
+            <div>
+                店铺老板手机号(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_boss_phone" name="m_boss_phone" placeholder="输入店铺老板手机号" />
+            </div>
+            <div>
+                是否逻辑删除&nbsp;:&nbsp;<select id="v_del" class="easyui-combobox" name="v_del" data-options="editable:false,disable:true" style="width:200px;">
+                <option value="">请选择</option>
+                <option value="01">已删除</option>
+                <option value="00">未删除</option>
+            </select>
+            </div>
+            <div>
+                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datebox" id ="v_start_updatetime" name="v_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
+                <input class="easyui-datebox" id ="v_end_updatetime" name="v_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
             </div>
             <a href="javascript:void(0)" onclick="add();" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="color: red;">新增</a>
             <a href="javascript:void(0)" onclick="edit();" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="color: red;">修改</a>
@@ -123,14 +170,6 @@
             <a href="javascript:void(0)" onclick="filterDate();" class="easyui-linkbutton" data-options="iconCls:'icon-filter'" style="color: red;">条件过滤</a>
             <a href="javascript:void(0)" onclick="clearfilterDate();" class="easyui-linkbutton" data-options="iconCls:'icon-redo'" style="color: red;">清空条件过滤</a>
         </div>
-
-    </div>
-
-
-    <div id = "dd" style="display: none;margin: 0 auto;padding-top: 50px;">
-        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">车牌号：<span style="color: red;" id="platenum"></span></p>
-        <p style="padding-left:2em;font-size: 3em;margin-bottom:0.5em;">描述：<span style="color: red;" id = "description"></span></p>
-        <img style="margin-left:5em;" id = "img" src=""/>
     </div>
 </div>
 
@@ -144,18 +183,18 @@
 </body>
 
 <div id="editDialog" >
-        <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
-            <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
-            <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="edit_q_investigation_date" name = "edit_q_investigation_date"  data-options="width:150"/><br/></td></tr>
-            <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
-            <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="edit_q_price_increase" name = "edit_q_price_increase"  data-options="width:150"/><br/></td></tr>
-            <tr><td>是否删除：</td><td>
-                <select id="edit_q_del" class="easyui-combobox" name="edit_q_del" data-options="editable:false,disable:true" style="width:150px;">
-                    <option value="00">可用</option>
-                    <option value="01">已删除</option>
-                </select>
-            <tr><td></td><td><br/><a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
-        </table>
+    <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
+        <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="edit_q_investigation_date" name = "edit_q_investigation_date"  data-options="width:150"/><br/></td></tr>
+        <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
+        <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="edit_q_price_increase" name = "edit_q_price_increase"  data-options="width:150"/><br/></td></tr>
+        <tr><td>是否删除：</td><td>
+            <select id="edit_q_del" class="easyui-combobox" name="edit_q_del" data-options="editable:false,disable:true" style="width:150px;">
+                <option value="00">可用</option>
+                <option value="01">已删除</option>
+            </select>
+        <tr><td></td><td><br/><a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+    </table>
 </div>
 
 <div id="addDialog" >
@@ -182,72 +221,80 @@
     /**
      * 加载列表信息
      */
-    function getBaseVegetablesQuotation () {
-        $('#detailinfo').css("display","block");
+    $(function(){
         $('#dg').datagrid({
-            url:'quotation/getBaseVegetablesQuotation',
+            url:'varieties/getBaseVegetablesVarieties',
             onRowContextMenu:function(e, rowIndex, rowData){
                 if(rowData!=null){
                     $('#mm').menu('show', {
                         left: e.pageX,
                         top: e.pageY
                     });
-                    row_data = rowData
-                    console.info(row_data);
                 }
             }
         });
-    }
+    });
 
     /**
      * 过滤数据
      * */
     function filterDate() {
-        var q_start_investigation_price = $('#q_start_investigation_price').textbox("getValue");
-        var q_end_investigation_price = $('#q_end_investigation_price').textbox("getValue");
-        var q_start_price_increase = $('#q_start_price_increase').textbox("getValue");
-        var q_end_price_increase = $('#q_end_price_increase').textbox("getValue");
-        var q_del = $('#q_del').combobox("getValue");
-        var q_start_updatetime = $('#q_start_updatetime').datebox("getValue");
-        var q_end_updatetime = $('#q_end_updatetime').datebox("getValue");
+        var v_name = $('#v_name').textbox("getValue");
+        var v_start_price = $('#v_start_price').textbox("getValue");
+        var v_end_price = $('#v_end_price').textbox("getValue");
+        var v_mature_season = $('#v_mature_season').combobox("getValue");
+        var v_mature_end_season = $('#v_mature_end_season').combobox("getValue");
+        var v_is_back_season = $('#v_is_back_season').combobox("getValue");
+        var s_id = $('#s_id').combobox("getValue");
+        var m_name = $('#m_name').textbox("getValue");
+        var m_boss_name = $('#m_boss_name').textbox("getValue");
+        var m_boss_phone = $('#m_boss_phone').textbox("getValue");
+        var v_del = $('#v_del').combobox("getValue");
+        var v_start_updatetime = $('#v_start_updatetime').datebox("getValue");
+        var v_end_updatetime = $('#v_end_updatetime').datebox("getValue");
 
         var obj = {
-            q_start_investigation_price: q_start_investigation_price,
-            q_end_investigation_price: q_end_investigation_price,
-            q_start_price_increase: q_start_price_increase,
-            q_end_price_increase: q_end_price_increase,
-            q_del: q_del,
-            q_start_updatetime: q_start_updatetime,
-            q_end_updatetime: q_end_updatetime
+            v_name: v_name,
+            v_start_price: v_start_price,
+            v_end_price: v_end_price,
+            v_mature_season: v_mature_season,
+            v_mature_end_season: v_mature_end_season,
+            v_is_back_season: v_is_back_season,
+            s_id: s_id,
+            m_name: m_name,
+            m_boss_name: m_boss_name,
+            m_boss_phone: m_boss_phone,
+            v_del: v_del,
+            v_start_updatetime: v_start_updatetime,
+            v_end_updatetime: v_end_updatetime
         }
 
         $('#dg').datagrid('load',{
             paramStr:JSON.stringify(obj)
         });
-
-        /*alert("q_start_investigation_price:"+q_start_investigation_price);
-        alert("q_end_investigation_price:"+q_end_investigation_price);
-        alert("q_start_price_increase:"+q_start_price_increase);
-        alert("q_end_price_increase:"+q_end_price_increase);
-        alert("q_del:"+q_del);
-        alert("q_start_updatetime:"+q_start_updatetime);
-        alert("q_end_updatetime:"+q_end_updatetime);*/
     }
 
     /**
      * 清空条件过滤
      **/
     function clearfilterDate() {
-        $('#q_start_investigation_price').textbox("setValue","");
-        $('#q_end_investigation_price').textbox("setValue","");
-        $('#q_start_price_increase').textbox("setValue","");
-        $('#q_end_price_increase').textbox("setValue","");
-        $('#q_del').combobox("setValue","");
-        $('#q_start_updatetime').datebox("setValue","");
-        $('#q_end_updatetime').datebox("setValue","");
+        $('#v_name').textbox("setValue","");
+        $('#v_start_price').textbox("setValue","");
+        $('#v_end_price').textbox("setValue","");
+        $('#v_mature_season').combobox("setValue","");
+        $('#v_mature_end_season').combobox("setValue","");
+        $('#v_is_back_season').combobox("setValue","");
+        $('#s_id').combobox("setValue","");
+        $('#m_name').textbox("setValue","");
+        $('#m_boss_name').textbox("setValue","");
+        $('#m_boss_phone').textbox("setValue","");
+        $('#v_del').combobox("setValue","");
+        $('#v_start_updatetime').datebox("setValue","");
+        $('#v_end_updatetime').datebox("setValue","");
+        filterDate();
     }
 
-    var opt_flag = true;
+    var opt_flag = true;  //标识是新增还是修改
 
     /**
      * 添加
@@ -257,10 +304,10 @@
 
         $('#addDetail').css("display","block");
         $('#add_v_id').combobox({
-         url:'varieties/getVarietiesCombobox',
-             valueField:'id',
-             textField:'text'
-         });
+            url:'varieties/getVarietiesCombobox',
+            valueField:'id',
+            textField:'text'
+        });
 
         $('#add_s_id').combobox({
             url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
@@ -296,19 +343,19 @@
         }
         $('#detail').css("display","block");
         /*$('#edit_v_id').combobox({
-            url:'varieties/getVarietiesCombobox',
-            valueField:'id',
-            textField:'text',
-            onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
-                var val = $(this).combobox("getData");
-                for (var item in val) {
-                    console.info(item);
-                    if (item.id == getRows.v_id) {
-                        $(this).combobox("select", val[item].id);
-                    }
-                }
-            }
-        });*/
+         url:'varieties/getVarietiesCombobox',
+         valueField:'id',
+         textField:'text',
+         onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
+         var val = $(this).combobox("getData");
+         for (var item in val) {
+         console.info(item);
+         if (item.id == getRows.v_id) {
+         $(this).combobox("select", val[item].id);
+         }
+         }
+         }
+         });*/
 
         $('#edit_s_id').combobox({
             url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',

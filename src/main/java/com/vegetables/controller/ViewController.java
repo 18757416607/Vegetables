@@ -21,12 +21,12 @@ public class ViewController {
 
 
     /**
-     * 去显示资源信息页面
+     * 去首页
      * @return
      */
-    @GetMapping(value = "/goResourceView")
-    public String goResourceView(){
-        return "resource";
+    @GetMapping(value = "/index")
+    public String index(){
+        return "index";
     }
 
 
@@ -38,11 +38,27 @@ public class ViewController {
      */
     @GetMapping(value = "/goQuotationView")
     public String goQuotationView(){
-        return "quotation/index";
+        return "quotation/quotation";
     }
 
 
     /*----------------------------------------------------------------- 蔬菜行情  end   -----------------------------------------------------------------*/
+
+
+
+    /*----------------------------------------------------------------- 蔬菜品种 start -----------------------------------------------------------------*/
+
+    /**
+     * 去蔬菜行情首页
+     * @return
+     */
+    @GetMapping(value = "/goVarietiesView")
+    public String goVarietiesView(){
+        return "varieties/varieties";
+    }
+
+
+    /*----------------------------------------------------------------- 蔬菜品种  end   -----------------------------------------------------------------*/
 
 
 }
