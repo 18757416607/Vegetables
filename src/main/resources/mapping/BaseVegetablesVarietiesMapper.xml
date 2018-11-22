@@ -39,8 +39,7 @@
         </where>
         ) bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc
         INNER JOIN base_vegetables_purchase_source bvps on vvvc.s_id = bvps.s_id ) temp
-        LEFT JOIN base_vegetables_purchase_source_merchant bvpsm on temp.s_id = bvpsm.s_id
-        WHERE bvpsm.m_del = '00') ttable
+        LEFT JOIN base_vegetables_purchase_source_merchant bvpsm on temp.s_id = bvpsm.s_id) ttable
         <where>
             <if test="m_name != null and m_name != ''">and m_name like CONCAT('%',#{m_name},'%') </if>
             <if test="m_boss_name != null and m_boss_name != ''">and m_boss_name like CONCAT('%',#{m_boss_name},'%') </if>
@@ -64,8 +63,8 @@
     <update id="updateBaseVegetablesVarieties" parameterType="java.util.Map">
         UPDATE base_vegetables_varieties
         <set>
-            <if test="edit_c_id != null">c_id = #{edit_c_id},</if>
-            <if test="edit_s_id != null">s_id = #{edit_s_id},</if>
+            <if test="edit_c_id != null and edit_c_id != ''">c_id = #{edit_c_id},</if>
+            <if test="edit_s_id != null and edit_s_id != ''">s_id = #{edit_s_id},</if>
             <if test="edit_v_name != null and edit_v_name != ''">v_name = #{edit_v_name},</if>
             <if test="edit_v_price != null">v_price = #{edit_v_price},</if>
             <if test="edit_v_mature_season != null and edit_v_mature_season != ''">v_mature_season = #{edit_v_mature_season},</if>

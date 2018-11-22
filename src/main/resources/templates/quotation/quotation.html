@@ -90,6 +90,9 @@
                 蔬菜名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "v_name" name="v_name" placeholder="输入蔬菜名称" />
             </div>
             <div>
+                蔬菜种类&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'category/getBaseVegetablesCategoryCombobox'" id = "c_id" name="c_id" placeholder="输入蔬菜种类" />
+            </div>
+            <div>
                 进货来源&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox'" id = "s_id" name="s_id" placeholder="输入进货来源" />
             </div>
             <div>
@@ -133,7 +136,7 @@
         <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
             <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
             <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="edit_q_investigation_date" name = "edit_q_investigation_date"  data-options="width:150"/><br/></td></tr>
-            <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
+            <tr><td>调查价格(数字)：</td><td><input class = "easyui-textbox" id="edit_q_investigation_price" name = "edit_q_investigation_price"  data-options="width:150"/><br/></td></tr>
             <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="edit_q_price_increase" name = "edit_q_price_increase"  data-options="width:150"/><br/></td></tr>
             <tr><td>是否删除：</td><td>
                 <select id="edit_q_del" class="easyui-combobox" name="edit_q_del" data-options="editable:false,disable:true" style="width:150px;">
@@ -149,7 +152,7 @@
         <tr><td>蔬菜名称：</td><td><select id="add_v_id" class="easyui-combobox" name="add_v_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>进货来源：</td><td><select id="add_s_id" class="easyui-combobox" name="add_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>调查时间：</td><td><input class = "easyui-datetimebox" id="add_q_investigation_date" name = "add_q_investigation_date"  data-options="width:150"/><br/></td></tr>
-        <tr><td>调查价格：</td><td><input class = "easyui-textbox" id="add_q_investigation_price" name = "add_q_investigation_price"  data-options="width:150"/><br/></td></tr>
+        <tr><td>调查价格(数字)：</td><td><input class = "easyui-textbox" id="add_q_investigation_price" name = "add_q_investigation_price"  data-options="width:150"/><br/></td></tr>
         <tr><td>价格涨幅：</td><td><input class = "easyui-textbox" id="add_q_price_increase" name = "add_q_price_increase"  data-options="width:150"/><br/></td></tr>
         <tr><td>是否删除：</td><td>
             <select id="add_q_del" class="easyui-combobox" name="add_q_del" data-options="editable:false,disable:true" style="width:150px;">
@@ -187,6 +190,7 @@
      * */
     function filterDate() {
         var s_id = $('#s_id').combobox("getValue");
+        var c_id = $('#c_id').combobox("getValue");
         var v_name = $('#v_name').textbox("getValue");
         var q_start_investigation_price = $('#q_start_investigation_price').textbox("getValue");
         var q_end_investigation_price = $('#q_end_investigation_price').textbox("getValue");
@@ -198,6 +202,7 @@
 
         var obj = {
             s_id : s_id,
+            c_id : c_id,
             v_name : v_name,
             q_start_investigation_price: q_start_investigation_price,
             q_end_investigation_price: q_end_investigation_price,
@@ -211,14 +216,6 @@
         $('#dg').datagrid('load',{
             paramStr:JSON.stringify(obj)
         });
-
-        /*alert("q_start_investigation_price:"+q_start_investigation_price);
-        alert("q_end_investigation_price:"+q_end_investigation_price);
-        alert("q_start_price_increase:"+q_start_price_increase);
-        alert("q_end_price_increase:"+q_end_price_increase);
-        alert("q_del:"+q_del);
-        alert("q_start_updatetime:"+q_start_updatetime);
-        alert("q_end_updatetime:"+q_end_updatetime);*/
     }
 
     /**

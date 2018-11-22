@@ -27,6 +27,13 @@ public interface BaseVegetablesCategoryMapper {
 
 
     /**
+     * 获取蔬菜类别下拉列表信息
+     * @return
+     */
+    public List<Map<String,Object>> getBaseVegetablesCategoryCombobox();
+
+
+    /**
      * 添加蔬菜类别信息
      * @param param
      *      收集蔬菜信息

@@ -37,6 +37,7 @@
         INNER JOIN base_vegetables_category bvc on bvc.c_id = temp2.c_id ) temp3
         <where>
             <if test="v_name != null and v_name != ''">temp3.v_name LIKE CONCAT('%',#{v_name},'%')</if>
+            <if test="c_id != null and c_id != ''">temp3.c_id = c_id</if>
         </where>
     </select>
     

@@ -15,6 +15,12 @@
     </select>
 
 
+    <!-- 获取蔬菜类别下拉列表信息 -->
+    <select id="getBaseVegetablesCategoryCombobox" resultType="java.util.Map">
+        select c_id id,c_name text from base_vegetables_category
+    </select>
+
+
     <!-- 添加蔬菜类别信息 -->
     <insert id="addBaseVegetablesCategory" parameterType="java.util.Map">
         INSERT INTO base_vegetables_category(c_name,c_del,c_updatetime,c_createtime)
