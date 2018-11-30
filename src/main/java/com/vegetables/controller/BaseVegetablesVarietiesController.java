@@ -89,10 +89,10 @@ public class BaseVegetablesVarietiesController{
             logger.info("添加蔬菜品种信息-->controller-->[是否反季节]为空");
             throw new MyException("请选择是否反季节","01");
         }
-        if(paramMap.get("add_v_del")==null||"".equals(paramMap.get("add_v_del"))){
+        /*if(paramMap.get("add_v_del")==null||"".equals(paramMap.get("add_v_del"))){
             logger.info("添加蔬菜品种信息-->controller-->[是否删除]为空");
             throw new MyException("请选择是否删除","01");
-        }
+        }*/
         return baseVegetablesVarietiesService.addBaseVegetablesVarieties(paramMap);
     }
 
@@ -108,34 +108,34 @@ public class BaseVegetablesVarietiesController{
     public Result editBaseVegetablesVarieties(String paramStr) throws Exception{
         logger.info("进入修改蔬菜品种信息-->controller-->参数:"+paramStr);
         Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
-        if(paramMap.get("add_c_id")==null||"".equals(paramMap.get("add_c_id"))){
+        if(paramMap.get("edit_c_id")==null||"".equals(paramMap.get("edit_c_id"))){
             logger.info("添加蔬菜品种信息-->controller-->[蔬菜类别]为空");
             throw new MyException("请选择蔬菜类别","01");
         }
-        if(paramMap.get("add_s_id")==null||"".equals(paramMap.get("add_s_id"))){
+        if(paramMap.get("edit_s_id")==null||"".equals(paramMap.get("edit_s_id"))){
             logger.info("添加蔬菜品种信息-->controller-->[进货来源]为空");
             throw new MyException("请选择进货来源","01");
         }
-        if(paramMap.get("add_v_price")==null||"".equals(paramMap.get("add_v_price"))){
+        if(paramMap.get("edit_v_price")==null||"".equals(paramMap.get("edit_v_price"))){
             logger.info("添加蔬菜品种信息-->controller-->[蔬菜价格]为空");
             throw new MyException("请填写蔬菜价格","01");
         }
-        if(paramMap.get("add_v_mature_season")==null||"".equals(paramMap.get("add_v_mature_season"))){
+        if(paramMap.get("edit_v_mature_season")==null||"".equals(paramMap.get("edit_v_mature_season"))){
             logger.info("添加蔬菜品种信息-->controller-->[蔬菜上市季节]为空");
             throw new MyException("请填写蔬菜上市季节","01");
         }
-        if(paramMap.get("add_v_mature_end_season")==null||"".equals(paramMap.get("add_v_mature_end_season"))){
+        if(paramMap.get("edit_v_mature_end_season")==null||"".equals(paramMap.get("edit_v_mature_end_season"))){
             logger.info("添加蔬菜品种信息-->controller-->[蔬菜下市季节]为空");
             throw new MyException("请填写蔬菜下市季节","01");
         }
-        if(paramMap.get("add_v_is_back_season")==null||"".equals(paramMap.get("add_v_is_back_season"))){
+        if(paramMap.get("edit_v_is_back_season")==null||"".equals(paramMap.get("edit_v_is_back_season"))){
             logger.info("添加蔬菜品种信息-->controller-->[是否反季节]为空");
             throw new MyException("请选择是否反季节","01");
         }
-        if(paramMap.get("add_v_del")==null||"".equals(paramMap.get("add_v_del"))){
+        /*if(paramMap.get("edit_v_del")==null||"".equals(paramMap.get("edit_v_del"))){
             logger.info("添加蔬菜品种信息-->controller-->[是否删除]为空");
             throw new MyException("请选择是否删除","01");
-        }
+        }*/
         return baseVegetablesVarietiesService.updateBaseVegetablesVarieties(paramMap);
     }
 
@@ -151,11 +151,11 @@ public class BaseVegetablesVarietiesController{
     public Result removeBaseVegetablesVarieties(String paramStr) throws Exception{
         logger.info("进入修改蔬菜品种信息-->controller-->参数:"+paramStr);
         Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
-        if(paramMap.get("q_id")==null||"".equals(paramMap.get("q_id"))){
+        if(paramMap.get("v_id")==null||"".equals(paramMap.get("v_id"))){
             logger.info("修改蔬菜品种信息-->controller-->[主键ID]为空");
             throw new MyException("主编号为空","01");
         }
-        paramMap.put("edit_q_del","01");
+        paramMap.put("edit_v_del","01");
         return baseVegetablesVarietiesService.updateBaseVegetablesVarieties(paramMap);
     }
 

@@ -30,7 +30,7 @@ public interface BaseVegetablesVarietiesService {
 
 
     /**
-     * 添加蔬菜行情信息
+     * 添加蔬菜品种信息
      * @param param
      *      收集蔬菜行情信息
      * @author wqs
@@ -40,7 +40,7 @@ public interface BaseVegetablesVarietiesService {
 
 
     /**
-     * 修改蔬菜行情信息
+     * 修改蔬菜品种信息
      * @param param
      *      收集蔬菜行情信息
      * @author wqs

@@ -45,6 +45,9 @@ public class BaseVegetablesQuotationServiceImpl implements BaseVegetablesQuotati
      */
     @Override
     public Result addBaseVegetablesQuotation(Map<String, Object> param) throws Exception{
+        if(param.get("add_q_remark")==null||"".equals(param.get("add_q_remark"))){
+            param.put("add_q_remark","无");
+        }
         int updateCount = quotationMapper.addBaseVegetablesQuotation(param);
         if(updateCount>0){
             return ResultUtil.requestSuccess("添加操作成功");

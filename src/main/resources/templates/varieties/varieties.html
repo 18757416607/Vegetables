@@ -37,6 +37,18 @@
     }
 
     /**
+     * easyui  格式化列
+     * @param value
+     * @param row
+     * @param index
+     * @returns {string}
+     */
+    function diyFormatterMonth(value,row,index) {
+        return "<span title='"+value+"月'>"+value+"月</span>";
+    }
+
+
+    /**
      * 格式化日期
      * @param date
      * @returns {string}
@@ -73,10 +85,11 @@
                 <th data-options="field:'c_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜种类</th>
                 <th data-options="field:'v_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜名称</th>
                 <th data-options="field:'v_price',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜价格</th>
-                <th data-options="field:'v_mature_season',width:150,align:'center',halign:'center',formatter: diyFormatter">蔬菜上市季节</th>
-                <th data-options="field:'v_mature_end_season',width:150,align:'center',halign:'center',formatter: diyFormatter">蔬菜下市季节</th>
-                <th data-options="field:'v_is_back_season',width:100,align:'center',halign:'center',formatter: diyFormatter">是否反季节</th>
+                <th data-options="field:'v_mature_season',width:150,align:'center',halign:'center',formatter: diyFormatterMonth">蔬菜上市季节</th>
+                <th data-options="field:'v_mature_end_season',width:150,align:'center',halign:'center',formatter: diyFormatterMonth">蔬菜下市季节</th>
+                <th data-options="field:'v_is_back_season_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否反季节</th>
                 <th data-options="field:'v_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
+                <th data-options="field:'v_remark',width:100,align:'center',halign:'center',formatter: diyFormatter">备注</th>
                 <th data-options="field:'v_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
                 <th data-options="field:'v_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
                 <th data-options="field:'s_name',width:100,align:'center',halign:'center',formatter: diyFormatter">进货来源</th>
@@ -100,7 +113,7 @@
             </div>
             <div>
                 蔬菜价格(数字)(起始区间)&nbsp;:&nbsp;<input class="easyui-textbox" id = "v_start_price" name="v_start_price" placeholder="输入蔬菜价格起始区间" />&nbsp;-
-                &nbsp;:&nbsp;<input class="easyui-textbox" id = "v_end_price" name="v_end_price" placeholder="输入蔬菜价格结束区间" />
+                <input class="easyui-textbox" id = "v_end_price" name="v_end_price" placeholder="输入蔬菜价格结束区间" />
             </div>
             <div>
                 蔬菜上市季节&nbsp;:&nbsp;
@@ -228,14 +241,15 @@
                 <option value="00">否</option>
             </select>
             <br/></td></tr>
-        <tr><td>是否删除：</td><td>
+        <tr><td>备注：</td><td><input id="edit_v_remark" class="easyui-textbox" name="edit_v_remark" style="width:150px;" /></td></tr>
+        <!--<tr><td>是否删除：</td><td>
             <select id="edit_v_del" class="easyui-combobox" name="edit_v_del" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">可用</option>
                 <option value="01">已删除</option>
             </select>
-            <br/></td></tr>
+            <br/></td></tr>-->
         <tr><td></td><td>
-            <a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+            <a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;保&nbsp;存&nbsp;</a></td></tr>
     </table>
 </div>
 
@@ -281,14 +295,15 @@
                 <option value="00">否</option>
             </select>
             <br/></td></tr>
-        <tr><td>是否删除：</td><td>
+        <tr><td>备注：</td><td><input id="add_v_remark" class="easyui-textbox" name="add_v_remark" style="width:150px;" /></td></tr>
+        <!--<tr><td>是否删除：</td><td>
             <select id="add_v_del" class="easyui-combobox" name="add_v_del" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">可用</option>
                 <option value="01">已删除</option>
             </select>
-            <br/></td></tr>
+            <br/></td></tr>-->
         <tr><td></td><td>
-        <a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;&nbsp;&nbsp;&nbsp;保&nbsp;&nbsp;存&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr>
+        <a href="javascript:editSave();" class="easyui-linkbutton">&nbsp;保&nbsp;存&nbsp;</a></td></tr>
     </table>
 </div>
 
@@ -462,11 +477,16 @@
         });
 
         //$('#edit_v_id').textbox("setValue",getRows.v_id);
+
+        $('#edit_c_id').combobox("setValue",getRows.c_id);
         $('#edit_s_id').textbox("setValue",getRows.s_id);
-        $('#edit_q_investigation_date').datetimebox("setValue",getRows.q_investigation_date);
-        $('#edit_q_investigation_price').textbox("setValue",getRows.q_investigation_price);
-        $('#edit_q_price_increase').textbox("setValue",getRows.q_price_increase);
-        $('#edit_q_del').combobox("setValue",getRows.q_del);
+        $('#edit_v_name').textbox("setValue",getRows.v_name);
+        $('#edit_v_price').textbox("setValue",getRows.v_price);
+        $('#edit_v_mature_season').combobox("setValue",getRows.v_mature_season);
+        $('#edit_v_mature_end_season').combobox("setValue",getRows.v_mature_end_season);
+        $('#edit_v_is_back_season').combobox("setValue",getRows.v_is_back_season);
+        //$('#edit_v_del').combobox("setValue",getRows.v_del);
+        $('#edit_v_remark').textbox("setValue",getRows.v_remark);
         $('#editDialog').dialog('open');
     }
 
@@ -482,7 +502,8 @@
             var add_v_mature_season = $('#add_v_mature_season').combobox("getValue");
             var add_v_mature_end_season = $('#add_v_mature_end_season').combobox("getValue");
             var add_v_is_back_season = $('#add_v_is_back_season').combobox("getValue");
-            var add_v_del = $('#add_v_del').combobox("getValue");
+            //var add_v_del = $('#add_v_del').combobox("getValue");
+            var add_v_remark = $('#add_v_remark').textbox("getValue");
 
             var obj = {
                 add_c_id : add_c_id,
@@ -492,7 +513,8 @@
                 add_v_mature_season : add_v_mature_season,
                 add_v_mature_end_season : add_v_mature_end_season,
                 add_v_is_back_season : add_v_is_back_season,
-                add_v_del : add_v_del
+                //add_v_del : add_v_del,
+                add_v_remark : add_v_remark
             }
 
             $.ajax({
@@ -537,7 +559,8 @@
             var edit_v_mature_season = $('#edit_v_mature_season').combobox("getValue");
             var edit_v_mature_end_season = $('#edit_v_mature_end_season').combobox("getValue");
             var edit_v_is_back_season = $('#edit_v_is_back_season').combobox("getValue");
-            var edit_v_del = $('#edit_v_del').combobox("getValue");
+            //var edit_v_del = $('#edit_v_del').combobox("getValue");
+            var edit_v_remark = $('#edit_v_remark').textbox("getValue");
 
             var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
             var obj = {
@@ -549,7 +572,8 @@
                 edit_v_mature_season : edit_v_mature_season,
                 edit_v_mature_end_season : edit_v_mature_end_season,
                 edit_v_is_back_season : edit_v_is_back_season,
-                edit_v_del : edit_v_del,
+                //edit_v_del : edit_v_del,
+                edit_v_remark : edit_v_remark
             }
             $.ajax({
                 url:'varieties/editBaseVegetablesVarieties',
@@ -612,9 +636,9 @@
 
         $.messager.confirm('系统确认', '您确定要删除蔬菜名称为 ['+getRows.v_name+'] 的市场行情信息么,请谨慎操作?', function(r){
             if (r){
-                var obj = {q_id:getRows.q_id};
+                var obj = {v_id:getRows.v_id};
                 $.ajax({
-                    url:'quotation/removeBaseVegetablesQuotation',
+                    url:'varieties/removeBaseVegetablesVarieties',
                     method:'post',
                     data:{
                         paramStr:JSON.stringify(obj)

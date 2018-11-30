@@ -43,7 +43,7 @@ public class BaseVegetablesVarietiesServiceImpl implements BaseVegetablesVarieti
     }
 
     /**
-     * 添加蔬菜行情信息
+     * 添加蔬菜品种信息
      * @param param
      *      收集蔬菜行情信息
      * @author wqs
@@ -51,6 +51,9 @@ public class BaseVegetablesVarietiesServiceImpl implements BaseVegetablesVarieti
      */
     @Override
     public Result addBaseVegetablesVarieties(Map<String, Object> param) throws Exception{
+        if(param.get("add_v_remark")==null||"".equals(param.get("add_v_remark"))){
+            param.put("add_v_remark","无");
+        }
         int updateCount = baseVegetablesVarietiesMapper.addBaseVegetablesVarieties(param);
         if(updateCount>0){
             return ResultUtil.requestSuccess("添加操作成功");
@@ -61,7 +64,7 @@ public class BaseVegetablesVarietiesServiceImpl implements BaseVegetablesVarieti
 
 
     /**
-     * 修改蔬菜行情信息
+     * 修改蔬菜品种信息
      * @param param
      *      收集蔬菜行情信息
      * @author wqs

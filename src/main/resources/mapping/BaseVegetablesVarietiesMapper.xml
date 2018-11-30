@@ -11,7 +11,7 @@
         WHEN 1 THEN '女' END m_gender,bvpsm.m_boss_name,bvpsm.m_boss_phone FROM(
         SELECT vvvc.*,bvps.s_name FROM (
         SELECT bvv.*,bvc.c_name FROM (
-        select v_id,c_id,s_id,v_name,v_price,CONCAT(v_mature_season,'月') v_mature_season,CONCAT(v_mature_end_season,'月') v_mature_end_season,
+        select v_id,c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,
         CASE v_is_back_season
         WHEN '00' THEN '否'
         WHEN '01' THEN '是'
@@ -19,7 +19,7 @@
         CASE v_del
         WHEN '00' THEN '可用'
         WHEN '01' THEN '已删除'
-        END v_del_name,v_del,
+        END v_del_name,v_del,v_remark,
         DATE_FORMAT(v_updatetime,'%Y-%m-%d %H:%i:%S') v_updatetime,DATE_FORMAT(v_createtime,'%Y-%m-%d %H:%i:%S') v_createtime from base_vegetables_varieties
         <where>
             <if test="c_id != null and c_id != ''">and c_id = #{c_id}</if>
@@ -55,8 +55,8 @@
     
     <!-- 添加蔬菜品种信息 -->
     <insert id="addBaseVegetablesVarieties" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_varieties(c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_updatetime,v_createtime)
-        VALUES (#{add_c_id},#{add_s_id},#{add_v_name},#{add_v_price},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},#{add_v_del},now(),now())
+        INSERT INTO base_vegetables_varieties(c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_remark,v_updatetime,v_createtime)
+        VALUES (#{add_c_id},#{add_s_id},#{add_v_name},#{add_v_price},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00',#{add_v_remark},now(),now())
     </insert>
 
     <!-- 修改蔬菜品种信息 -->
@@ -70,10 +70,11 @@
             <if test="edit_v_mature_season != null and edit_v_mature_season != ''">v_mature_season = #{edit_v_mature_season},</if>
             <if test="edit_v_mature_end_season != null and edit_v_mature_end_season != ''">v_mature_end_season = #{edit_v_mature_end_season},</if>
             <if test="edit_v_is_back_season != null">v_is_back_season = #{edit_v_is_back_season},</if>
-            <if test="edit_v_del != null">v_del = #{edit_v_del},</if>
+            <if test="edit_v_del != null and edit_v_del != ''">v_del = #{edit_v_del},</if>
+            <if test="edit_v_remark != null and edit_v_remark != ''">v_remark = #{edit_v_remark},</if>
             v_updatetime = now()
         </set>
-        WHEN v_id = #{v_id}
+        WHERE v_id = #{v_id}
     </update>
 
 

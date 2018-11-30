@@ -74,10 +74,10 @@ public class BaseVegetablesQuotationController {
             logger.info("添加蔬菜行情信息-->controller-->[价格涨幅]为空");
             throw new MyException("请填写价格涨幅","01");
         }
-        if(paramMap.get("add_q_del")==null||"".equals(paramMap.get("add_q_del"))){
+        /*if(paramMap.get("add_q_del")==null||"".equals(paramMap.get("add_q_del"))){
             logger.info("添加蔬菜行情信息-->controller-->[是否删除]为空");
             throw new MyException("请选择是否删除","01");
-        }
+        }*/
         return quotationService.addBaseVegetablesQuotation(paramMap);
     }
 
@@ -109,10 +109,10 @@ public class BaseVegetablesQuotationController {
             logger.info("修改蔬菜行情信息-->controller-->[价格涨幅]为空");
             throw new MyException("请填写价格涨幅","01");
         }
-        if(paramMap.get("edit_q_del")==null||"".equals(paramMap.get("edit_q_del"))){
+        /*if(paramMap.get("edit_q_del")==null||"".equals(paramMap.get("edit_q_del"))){
             logger.info("修改蔬菜行情信息-->controller-->[是否删除]为空");
             throw new MyException("请选择是否删除","01");
-        }
+        }*/
         return quotationService.updateBaseVegetablesQuotation(paramMap);
     }
 
