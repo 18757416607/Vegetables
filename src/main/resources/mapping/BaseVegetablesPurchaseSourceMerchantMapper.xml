@@ -5,7 +5,7 @@
 
     <!-- 查询进货来源商户信息 -->
     <select id="getBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_del,m_updatetime,m_createtime FROM base_vegetables_purchase_source_merchant
+        SELECT m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_remark,m_del,m_updatetime,m_createtime FROM base_vegetables_purchase_source_merchant
         <where>
             <if test="m_id != null">and m_id = #{m_id}</if>
             <if test="s_id != null">and s_id = #{s_id}</if>
@@ -23,21 +23,22 @@
 
     <!-- 添加进货来源商户信息 -->
     <insert id="addBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_purchase_source_merchant(m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_del,m_updatetime,m_createtime)
-        VALUES (#{m_id},#{s_id},#{m_name},#{m_gender},#{m_boss_name},#{m_boss_phone},#{m_is_cooperation},#{m_del},now(),now())
+        INSERT INTO base_vegetables_purchase_source_merchant(m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_remark,m_del,m_updatetime,m_createtime)
+        VALUES (#{add_m_id},#{add_s_id},#{add_m_name},#{add_m_gender},#{add_m_boss_name},#{add_m_boss_phone},#{add_m_is_cooperation},#{add_m_remark},#{add_m_del},now(),now())
     </insert>
 
     <!-- 修改进货来源商户信息 -->
     <update id="updateBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map">
         UPDATE base_vegetables_purchase_source_merchant
         <set>
-            <if test="m_name != null and m_name != ''">m_name = #{m_name},</if>
-            <if test="s_id != null">s_id = #{s_id},</if>
-            <if test="m_gender != null">m_gender = #{m_gender},</if>
-            <if test="m_boss_name != null and m_boss_name != ''">m_boss_name = #{m_boss_name},</if>
-            <if test="m_boss_phone != null and m_boss_phone != ''">m_boss_phone = #{m_boss_phone},</if>
-            <if test="m_is_cooperation != null and m_is_cooperation != ''">m_is_cooperation = #{m_is_cooperation},</if>
-            <if test="m_del != null and m_del != ''">m_del = #{m_del},</if>
+            <if test="edit_m_name != null and edit_m_name != ''">m_name = #{edit_m_name},</if>
+            <if test="edit_s_id != null and edit_s_id != ''">s_id = #{edit_s_id},</if>
+            <if test="edit_m_gender != null and edit_m_gender != ''">m_gender = #{edit_m_gender},</if>
+            <if test="edit_m_boss_name != null and edit_m_boss_name != ''">m_boss_name = #{edit_m_boss_name},</if>
+            <if test="edit_m_boss_phone != null and edit_m_boss_phone != ''">m_boss_phone = #{edit_m_boss_phone},</if>
+            <if test="edit_m_is_cooperation != null and edit_m_is_cooperation != ''">m_is_cooperation = #{edit_m_is_cooperation},</if>
+            <if test="edit_m_remark != null and edit_m_remark != ''">m_remark = #{edit_m_remark},</if>
+            <if test="edit_m_del != null and edit_m_del != ''">m_del = #{edit_m_del},</if>
             s_updatetime = now()
         </set>
         WHEN m_id = #{m_id}

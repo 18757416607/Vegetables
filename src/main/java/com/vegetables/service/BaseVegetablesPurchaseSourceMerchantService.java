@@ -1,19 +1,14 @@
-package com.vegetables.mapper;
+package com.vegetables.service;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import com.vegetables.pojo.Result;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Mloong on 2018/11/1.
- * 进货来源商户
+ * Created by Mloong on 2018/12/4.
  */
-@Mapper
-@Repository
-public interface BaseVegetablesPurchaseSourceMerchantMapper {
-
+public interface BaseVegetablesPurchaseSourceMerchantService {
 
     /**
      * 查询进货来源商户信息
@@ -33,7 +28,7 @@ public interface BaseVegetablesPurchaseSourceMerchantMapper {
      * @author wqs
      * @return
      */
-    public int addBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param);
+    public Result addBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param) throws Exception;
 
 
     /**
@@ -43,7 +38,7 @@ public interface BaseVegetablesPurchaseSourceMerchantMapper {
      * @author wqs
      * @return
      */
-    public int updateBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param);
+    public Result updateBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param) throws Exception;
 
 
 }

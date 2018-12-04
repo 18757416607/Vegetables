@@ -126,11 +126,11 @@ public class BaseVegetablesQuotationController {
      */
     @PostMapping(value = "/removeBaseVegetablesQuotation")
     public Result removeBaseVegetablesQuotation(String paramStr) throws Exception{
-        logger.info("进入修改蔬菜行情信息-->controller-->参数:"+paramStr);
+        logger.info("进入删除蔬菜行情信息-->controller-->参数:"+paramStr);
         Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
         if(paramMap.get("q_id")==null||"".equals(paramMap.get("q_id"))){
-            logger.info("修改蔬菜行情信息-->controller-->[主键ID]为空");
-            throw new MyException("主编号为空","01");
+            logger.info("删除蔬菜行情信息-->controller-->[主键ID]为空");
+            throw new MyException("蔬菜行情主编号为空","01");
         }
         paramMap.put("edit_q_del","01");
         return quotationService.updateBaseVegetablesQuotation(paramMap);

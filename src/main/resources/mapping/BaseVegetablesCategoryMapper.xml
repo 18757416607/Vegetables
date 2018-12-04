@@ -5,10 +5,12 @@
 
     <!-- 查询蔬菜类别信息 -->
     <select id="getBaseVegetablesCategory" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT c_id,c_name,c_updatetime,c_createtime FROM base_vegetables_category
+        SELECT c_id,c_name,c_del,c_remark,c_updatetime,c_createtime FROM base_vegetables_category
         <where>
-            <if test="c_id != null">and c_id = #{c_id}</if>
+            <if test="c_id != null and c_id != ''">and c_id = #{c_id}</if>
             <if test="c_name !=null and c_name != ''">and c_name CONCAT('%',#{c_name},'%')</if>
+            <if test="c_del != null and c_del != ''">and c_del = #{c_del}</if>
+            <if test="c_remark != null and c_remark != ''">and c_remark = #{c_remark}</if>
             <if test="c_updatetime !=null and c_updatetime != ''">and c_updatetime BETWEEN #{c_start_updatetime} AND #{c_end_updatetime}</if>
             <if test="c_createtime !=null and c_createtime != ''">and c_createtime BETWEEN #{c_start_createtime} AND #{c_end_createtime}</if>
         </where>
@@ -23,15 +25,16 @@
 
     <!-- 添加蔬菜类别信息 -->
     <insert id="addBaseVegetablesCategory" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_category(c_name,c_del,c_updatetime,c_createtime)
-        VALUES (#{c_name},#{c_del},now(),now())
+        INSERT INTO base_vegetables_category(c_name,c_remark,c_del,c_updatetime,c_createtime)
+        VALUES (#{add_c_name},#{add_c_remark},#{add_c_del},now(),now())
     </insert>
 
     <!-- 修改蔬菜类别信息 -->
     <update id="updateBaseVegetablesCategory" parameterType="java.util.Map">
         UPDATE base_vegetables_category
         <set>
-            <if test="c_name != null and c_name != ''">c_name = #{c_name},</if>
+            <if test="edit_c_name != null and edit_c_name != ''">c_name = #{edit_c_name},</if>
+            <if test="edit_c_remark != null and edit_c_remark != ''">c_remark = #{edit_c_remark},</if>
             c_updatetime = now()
         </set>
         WHEN c_id = #{c_id}

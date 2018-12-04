@@ -5,7 +5,7 @@
 
     <!-- 查询蔬菜进货来源信息 -->
     <select id="getBaseVegetablesPurchaseSource" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT s_id,s_name,s_is_purchase,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
+        SELECT s_id,s_name,s_is_purchase,s_remark,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
         <where>
             <if test="s_id != null">and s_id = #{s_id}</if>
             <if test="s_name !=null and s_name != ''">and s_name CONCAT('%',#{s_name},'%')</if>
@@ -16,8 +16,7 @@
         </where>
     </select>
 
-    <!--
-     -->
+    <!-- 蔬菜进货来源下拉列表 -->
     <select id="getBaseVegetablesPurchaseSourceCombobox" resultType="java.util.Map">
         SELECT s_id id,s_name text FROM base_vegetables_purchase_source
     </select>
@@ -25,17 +24,18 @@
 
     <!-- 添加蔬菜进货来源信息 -->
     <insert id="addBaseVegetablesPurchaseSource" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_purchase_source(s_name,s_is_purchase,s_del,s_updatetime,s_createtime)
-        VALUES (#{s_name},#{s_is_purchase},#{s_del},now(),now())
+        INSERT INTO base_vegetables_purchase_source(s_name,s_is_purchase,s_remark,s_del,s_updatetime,s_createtime)
+        VALUES (#{add_s_name},#{add_s_is_purchase},#{add_s_remark},#{add_s_del},now(),now())
     </insert>
 
     <!-- 修改蔬菜进货来源信息 -->
     <update id="updateBaseVegetablesPurchaseSource" parameterType="java.util.Map">
         UPDATE base_vegetables_purchase_source
         <set>
-            <if test="s_name != null and s_name != ''">s_name = #{s_name},</if>
-            <if test="s_is_purchase != null">s_is_purchase = #{s_is_purchase},</if>
-            <if test="s_del != null">s_del = #{s_del},</if>
+            <if test="edit_s_name != null and edit_s_name != ''">s_name = #{edit_s_name},</if>
+            <if test="edit_s_is_purchase != null and edit_s_is_purchase != ''">s_is_purchase = #{edit_s_is_purchase},</if>
+            <if test="edit_s_remark != null and edit_s_remark != ''">s_remark = #{edit_s_remark},</if>
+            <if test="edit_s_del != null and edit_s_del != ''">s_del = #{edit_s_del},</if>
             s_updatetime = now()
         </set>
         WHEN s_id = #{s_id}

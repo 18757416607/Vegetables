@@ -55,8 +55,8 @@
     
     <!-- 添加蔬菜品种信息 -->
     <insert id="addBaseVegetablesVarieties" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_varieties(c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_remark,v_updatetime,v_createtime)
-        VALUES (#{add_c_id},#{add_s_id},#{add_v_name},#{add_v_price},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00',#{add_v_remark},now(),now())
+        INSERT INTO base_vegetables_varieties(c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_sellout,v_remark,v_updatetime,v_createtime)
+        VALUES (#{add_c_id},#{add_s_id},#{add_v_name},#{add_v_price},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00','00',#{add_v_remark},now(),now())
     </insert>
 
     <!-- 修改蔬菜品种信息 -->
