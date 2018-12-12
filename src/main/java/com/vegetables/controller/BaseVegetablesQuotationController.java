@@ -37,6 +37,7 @@ public class BaseVegetablesQuotationController {
      */
     @PostMapping(value = "/getBaseVegetablesQuotation")
     public List<Map<String,Object>> getBaseVegetablesQuotation(String paramStr) throws IOException {
+        logger.info("进入查询蔬菜行情信息-->controller-->参数:"+paramStr);
         if(paramStr!=null&&!"".equals(paramStr)){
             return quotationService.getBaseVegetablesQuotation(JacksonUtils.strToMap(paramStr));
         }else{

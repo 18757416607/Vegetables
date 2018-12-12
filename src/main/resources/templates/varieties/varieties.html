@@ -627,14 +627,14 @@
         if(getRows==null){
             $.messager.show({
                 title:'系统消息',
-                msg:'请选中一行蔬菜行情进行删除!',
+                msg:'请选中一行蔬菜品种进行删除!',
                 timeout:5000,
                 showType:'slide'
             });
             return false;
         }
 
-        $.messager.confirm('系统确认', '您确定要删除蔬菜名称为 ['+getRows.v_name+'] 的市场行情信息么,请谨慎操作?', function(r){
+        $.messager.confirm('系统确认', '您确定要删除蔬菜名称为 ['+getRows.v_name+'] 的品种信息么,请谨慎操作?', function(r){
             if (r){
                 var obj = {v_id:getRows.v_id};
                 $.ajax({

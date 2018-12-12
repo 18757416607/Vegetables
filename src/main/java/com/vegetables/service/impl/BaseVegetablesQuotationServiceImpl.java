@@ -31,6 +31,14 @@ public class BaseVegetablesQuotationServiceImpl implements BaseVegetablesQuotati
      */
     @Override
     public List<Map<String, Object>> getBaseVegetablesQuotation(Map<String, Object> param) {
+        if(param!=null){
+            if(param.get("q_start_updatetime")!=null&&!"".equals(param.get("q_start_updatetime"))){
+                param.put("q_start_updatetime",param.get("q_start_updatetime")+" 00:00:00");
+                if(param.get("q_end_updatetime")!=null&&!"".equals(param.get("q_end_updatetime"))){
+                    param.put("q_end_updatetime",param.get("q_end_updatetime")+" 23:59:59");
+                }
+            }
+        }
         return quotationMapper.getBaseVegetablesQuotation(param);
     }
 

@@ -41,7 +41,7 @@
             <if test="edit_m_del != null and edit_m_del != ''">m_del = #{edit_m_del},</if>
             s_updatetime = now()
         </set>
-        WHEN m_id = #{m_id}
+        WHERE m_id = #{m_id}
     </update>
 
 

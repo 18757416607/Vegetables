@@ -46,6 +46,7 @@ public class BaseVegetablesCategoryController {
      */
     @RequestMapping(value = "/getBaseVegetablesCategory")
     public List<Map<String,Object>> getBaseVegetablesCategory(String paramStr) throws Exception{
+        logger.info("进入查询蔬菜类别信息-->controller-->参数:"+paramStr);
         if(paramStr!=null&&!"".equals(paramStr)){
             return baseVegetablesCategoryService.getBaseVegetablesCategory(JacksonUtils.strToMap(paramStr));
         }else{
@@ -85,9 +86,9 @@ public class BaseVegetablesCategoryController {
     public Result updateBaseVegetablesCategory(String paramStr) throws Exception{
         logger.info("进入蔬菜类别信息-->controller-->参数:"+paramStr);
         Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
-        if(paramMap.get("add_c_name")==null||"".equals(paramMap.get("add_c_name"))){
-            logger.info("修改蔬菜类别信息-->controller-->[类别名称]为空");
-            throw new MyException("请填写类别名称","01");
+        if(paramMap.get("edit_c_name")==null||"".equals(paramMap.get("edit_c_name"))){
+            logger.info("修改蔬菜类别信息-->controller-->[种类名称]为空");
+            throw new MyException("请填写种类名称","01");
         }
         return baseVegetablesCategoryService.updateBaseVegetablesCategory(paramMap);
     }

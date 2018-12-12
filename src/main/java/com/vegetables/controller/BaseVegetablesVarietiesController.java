@@ -36,6 +36,7 @@ public class BaseVegetablesVarietiesController{
      */
     @RequestMapping(value = "/getBaseVegetablesVarieties")
     public List<Map<String,Object>> getBaseVegetablesVarieties(String paramStr) throws Exception{
+        logger.info("进入查询蔬菜品种信息-->controller-->参数:"+paramStr);
         if(paramStr!=null&&!"".equals(paramStr)){
             return baseVegetablesVarietiesService.getBaseVegetablesVarieties(JacksonUtils.strToMap(paramStr));
         }else{

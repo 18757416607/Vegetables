@@ -29,6 +29,14 @@ public class BaseVegetablesVarietiesServiceImpl implements BaseVegetablesVarieti
      *      蔬菜品种信息
      */
     public List<Map<String,Object>> getBaseVegetablesVarieties(Map<String,Object> param){
+        if(param!=null){
+            if(param.get("v_start_updatetime")!=null&&!"".equals(param.get("v_start_updatetime"))){
+                param.put("v_start_updatetime",param.get("v_start_updatetime")+" 00:00:00");
+                if(param.get("v_end_updatetime")!=null&&!"".equals(param.get("v_end_updatetime"))){
+                    param.put("v_end_updatetime",param.get("v_end_updatetime")+" 23:59:59");
+                }
+            }
+        }
         return baseVegetablesVarietiesMapper.getBaseVegetablesVarieties(param);
     }
 

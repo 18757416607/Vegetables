@@ -39,6 +39,14 @@ public class BaseVegetablesCategoryServiceImpl implements BaseVegetablesCategory
      *      蔬菜品种信息
      */
     public List<Map<String,Object>> getBaseVegetablesCategory(Map<String,Object> param){
+        if(param!=null){
+            if(param.get("c_start_updatetime")!=null&&!"".equals(param.get("c_start_updatetime"))){
+                param.put("c_start_updatetime",param.get("c_start_updatetime")+" 00:00:00");
+                if(param.get("c_end_updatetime")!=null&&!"".equals(param.get("c_end_updatetime"))){
+                    param.put("c_end_updatetime",param.get("c_end_updatetime")+" 23:59:59");
+                }
+            }
+        }
         return categoryMapper.getBaseVegetablesCategory(param);
     }
 
