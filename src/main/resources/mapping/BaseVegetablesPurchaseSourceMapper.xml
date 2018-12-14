@@ -5,13 +5,21 @@
 
     <!-- 查询蔬菜进货来源信息 -->
     <select id="getBaseVegetablesPurchaseSource" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT s_id,s_name,s_is_purchase,s_remark,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
+        SELECT s_id,s_name,CASE s_is_purchase
+        WHEN '00' THEN '是'
+        WHEN '01' THEN '否'
+        END s_is_purchase_name,s_is_purchase,s_remark,CASE s_del
+        WHEN '00' THEN '可用'
+        WHEN '01' THEN '已删除'
+        END s_del_name,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
         <where>
-            <if test="s_id != null">and s_id = #{s_id}</if>
-            <if test="s_name !=null and s_name != ''">and s_name CONCAT('%',#{s_name},'%')</if>
+            <if test="s_id != null and s_id != ''">and s_id = #{s_id}</if>
+            <if test="s_name !=null and s_name != ''">and s_name LIKE CONCAT('%',#{s_name},'%')</if>
             <if test="s_is_purchase !=null and s_is_purchase != ''">and s_is_purchase = #{s_is_purchase}</if>
             <if test="s_del !=null and s_del != ''">and s_del = #{s_del}</if>
-            <if test="s_updatetime !=null and s_updatetime != ''">and s_updatetime BETWEEN #{s_updatetime} AND #{s_updatetime}</if>
+            <if test="(s_start_updatetime != null and s_start_updatetime != '') and (s_end_updatetime != null and s_end_updatetime != '')">and s_updatetime BETWEEN #{s_start_updatetime} and #{s_end_updatetime}</if>
+            <if test="(s_start_updatetime != null and s_start_updatetime != '') and (s_end_updatetime == null or s_end_updatetime =='')">and s_updatetime &gt;= #{s_start_updatetime}</if>
+            <if test="(s_start_updatetime == null or s_start_updatetime =='') and (s_end_updatetime != null and s_end_updatetime != '')">and s_updatetime &gt;= #{s_end_updatetime}</if>
             <if test="s_createtime !=null and s_createtime != ''">and s_createtime BETWEEN #{s_createtime} AND #{s_createtime}</if>
         </where>
     </select>

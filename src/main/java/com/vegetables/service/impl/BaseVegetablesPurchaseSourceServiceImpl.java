@@ -37,6 +37,14 @@ public class BaseVegetablesPurchaseSourceServiceImpl implements BaseVegetablesPu
      *      蔬菜蔬菜进货来源信息
      */
     public List<Map<String,Object>> getBaseVegetablesPurchaseSource(Map<String,Object> param){
+        if(param!=null){
+            if(param.get("s_start_updatetime")!=null&&!"".equals(param.get("s_start_updatetime"))){
+                param.put("s_start_updatetime",param.get("s_start_updatetime")+" 00:00:00");
+                if(param.get("s_end_updatetime")!=null&&!"".equals(param.get("s_end_updatetime"))){
+                    param.put("s_end_updatetime",param.get("s_end_updatetime")+" 23:59:59");
+                }
+            }
+        }
         return baseVegetablesPurchaseSourceMapper.getBaseVegetablesPurchaseSource(param);
     }
 
