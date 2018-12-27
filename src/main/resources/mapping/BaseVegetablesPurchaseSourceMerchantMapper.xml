@@ -5,17 +5,32 @@
 
     <!-- 查询进货来源商户信息 -->
     <select id="getBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_remark,m_del,m_updatetime,m_createtime FROM base_vegetables_purchase_source_merchant
+        SELECT m_id,s_id,m_name,
+        CASE m_gender
+        WHEN '0' THEN '男'
+        WHEN '1' THEN '女'
+        END m_gender_name,m_gender,m_boss_name,m_boss_phone,
+        CASE m_is_cooperation
+        WHEN '00' THEN '是'
+        WHEN '01' THEN '否'
+        END m_is_cooperation_name,m_is_cooperation,m_remark,CASE m_del
+        WHEN '00' THEN '可用'
+        WHEN '01' THEN '已删除'
+        END m_del_name,m_del,
+        DATE_FORMAT(m_updatetime,'%Y-%m-%d %H:%i:%S') m_updatetime,DATE_FORMAT(m_createtime,'%Y-%m-%d %H:%i:%S') m_createtime
+        FROM base_vegetables_purchase_source_merchant
         <where>
-            <if test="m_id != null">and m_id = #{m_id}</if>
-            <if test="s_id != null">and s_id = #{s_id}</if>
-            <if test="m_name !=null and m_name != ''">and m_name CONCAT('%',#{m_name},'%')</if>
-            <if test="m_gender !=null">and m_gender = #{m_gender}</if>
-            <if test="m_boss_name !=null and m_boss_name != ''">and m_boss_name CONCAT('%',#{m_boss_name},'%')</if>
-            <if test="m_boss_phone !=null and m_boss_phone != ''">and m_boss_phone CONCAT('%',#{m_boss_phone},'%')</if>
+            <if test="m_id != null and m_id != ''">and m_id = #{m_id}</if>
+            <if test="s_id != null and s_id != ''">and s_id = #{s_id}</if>
+            <if test="m_name !=null and m_name != ''">and m_name LIKE CONCAT('%',#{m_name},'%')</if>
+            <if test="m_gender !=null and m_gender != ''">and m_gender = #{m_gender}</if>
+            <if test="m_boss_name !=null and m_boss_name != ''">and m_boss_name LIKE CONCAT('%',#{m_boss_name},'%')</if>
+            <if test="m_boss_phone !=null and m_boss_phone != ''">and m_boss_phone LIKE CONCAT('%',#{m_boss_phone},'%')</if>
             <if test="m_is_cooperation !=null and m_is_cooperation != ''">and m_is_cooperation = #{m_is_cooperation}</if>
             <if test="m_del !=null and m_del != ''">and m_del = #{m_del}</if>
-            <if test="m_updatetime !=null and m_updatetime != ''">and m_updatetime BETWEEN #{m_updatetime} AND #{m_updatetime}</if>
+            <if test="(m_start_updatetime != null and m_start_updatetime != '') and (m_end_updatetime != null and m_end_updatetime != '')">and m_updatetime BETWEEN #{m_start_updatetime} and #{m_end_updatetime}</if>
+            <if test="(m_start_updatetime != null and m_start_updatetime != '') and (m_end_updatetime == null or m_end_updatetime =='')">and m_updatetime &gt;= #{m_start_updatetime}</if>
+            <if test="(m_start_updatetime == null or m_start_updatetime =='') and (m_end_updatetime != null and m_end_updatetime != '')">and m_updatetime &gt;= #{m_end_updatetime}</if>
             <if test="m_createtime !=null and m_createtime != ''">and m_createtime BETWEEN #{m_createtime} AND #{m_createtime}</if>
         </where>
     </select>
@@ -24,7 +39,7 @@
     <!-- 添加进货来源商户信息 -->
     <insert id="addBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map">
         INSERT INTO base_vegetables_purchase_source_merchant(m_id,s_id,m_name,m_gender,m_boss_name,m_boss_phone,m_is_cooperation,m_remark,m_del,m_updatetime,m_createtime)
-        VALUES (#{add_m_id},#{add_s_id},#{add_m_name},#{add_m_gender},#{add_m_boss_name},#{add_m_boss_phone},#{add_m_is_cooperation},#{add_m_remark},#{add_m_del},now(),now())
+        VALUES (#{add_m_id},#{add_s_id},#{add_m_name},#{add_m_gender},#{add_m_boss_name},#{add_m_boss_phone},#{add_m_is_cooperation},#{add_m_remark},'00',now(),now())
     </insert>
 
     <!-- 修改进货来源商户信息 -->
@@ -39,7 +54,7 @@
             <if test="edit_m_is_cooperation != null and edit_m_is_cooperation != ''">m_is_cooperation = #{edit_m_is_cooperation},</if>
             <if test="edit_m_remark != null and edit_m_remark != ''">m_remark = #{edit_m_remark},</if>
             <if test="edit_m_del != null and edit_m_del != ''">m_del = #{edit_m_del},</if>
-            s_updatetime = now()
+            m_updatetime = now()
         </set>
         WHERE m_id = #{m_id}
     </update>

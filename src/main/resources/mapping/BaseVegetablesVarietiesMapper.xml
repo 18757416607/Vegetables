@@ -19,7 +19,12 @@
         CASE v_del
         WHEN '00' THEN '可用'
         WHEN '01' THEN '已删除'
-        END v_del_name,v_del,v_remark,
+        END v_del_name,v_del,
+        CASE v_sellout
+        WHEN '00' THEN '未售完'
+        WHEN '01' THEN '已售完'
+        END v_sellout_name,v_sellout,
+        v_remark,
         DATE_FORMAT(v_updatetime,'%Y-%m-%d %H:%i:%S') v_updatetime,DATE_FORMAT(v_createtime,'%Y-%m-%d %H:%i:%S') v_createtime from base_vegetables_varieties
         <where>
             <if test="c_id != null and c_id != ''">and c_id = #{c_id}</if>
@@ -32,6 +37,7 @@
             <if test="v_mature_end_season != null and v_mature_end_season != ''">and v_mature_end_season = #{v_mature_end_season}</if>
             <if test="v_is_back_season != null and v_is_back_season != ''">and v_is_back_season = #{v_is_back_season}</if>
             <if test="v_del != null and v_del != ''">and v_del = #{v_del}</if>
+            <if test="v_sellout != null and v_sellout != ''">and v_sellout = #{v_sellout}</if>
             <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime BETWEEN #{v_start_updatetime} and #{v_end_updatetime}</if>
             <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime == null or v_end_updatetime =='')">and v_updatetime &gt;= #{v_start_updatetime}</if>
             <if test="(v_start_updatetime == null or v_start_updatetime =='') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime &gt;= #{v_end_updatetime}</if>
@@ -71,6 +77,7 @@
             <if test="edit_v_mature_end_season != null and edit_v_mature_end_season != ''">v_mature_end_season = #{edit_v_mature_end_season},</if>
             <if test="edit_v_is_back_season != null">v_is_back_season = #{edit_v_is_back_season},</if>
             <if test="edit_v_del != null and edit_v_del != ''">v_del = #{edit_v_del},</if>
+            <if test="edit_v_sellout != null and edit_v_sellout != ''">v_sellout = #{edit_v_sellout},</if>
             <if test="edit_v_remark != null and edit_v_remark != ''">v_remark = #{edit_v_remark},</if>
             v_updatetime = now()
         </set>

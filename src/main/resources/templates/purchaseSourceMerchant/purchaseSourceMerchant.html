@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>蔬菜进货来源</title>
+    <title>进货来源商户信息</title>
     <link charset="UTF-8" rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/bootstrap/easyui.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{static/easyui/themes/icon.css}" />
     <script type="text/javascript" th:src="@{static/easyui/jquery.min.js}"></script>
@@ -24,7 +24,6 @@
     document.oncontextmenu = function(){
         return false;
     }
-
     /**
      * easyui  格式化列
      * @param value
@@ -80,14 +79,17 @@
         ">
             <thead>
             <tr>
-                <th data-options="field:'s_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">进货来源编号</th>
-                <th data-options="field:'s_name',width:100,align:'center',halign:'center',formatter: diyFormatter">进货来源名称</th>
-                <th data-options="field:'s_is_purchase_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否在此进货</th>
-                <th data-options="field:'s_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
-                <th data-options="field:'s_remark',width:100,align:'center',halign:'center',formatter: diyFormatter">备注</th>
-                <th data-options="field:'s_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
-                <th data-options="field:'s_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
-
+                <th data-options="field:'m_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">商户编号</th>
+                <th data-options="field:'s_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">来源编号</th>
+                <th data-options="field:'m_name',width:100,align:'center',halign:'center',formatter: diyFormatter">商户店铺名称</th>
+                <th data-options="field:'m_gender_name',width:100,align:'center',halign:'center',formatter: diyFormatter">性别</th>
+                <th data-options="field:'m_boss_name',width:100,align:'center',halign:'center',formatter: diyFormatter">商户老板名字</th>
+                <th data-options="field:'m_boss_phone',width:150,align:'center',halign:'center',formatter: diyFormatter">商户老板手机号</th>
+                <th data-options="field:'m_is_cooperation_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否合作</th>
+                <th data-options="field:'m_remark',width:120,align:'center',halign:'center',formatter: diyFormatter">备注</th>
+                <th data-options="field:'m_del_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否逻辑删除</th>
+                <th data-options="field:'m_updatetime',width:130,align:'center',halign:'center',formatter: diyFormatter">修改时间</th>
+                <th data-options="field:'m_createtime',width:130,align:'center',halign:'center',formatter: diyFormatter">创建时间</th>
             </tr>
             </thead>
         </table>
@@ -96,24 +98,41 @@
     <div id="toolbar">
         <div style="padding: 5px;">
             <div>
-                进货来源名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "s_name" name="s_name" placeholder="输入进货来源名称" />
+                商户店铺名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_name" name="m_name" placeholder="输入商户店铺名称" />
             </div>
             <div>
-                是否在此进货&nbsp;:&nbsp;<select id="s_is_purchase" class="easyui-combobox" name="s_is_purchase" data-options="editable:false,disable:true" style="width:200px;">
-                <option value="">请选择</option>
-                <option value="01">是</option>
-                <option value="00">否</option>
-            </select>
+                进货来源&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox'" id = "s_id" name="s_id" placeholder="输入进货来源" />
+            </div>
             <div>
-                是否逻辑删除&nbsp;:&nbsp;<select id="s_del" class="easyui-combobox" name="s_del" data-options="editable:false,disable:true" style="width:200px;">
+                性别&nbsp;:&nbsp;<select id="m_gender" class="easyui-combobox" name="m_gender" data-options="editable:false,disable:true" style="width:200px;">
+                <option value="">请选择</option>
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+            </div>
+            <div>
+                商户老板名称(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_boss_name" name="m_boss_name" placeholder="输入商户店铺名称" />
+            </div>
+            <div>
+                店铺老板手机号(支持模糊匹配)&nbsp;:&nbsp;<input class="easyui-textbox" id = "m_boss_phone" name="m_boss_phone" placeholder="输入店铺老板手机号" />
+            </div>
+            <div>
+                是否合作&nbsp;:&nbsp;<select id="m_is_cooperation" class="easyui-combobox" name="m_is_cooperation" data-options="editable:false,disable:true" style="width:200px;">
+                <option value="">请选择</option>
+                <option value="00">是</option>
+                <option value="01">否</option>
+            </select>
+            </div>
+            <div>
+                是否逻辑删除&nbsp;:&nbsp;<select id="m_del" class="easyui-combobox" name="m_del" data-options="editable:false,disable:true" style="width:200px;">
                 <option value="">请选择</option>
                 <option value="01">已删除</option>
                 <option value="00">未删除</option>
             </select>
             </div>
             <div>
-                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datebox" id ="s_start_updatetime" name="s_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
-                <input class="easyui-datebox" id ="s_end_updatetime" name="s_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
+                修改数据时间(开始区间)&nbsp;:&nbsp;<input class="easyui-datebox" id ="m_start_updatetime" name="m_start_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">&nbsp;-
+                <input class="easyui-datebox" id ="m_end_updatetime" name="m_end_updatetime" data-options="showSeconds:false,editable:false" style="width:130px">
             </div>
             <a href="javascript:void(0)" onclick="add();" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="color: red;">新增</a>
             <a href="javascript:void(0)" onclick="edit();" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="color: red;">修改</a>
@@ -135,14 +154,23 @@
 
 <div id="editDialog" >
     <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
-        <tr><td>进货来源名称:</td><td><input class="easyui-textbox" id = "edit_s_name" name="edit_s_name" style="width:150px;" /></td></tr>
-        <tr><td>是否在此进货：</td><td>
-            <select id="edit_s_is_purchase" class="easyui-combobox" name="edit_s_is_purchase" data-options="editable:false,disable:true" style="width:150px;">
+        <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>商户店铺名称：</td><td><input class = "easyui-textbox" id="edit_m_name" name = "edit_m_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>性别:</td><td>
+            <select id="edit_m_gender" class="easyui-combobox" name="edit_m_gender" data-options="editable:false,disable:true" style="width:150px;">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+            <br/></td></tr>
+        <tr><td>商户老板名字：</td><td><input class = "easyui-textbox" id="edit_m_boss_name" name = "edit_m_boss_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>商户老板手机号：</td><td><input class = "easyui-textbox" id="edit_m_boss_phone" name = "edit_m_boss_phone"  data-options="width:150"/><br/></td></tr>
+        <tr><td>是否合作:</td><td>
+            <select id="edit_m_is_cooperation" class="easyui-combobox" name="edit_m_is_cooperation" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">是</option>
                 <option value="01">否</option>
             </select>
             <br/></td></tr>
-        <tr><td>备注：</td><td><input id="edit_s_remark" class="easyui-textbox" name="edit_s_remark" style="width:150px;" /></td></tr>
+        <tr><td>备注：</td><td><input id="edit_m_remark" class="easyui-textbox" name="edit_m_remark" style="width:150px;" /></td></tr>
         <!--<tr><td>是否删除：</td><td>
             <select id="edit_v_del" class="easyui-combobox" name="edit_v_del" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">可用</option>
@@ -156,14 +184,23 @@
 
 <div id="addDialog" >
     <table id = "addDetail" style="display: none;padding: 25px 0px 0px 36px;">
-        <tr><td>进货来源名称:</td><td><input class="easyui-textbox" id = "add_s_name" name="add_s_name" style="width:150px;"/></td></tr>
-        <tr><td>是否在此进货：</td><td>
-            <select id="add_s_is_purchase" class="easyui-combobox" name="add_s_is_purchase" data-options="editable:false,disable:true" style="width:150px;">
+        <tr><td>进货来源：</td><td><select id="add_s_id" class="easyui-combobox" name="add_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>商户店铺名称：</td><td><input class = "easyui-textbox" id="add_m_name" name = "add_m_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>性别:</td><td>
+            <select id="add_m_gender" class="easyui-combobox" name="add_m_gender" data-options="editable:false,disable:true" style="width:150px;">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+            <br/></td></tr>
+        <tr><td>商户老板名字：</td><td><input class = "easyui-textbox" id="add_m_boss_name" name = "add_m_boss_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>商户老板手机号：</td><td><input class = "easyui-textbox" id="add_m_boss_phone" name = "add_m_boss_phone"  data-options="width:150"/><br/></td></tr>
+        <tr><td>是否合作:</td><td>
+            <select id="add_m_is_cooperation" class="easyui-combobox" name="add_m_is_cooperation" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">是</option>
                 <option value="01">否</option>
             </select>
             <br/></td></tr>
-        <tr><td>备注：</td><td><input id="add_s_remark" class="easyui-textbox" name="add_s_remark" style="width:150px;" /></td></tr>
+        <tr><td>备注：</td><td><input id="add_m_remark" class="easyui-textbox" name="add_m_remark" style="width:150px;" /></td></tr>
         <!--<tr><td>是否删除：</td><td>
             <select id="add_v_del" class="easyui-combobox" name="add_v_del" data-options="editable:false,disable:true" style="width:150px;">
                 <option value="00">可用</option>
@@ -185,7 +222,7 @@
      */
     $(function(){
         $('#dg').datagrid({
-            url:'purchaseSource/getBaseVegetablesPurchaseSource',
+            url:'purchaseSourceMerchant/getBaseVegetablesPurchaseSourceMerchant',
             onRowContextMenu:function(e, rowIndex, rowData){
                 if(rowData!=null){
                     $('#mm').menu('show', {
@@ -201,18 +238,27 @@
      * 过滤数据
      * */
     function filterDate() {
-        var s_name = $('#s_name').textbox("getValue");
-        var s_is_purchase = $('#s_is_purchase').combobox("getValue");
-        var s_del = $('#s_del').combobox("getValue");
-        var s_start_updatetime = $('#s_start_updatetime').datebox("getValue");
-        var s_end_updatetime = $('#s_end_updatetime').datebox("getValue");
+
+        var m_name = $('#m_name').textbox("getValue");
+        var s_id = $('#s_id').combobox("getValue");
+        var m_gender = $('#m_gender').combobox("getValue");
+        var m_boss_name = $('#m_boss_name').textbox("getValue");
+        var m_boss_phone = $('#m_boss_phone').textbox("getValue");
+        var m_is_cooperation = $('#m_is_cooperation').combobox("getValue");
+        var m_del = $('#m_del').combobox("getValue");
+        var m_start_updatetime = $('#m_start_updatetime').datebox("getValue");
+        var m_end_updatetime = $('#m_end_updatetime').datebox("getValue");
 
         var obj = {
-            s_name: s_name,
-            s_is_purchase: s_is_purchase,
-            s_del : s_del,
-            s_start_updatetime: s_start_updatetime,
-            s_end_updatetime: s_end_updatetime
+            m_name: m_name,
+            s_id: s_id,
+            m_gender: m_gender,
+            m_boss_name: m_boss_name,
+            m_boss_phone: m_boss_phone,
+            m_is_cooperation: m_is_cooperation,
+            m_del: m_del,
+            m_start_updatetime : m_start_updatetime,
+            m_end_updatetime: m_end_updatetime
         }
 
         $('#dg').datagrid('load',{
@@ -224,11 +270,15 @@
      * 清空条件过滤
      **/
     function clearfilterDate() {
-        $('#s_name').textbox("setValue","");
-        $('#s_is_purchase').combobox("setValue","");
-        $('#s_del').combobox("setValue","");
-        $('#s_start_updatetime').datebox("setValue","");
-        $('#s_end_updatetime').datebox("setValue","");
+        $('#m_name').textbox("setValue","");
+        $('#s_id').combobox("setValue","");
+        $('#m_gender').combobox("setValue","");
+        $('#m_boss_name').textbox("setValue","");
+        $('#m_boss_phone').textbox("setValue","");
+        $('#m_is_cooperation').combobox("setValue","");
+        $('#m_del').combobox("setValue","");
+        $('#m_start_updatetime').datebox("setValue","");
+        $('#m_end_updatetime').datebox("setValue","");
         filterDate();
     }
 
@@ -242,10 +292,16 @@
 
         $('#addDetail').css("display","block");
 
+        $('#add_s_id').combobox({
+            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+            valueField:'id',
+            textField:'text'
+        });
+
         $('#addDialog').window({
-            title:'添加进货来源详细信息',
+            title:'添加商户店铺详细信息',
             width:340,
-            height:210,
+            height:310,
             modal:true
         });
         $('#addDialog').dialog('open');
@@ -262,7 +318,7 @@
         if(getRows==null){
             $.messager.show({
                 title:'系统消息',
-                msg:'请选中一行进货来源进行编辑!',
+                msg:'请选中一行商户店铺进行编辑!',
                 timeout:5000,
                 showType:'slide'
             });
@@ -270,16 +326,35 @@
         }
         $('#detail').css("display","block");
 
+        $('#edit_s_id').combobox({
+            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+            valueField:'id',
+            textField:'text',
+            onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
+                var val = $(this).combobox("getData");
+                for (var item in val) {
+                    if (item.id == getRows.v_id) {
+                        $(this).combobox("select", val[item].id);
+                    }
+                }
+            }
+        });
+
         $('#editDialog').window({
-            title:'编辑进货来源详细信息',
+            title:'编辑商户店铺详细信息',
             width:340,
-            height:210,
+            height:310,
             modal:true
         });
 
-        $('#edit_s_name').textbox("setValue",getRows.s_name);
-        $('#edit_s_is_purchase').textbox("setValue",getRows.s_is_purchase);
-        $('#edit_s_remark').textbox("setValue",getRows.s_remark);
+
+        $('#edit_s_id').textbox("setValue",getRows.s_id);
+        $('#edit_m_name').textbox("setValue",getRows.m_name);
+        $('#edit_m_gender').combobox("setValue",getRows.m_gender);
+        $('#edit_m_boss_name').textbox("setValue",getRows.m_boss_name);
+        $('#edit_m_boss_phone').textbox("setValue",getRows.m_boss_phone);
+        $('#edit_m_is_cooperation').combobox("setValue",getRows.m_is_cooperation);
+        $('#edit_m_remark').textbox("setValue",getRows.m_remark);
         $('#editDialog').dialog('open');
     }
 
@@ -288,18 +363,26 @@
     function editSave() {
         if(opt_flag){ //新增
 
-            var add_s_name = $('#add_s_name').textbox("getValue");
-            var add_s_remark = $('#add_s_remark').textbox("getValue");
-            var add_s_is_purchase = $('#add_s_is_purchase').combobox("getValue");
+            var add_s_id = $('#add_s_id').combobox("getValue");
+            var add_m_name = $('#add_m_name').textbox("getValue");
+            var add_m_gender = $('#add_m_gender').combobox("getValue");
+            var add_m_boss_name = $('#add_m_boss_name').textbox("getValue");
+            var add_m_boss_phone = $('#add_m_boss_phone').textbox("getValue");
+            var add_m_is_cooperation = $('#add_m_is_cooperation').combobox("getValue");
+            var add_m_remark = $('#add_m_remark').textbox("getValue");
 
             var obj = {
-                add_s_name : add_s_name,
-                add_s_remark : add_s_remark,
-                add_s_is_purchase : add_s_is_purchase
+                add_s_id : add_s_id,
+                add_m_name : add_m_name,
+                add_m_gender : add_m_gender,
+                add_m_boss_name : add_m_boss_name,
+                add_m_boss_phone : add_m_boss_phone,
+                add_m_is_cooperation : add_m_is_cooperation,
+                add_m_remark : add_m_remark
             }
 
             $.ajax({
-                url:'purchaseSource/addBaseVegetablesPurchaseSource',
+                url:'purchaseSourceMerchant/addBaseVegetablesPurchaseSourceMerchant',
                 method:'post',
                 data:{
                     paramStr:JSON.stringify(obj)
@@ -333,19 +416,30 @@
                 }
             });
         }else if(!opt_flag){ //修改
-            var edit_s_name = $('#edit_s_name').textbox("getValue");
-            var edit_s_remark = $('#edit_s_remark').textbox("getValue");
-            var edit_s_is_purchase = $('#edit_s_is_purchase').combobox("getValue");
+
+
+            var edit_s_id = $('#edit_s_id').combobox("getValue");
+            var edit_m_name = $('#edit_m_name').textbox("getValue");
+            var edit_m_gender = $('#edit_m_gender').combobox("getValue");
+            var edit_m_boss_name = $('#edit_m_boss_name').textbox("getValue");
+            var edit_m_boss_phone = $('#edit_m_boss_phone').textbox("getValue");
+            var edit_m_is_cooperation = $('#edit_m_is_cooperation').combobox("getValue");
+            var edit_m_remark = $('#edit_m_remark').textbox("getValue");
 
             var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
             var obj = {
-                s_id : getRows.s_id,
-                edit_s_name : edit_s_name,
-                edit_s_remark : edit_s_remark,
-                edit_s_is_purchase : edit_s_is_purchase
+                m_id : getRows.m_id,
+                edit_s_id : edit_s_id,
+                edit_m_name : edit_m_name,
+                edit_m_gender : edit_m_gender,
+                edit_m_boss_name : edit_m_boss_name,
+                edit_m_boss_phone : edit_m_boss_phone,
+                edit_m_is_cooperation : edit_m_is_cooperation,
+                edit_m_remark : edit_m_remark
             }
+
             $.ajax({
-                url:'purchaseSource/updateBaseVegetablesPurchaseSource',
+                url:'purchaseSourceMerchant/updateBaseVegetablesPurchaseSourceMerchant',
                 method:'post',
                 data:{
                     paramStr:JSON.stringify(obj)
@@ -396,18 +490,18 @@
         if(getRows==null){
             $.messager.show({
                 title:'系统消息',
-                msg:'请选中一行进货来源进行删除!',
+                msg:'请选中一行蔬菜品种进行删除!',
                 timeout:5000,
                 showType:'slide'
             });
             return false;
         }
 
-        $.messager.confirm('系统确认', '您确定要删除进货来源名称为 ['+getRows.c_name+'] 的种类信息么,请谨慎操作?', function(r){
+        $.messager.confirm('系统确认', '您确定要删除商户店铺名称为 ['+getRows.v_name+'] 的信息么,请谨慎操作?', function(r){
             if (r){
-                var obj = {s_id:getRows.s_id};
+                var obj = {m_id:getRows.m_id};
                 $.ajax({
-                    url:'purchaseSource/removeBaseVegetablesPurchaseSource',
+                    url:'purchaseSourceMerchant/removeBaseVegetablesPurchaseSourceMerchant',
                     method:'post',
                     data:{
                         paramStr:JSON.stringify(obj)

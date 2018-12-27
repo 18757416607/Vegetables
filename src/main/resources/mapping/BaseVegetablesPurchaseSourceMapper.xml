@@ -11,7 +11,9 @@
         END s_is_purchase_name,s_is_purchase,s_remark,CASE s_del
         WHEN '00' THEN '可用'
         WHEN '01' THEN '已删除'
-        END s_del_name,s_del,s_updatetime,s_createtime FROM base_vegetables_purchase_source
+        END s_del_name,s_del,
+        DATE_FORMAT(s_updatetime,'%Y-%m-%d %H:%i:%S') s_updatetime,DATE_FORMAT(s_createtime,'%Y-%m-%d %H:%i:%S') s_createtime
+        FROM base_vegetables_purchase_source
         <where>
             <if test="s_id != null and s_id != ''">and s_id = #{s_id}</if>
             <if test="s_name !=null and s_name != ''">and s_name LIKE CONCAT('%',#{s_name},'%')</if>
@@ -33,7 +35,7 @@
     <!-- 添加蔬菜进货来源信息 -->
     <insert id="addBaseVegetablesPurchaseSource" parameterType="java.util.Map">
         INSERT INTO base_vegetables_purchase_source(s_name,s_is_purchase,s_remark,s_del,s_updatetime,s_createtime)
-        VALUES (#{add_s_name},#{add_s_is_purchase},#{add_s_remark},#{add_s_del},now(),now())
+        VALUES (#{add_s_name},#{add_s_is_purchase},#{add_s_remark},'00',now(),now())
     </insert>
 
     <!-- 修改蔬菜进货来源信息 -->

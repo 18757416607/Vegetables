@@ -31,6 +31,14 @@ public class BaseVegetablesPurchaseSourceMerchantServiceImpl implements BaseVege
      *      进货来源商户信息
      */
     public List<Map<String,Object>> getBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param){
+        if(param!=null){
+            if(param.get("m_start_updatetime")!=null&&!"".equals(param.get("m_start_updatetime"))){
+                param.put("m_start_updatetime",param.get("m_start_updatetime")+" 00:00:00");
+                if(param.get("m_end_updatetime")!=null&&!"".equals(param.get("m_end_updatetime"))){
+                    param.put("m_end_updatetime",param.get("m_end_updatetime")+" 23:59:59");
+                }
+            }
+        }
         return baseVegetablesPurchaseSourceMerchantMapper.getBaseVegetablesPurchaseSourceMerchant(param);
     }
 
