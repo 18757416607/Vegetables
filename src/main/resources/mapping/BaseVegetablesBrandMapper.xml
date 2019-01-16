@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vegetables.mapper.BaseVegetablesBrandMapper">
+
+
+    <!-- 查询蔬菜品牌信息 -->
+    <select id="getBaseVegetablesBrand" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT b_id,b_name,b_phone,b_address,b_address_loc,CASE b_del
+        WHEN '00' THEN '可用'
+        WHEN '01' THEN '已删除'
+        END b_del_name,b_del,b_remark,
+        DATE_FORMAT(b_updatetime,'%Y-%m-%d %H:%i:%S') b_updatetime,DATE_FORMAT(b_createtime,'%Y-%m-%d %H:%i:%S') b_createtime FROM base_vegetables_brand
+        <where>
+            <if test="b_id != null and b_id != ''">and b_id = #{b_id}</if>
+            <if test="b_name !=null and b_name != ''">and b_name like CONCAT('%',#{b_name},'%')</if>
+            <if test="b_del != null and b_del != ''">and b_del = #{b_del}</if>
+            <if test="b_remark != null and b_remark != ''">and b_remark = #{b_remark}</if>
+
+            <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime BETWEEN #{b_start_updatetime} and #{c_end_updatetime}</if>
+            <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime == null or b_end_updatetime =='')">and b_updatetime &gt;= #{b_start_updatetime}</if>
+            <if test="(b_start_updatetime == null or b_start_updatetime =='') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime &gt;= #{b_end_updatetime}</if>
+
+
+            <if test="b_createtime !=null and b_createtime != ''">and b_createtime BETWEEN #{b_start_createtime} AND #{b_end_createtime}</if>
+        </where>
+    </select>
+
+
+    <!-- 获取蔬菜品牌下拉列表信息 -->
+    <select id="getBaseVegetablesBrandCombobox" resultType="java.util.Map">
+        select b_id id,b_name text from base_vegetables_brand
+    </select>
+
+
+    <!-- 添加蔬菜品牌信息 -->
+    <insert id="addBaseVegetablesBrand" parameterType="java.util.Map">
+        INSERT INTO base_vegetables_brand(b_name,b_phone,b_address,b_address_loc,b_remark,b_del,b_updatetime,b_createtime)
+        VALUES (#{add_b_name},#{add_b_phone},#{add_b_address},#{add_b_address_loc},#{add_b_remark},'00',now(),now())
+    </insert>
+
+    <!-- 修改蔬菜品牌信息 -->
+    <update id="updateBaseVegetablesBrand" parameterType="java.util.Map">
+        UPDATE base_vegetables_brand
+        <set>
+            <if test="edit_b_name != null and edit_b_name != ''">b_name = #{edit_b_name},</if>
+            <if test="edit_b_phone != null and edit_b_phone != ''">b_phone = #{edit_b_phone},</if>
+            <if test="edit_b_address != null and edit_b_address != ''">b_address = #{edit_b_address},</if>
+            <if test="edit_b_address_loc != null and edit_b_address_loc != ''">b_address_loc = #{edit_b_address_loc},</if>
+            <if test="edit_b_del != null and edit_b_del != ''">b_del = #{edit_b_del},</if>
+            <if test="edit_b_remark != null and edit_b_remark != ''">b_remark = #{edit_b_remark},</if>
+            b_updatetime = now()
+        </set>
+        WHERE b_id = #{b_id}
+    </update>
+
+
+</mapper>

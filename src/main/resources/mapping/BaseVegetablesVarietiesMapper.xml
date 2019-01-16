@@ -4,14 +4,15 @@
 
     <!-- 查询蔬菜品种信息 -->
     <select id="getBaseVegetablesVarieties" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM (
+        <!--SELECT * FROM (
+        SELECT ttable.*,bvb.b_name FROM (
         SELECT temp.*,bvpsm.m_name,
         CASE bvpsm.m_gender
         WHEN 0 THEN '男'
         WHEN 1 THEN '女' END m_gender,bvpsm.m_boss_name,bvpsm.m_boss_phone FROM(
         SELECT vvvc.*,bvps.s_name FROM (
         SELECT bvv.*,bvc.c_name FROM (
-        select v_id,c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,
+        select v_id,c_id,s_id,b_id,v_name,v_img_url,v_price,v_unit,v_place_origin,v_mature_season,v_mature_end_season,
         CASE v_is_back_season
         WHEN '00' THEN '否'
         WHEN '01' THEN '是'
@@ -46,10 +47,56 @@
         ) bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc
         INNER JOIN base_vegetables_purchase_source bvps on vvvc.s_id = bvps.s_id ) temp
         LEFT JOIN base_vegetables_purchase_source_merchant bvpsm on temp.s_id = bvpsm.s_id) ttable
+        LEFT JOIN base_vegetables_brand bvb on bvb.b_id = ttable.b_id ) t-->
+        SELECT t.*,s_name FROM (
+        SELECT ttable.*,bvb.b_name FROM (
+        SELECT vvvc.*,bvpsm.m_name,bvpsm.s_id,
+        CASE bvpsm.m_gender
+        WHEN 0 THEN '男'
+        WHEN 1 THEN '女' END m_gender,bvpsm.m_boss_name,bvpsm.m_boss_phone FROM(
+        SELECT bvv.*,bvc.c_name FROM (
+        select v_id,c_id,m_id,b_id,v_name,v_img_url,v_price,v_unit,v_place_origin,v_mature_season,v_mature_end_season,
+        CASE v_is_back_season
+        WHEN '00' THEN '否'
+        WHEN '01' THEN '是'
+        END v_is_back_season_name,v_is_back_season,
+        CASE v_del
+        WHEN '00' THEN '可用'
+        WHEN '01' THEN '已删除'
+        END v_del_name,v_del,
+        CASE v_sellout
+        WHEN '00' THEN '未售完'
+        WHEN '01' THEN '已售完'
+        END v_sellout_name,v_sellout,
+        v_remark,
+        DATE_FORMAT(v_updatetime,'%Y-%m-%d %H:%i:%S') v_updatetime,DATE_FORMAT(v_createtime,'%Y-%m-%d %H:%i:%S') v_createtime from base_vegetables_varieties
+        <where>
+            <if test="c_id != null and c_id != ''">and c_id = #{c_id}</if>
+            <if test="m_id != null and m_id != ''">and m_id = #{m_id}</if>
+            <if test="v_name != null and v_name != ''">and v_name LIKE CONCAT('%',#{v_name},'%')</if>
+            <if test="(v_start_price != null and v_start_price != '') and (v_end_price != null and v_end_price != '')">and v_price BETWEEN #{v_start_price} AND #{v_end_price}</if>
+            <if test="(v_start_price != null and v_start_price != '') and (v_end_price == null or v_end_price =='')">and v_price &gt;= #{v_start_price}</if>
+            <if test="(v_start_price == null or v_start_price == '') and (v_end_price != null and v_end_price !='')">and v_price &gt;= #{v_end_price}</if>
+            <if test="v_mature_season != null and v_mature_season != ''">and v_mature_season = #{v_mature_season}</if>
+            <if test="v_mature_end_season != null and v_mature_end_season != ''">and v_mature_end_season = #{v_mature_end_season}</if>
+            <if test="v_is_back_season != null and v_is_back_season != ''">and v_is_back_season = #{v_is_back_season}</if>
+            <if test="v_del != null and v_del != ''">and v_del = #{v_del}</if>
+            <if test="v_sellout != null and v_sellout != ''">and v_sellout = #{v_sellout}</if>
+            <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime BETWEEN #{v_start_updatetime} and #{v_end_updatetime}</if>
+            <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime == null or v_end_updatetime =='')">and v_updatetime &gt;= #{v_start_updatetime}</if>
+            <if test="(v_start_updatetime == null or v_start_updatetime =='') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime &gt;= #{v_end_updatetime}</if>
+            <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
+        </where>
+        ) bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc
+        LEFT JOIN base_vegetables_purchase_source_merchant bvpsm on vvvc.m_id = bvpsm.m_id) ttable
+        LEFT JOIN base_vegetables_brand bvb on bvb.b_id = ttable.b_id ) t
+        INNER JOIN base_vegetables_purchase_source bvps on t.s_id = bvps.s_id
         <where>
             <if test="m_name != null and m_name != ''">and m_name like CONCAT('%',#{m_name},'%') </if>
             <if test="m_boss_name != null and m_boss_name != ''">and m_boss_name like CONCAT('%',#{m_boss_name},'%') </if>
             <if test="m_boss_phone != null and m_boss_phone != ''">and m_boss_phone like CONCAT('%',#{m_boss_phone},'%') </if>
+            <if test="b_id != null and b_id != ''">and b_id = #{b_id} </if>
+            <if test="s_id != null and s_id != ''">and t.s_id = #{s_id}</if>
         </where>
     </select>
 
@@ -61,8 +108,8 @@
     
     <!-- 添加蔬菜品种信息 -->
     <insert id="addBaseVegetablesVarieties" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_varieties(c_id,s_id,v_name,v_price,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_sellout,v_remark,v_updatetime,v_createtime)
-        VALUES (#{add_c_id},#{add_s_id},#{add_v_name},#{add_v_price},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00','00',#{add_v_remark},now(),now())
+        INSERT INTO base_vegetables_varieties(c_id,s_id,b_id,v_name,v_img_url,v_price,v_unit,v_place_origin,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_sellout,v_remark,v_updatetime,v_createtime)
+        VALUES (#{add_c_id},#{add_s_id},#{add_b_id},#{add_v_name},#{add_v_img_url},#{add_v_price},#{add_v_unit},#{add_v_place_origin},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00','00',#{add_v_remark},now(),now())
     </insert>
 
     <!-- 修改蔬菜品种信息 -->
@@ -71,8 +118,12 @@
         <set>
             <if test="edit_c_id != null and edit_c_id != ''">c_id = #{edit_c_id},</if>
             <if test="edit_s_id != null and edit_s_id != ''">s_id = #{edit_s_id},</if>
+            <if test="edit_b_id != null and edit_b_id != ''">b_id = #{edit_b_id},</if>
             <if test="edit_v_name != null and edit_v_name != ''">v_name = #{edit_v_name},</if>
+            <if test="edit_img_url != null and edit_img_url != ''">img_url = #{edit_img_url},</if>
             <if test="edit_v_price != null">v_price = #{edit_v_price},</if>
+            <if test="edit_v_unit != null and edit_v_unit != ''">v_unit = #{edit_v_unit},</if>
+            <if test="edit_v_place_origin != null and edit_v_place_origin != ''">v_place_origin = #{edit_v_place_origin},</if>
             <if test="edit_v_mature_season != null and edit_v_mature_season != ''">v_mature_season = #{edit_v_mature_season},</if>
             <if test="edit_v_mature_end_season != null and edit_v_mature_end_season != ''">v_mature_end_season = #{edit_v_mature_end_season},</if>
             <if test="edit_v_is_back_season != null">v_is_back_season = #{edit_v_is_back_season},</if>

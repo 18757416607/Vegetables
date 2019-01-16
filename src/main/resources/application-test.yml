@@ -1,44 +1,42 @@
 server:
   port: 8083
-  session:
-    timeout: 2
   servlet:
     context-path: /vegetables
 
 weixin:
-    appid: 123456
-    key: yeyrew
+  appid: 123456
+  key: yeyrew
 
 
 
 #alibaba的druid数据库连接池配置
 spring:
-    datasource:
-        driver-class-name: com.mysql.jdbc.Driver
-        type: com.alibaba.druid.pool.DruidDataSource
-        url: jdbc:mysql://47.92.4.251:3306/vegetables?useUnicode=true&characterEncoding=utf8
-        username: root
-        password: root
-        # 使用druid数据源
-        filters: stat
-        maxActive: 20
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
-    thymeleaf:
-        mode: LEGACYHTML5
-        prefix: classpath:/templates/
-        suffix: .html
-        encoding: UTF-8
-        cache: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/vegetables?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+    # 使用druid数据源
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  thymeleaf:
+    mode: LEGACYHTML5
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    cache: false
 
 
 mybatis:

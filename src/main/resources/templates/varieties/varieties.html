@@ -83,8 +83,12 @@
                 <th data-options="field:'v_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">品种编号</th>
                 <th data-options="field:'c_id',hidden:true,width:100,align:'center',halign:'center',formatter: diyFormatter">种类编号</th>
                 <th data-options="field:'c_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜种类</th>
+                <th data-options="field:'b_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜品牌</th>
                 <th data-options="field:'v_name',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜名称</th>
                 <th data-options="field:'v_price',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜价格</th>
+                <th data-options="field:'v_unit',width:100,align:'center',halign:'center',formatter: diyFormatter">单位</th>
+                <th data-options="field:'v_img_url',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜图片</th>
+                <th data-options="field:'v_place_origin',width:100,align:'center',halign:'center',formatter: diyFormatter">蔬菜产地</th>
                 <th data-options="field:'v_sellout_name',width:100,align:'center',halign:'center',formatter: diyFormatter">是否售完</th>
                 <th data-options="field:'v_mature_season',width:150,align:'center',halign:'center',formatter: diyFormatterMonth">蔬菜上市季节</th>
                 <th data-options="field:'v_mature_end_season',width:150,align:'center',halign:'center',formatter: diyFormatterMonth">蔬菜下市季节</th>
@@ -111,6 +115,9 @@
             </div>
             <div>
                 蔬菜种类&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'category/getBaseVegetablesCategoryCombobox'" id = "c_id" name="c_id" placeholder="输入蔬菜种类" />
+            </div>
+            <div>
+                蔬菜品牌&nbsp;:&nbsp;<input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'brand/getBaseVegetablesBrandCombobox'" id = "b_id" name="b_id" placeholder="输入蔬菜品牌" />
             </div>
             <div>
                 是否售完&nbsp;:&nbsp;<select id="v_sellout" class="easyui-combobox" name="v_sellout" data-options="editable:false,disable:true" style="width:200px;">
@@ -211,7 +218,11 @@
         <tr><td>蔬菜种类:</td><td><select class="easyui-combobox" data-options="editable:false,disable:true" id = "edit_c_id" name="edit_c_id" style="width:150px;"></select></td></tr>
         <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>蔬菜名称：</td><td><input class = "easyui-textbox" id="edit_v_name" name = "edit_v_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜品牌：</td><td><input class = "easyui-combobox" id="edit_b_id" name = "edit_b_id" data-options="editable:false,disable:true,valueField:'id',textField:'text',width:150"/><br/></td></tr>
         <tr><td>蔬菜价格(数字)：</td><td><input class = "easyui-textbox" id="edit_v_price" name = "edit_v_price"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜单位：</td><td><input class = "easyui-textbox" id="edit_v_unit" name = "edit_v_unit"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜产地：</td><td><input class = "easyui-textbox" id="edit_v_place_origin" name = "edit_v_place_origin"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜图片：</td><td><input class = "easyui-textbox" id="edit_v_img_url" name = "edit_v_img_url"  data-options="width:150"/><br/></td></tr>
         <tr><td>是否售完&nbsp;:&nbsp;</td><td><select id="edit_v_sellout" class="easyui-combobox" name="edit_v_sellout" data-options="editable:false,disable:true" style="width:150px;">
             <option value="00">未售完</option>
             <option value="01">已售完</option>
@@ -269,7 +280,11 @@
         <tr><td>蔬菜种类:</td><td><input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'category/getBaseVegetablesCategoryCombobox'" id = "add_c_id" name="add_c_id" style="width:150px;"/></td></tr>
         <tr><td>进货来源：</td><td><select id="add_s_id" class="easyui-combobox" name="add_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>蔬菜名称：</td><td><input class = "easyui-textbox" id="add_v_name" name = "add_v_name"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜品牌：</td><td><input class = "easyui-combobox" id="add_b_id" name = "add_b_id"  data-options="editable:false,disable:true,valueField:'id',textField:'text',width:150"/><br/></td></tr>
         <tr><td>蔬菜价格(数字)：</td><td><input class = "easyui-textbox" id="add_v_price" name = "add_v_price"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜单位：</td><td><input class = "easyui-textbox" id="add_v_unit" name = "add_v_unit"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜产地：</td><td><input class = "easyui-textbox" id="add_v_place_origin" name = "add_v_place_origin"  data-options="width:150"/><br/></td></tr>
+        <tr><td>蔬菜图片：</td><td><input class = "easyui-textbox" id="add_v_img_url" name = "add_v_img_url"  data-options="width:150"/><br/></td></tr>
         <tr><td>是否售完&nbsp;:&nbsp;</td><td><select id="add_v_sellout" class="easyui-combobox" name="add_v_sellout" data-options="editable:false,disable:true" style="width:150px;">
             <option value="00">未售完</option>
             <option value="01">已售完</option>
@@ -355,6 +370,7 @@
         var v_is_back_season = $('#v_is_back_season').combobox("getValue");
         var s_id = $('#s_id').combobox("getValue");
         var c_id = $('#c_id').combobox("getValue");
+        var b_id = $('#b_id').combobox("getValue");
         var m_name = $('#m_name').textbox("getValue");
         var m_boss_name = $('#m_boss_name').textbox("getValue");
         var m_boss_phone = $('#m_boss_phone').textbox("getValue");
@@ -373,6 +389,7 @@
             v_is_back_season: v_is_back_season,
             s_id: s_id,
             c_id : c_id,
+            b_id : b_id,
             m_name: m_name,
             m_boss_name: m_boss_name,
             m_boss_phone: m_boss_phone,
@@ -398,6 +415,7 @@
         $('#v_mature_end_season').combobox("setValue","");
         $('#v_is_back_season').combobox("setValue","");
         $('#s_id').combobox("setValue","");
+        $('#b_id').combobox("setValue","");
         $('#m_name').textbox("setValue","");
         $('#m_boss_name').textbox("setValue","");
         $('#m_boss_phone').textbox("setValue","");
@@ -429,10 +447,16 @@
             textField:'text'
         });
 
+        $('#add_b_id').combobox({
+            url:'brand/getBaseVegetablesBrandCombobox',
+            valueField:'id',
+            textField:'text'
+        });
+
         $('#addDialog').window({
             title:'添加蔬菜行情详细信息',
             width:340,
-            height:320,
+            height:420,
             modal:true
         });
         $('#addDialog').dialog('open');
@@ -487,16 +511,32 @@
             }
         });
 
+        $('#edit_b_id').combobox({
+            url:'brand/getBaseVegetablesBrandCombobox',
+            valueField:'id',
+            textField:'text',
+            onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
+                var val = $(this).combobox("getData");
+                for (var item in val) {
+                    if (item.id == getRows.b_id) {
+                        $(this).combobox("select", val[item].id);
+                    }
+                }
+            }
+        });
+
+
         $('#editDialog').window({
             title:'编辑蔬菜行情详细信息',
             width:340,
-            height:320,
+            height:420,
             modal:true
         });
 
         //$('#edit_v_id').textbox("setValue",getRows.v_id);
 
         $('#edit_c_id').combobox("setValue",getRows.c_id);
+        $('#edit_b_id').combobox("setValue",getRows.b_id);
         $('#edit_s_id').textbox("setValue",getRows.s_id);
         $('#edit_v_name').textbox("setValue",getRows.v_name);
         $('#edit_v_price').textbox("setValue",getRows.v_price);
@@ -516,8 +556,12 @@
 
             var add_c_id = $('#add_c_id').combobox("getValue");
             var add_s_id = $('#add_s_id').combobox("getValue");
+            var add_b_id = $('#add_b_id').combobox("getValue");
             var add_v_name = $('#add_v_name').textbox("getValue");
             var add_v_price = $('#add_v_price').textbox("getValue");
+            var add_v_img_url = $('#add_v_img_url').textbox("getValue");
+            var add_v_unit = $('#add_v_unit').textbox("getValue");
+            var add_v_place_origin = $('#add_v_place_origin').textbox("getValue");
             var add_v_mature_season = $('#add_v_mature_season').combobox("getValue");
             var add_v_mature_end_season = $('#add_v_mature_end_season').combobox("getValue");
             var add_v_is_back_season = $('#add_v_is_back_season').combobox("getValue");
@@ -528,8 +572,12 @@
             var obj = {
                 add_c_id : add_c_id,
                 add_s_id : add_s_id,
+                add_b_id : add_b_id,
                 add_v_name : add_v_name,
                 add_v_price : add_v_price,
+                add_v_img_url : add_v_img_url,
+                add_v_unit : add_v_unit,
+                add_v_place_origin : add_v_place_origin,
                 add_v_mature_season : add_v_mature_season,
                 add_v_mature_end_season : add_v_mature_end_season,
                 add_v_is_back_season : add_v_is_back_season,
@@ -575,23 +623,29 @@
         }else if(!opt_flag){ //修改
             var edit_c_id = $('#edit_c_id').combobox("getValue");
             var edit_s_id = $('#edit_s_id').combobox("getValue");
+            var edit_b_id = $('#edit_b_id').combobox("getValue");
             var edit_v_name = $('#edit_v_name').textbox("getValue");
             var edit_v_price = $('#edit_v_price').textbox("getValue");
+            var edit_v_img_url = $('#edit_v_img_url').textbox("getValue");
+            var edit_v_unit = $('#edit_v_unit').textbox("getValue");
+            var edit_v_place_origin = $('#edit_v_place_origin').textbox("getValue");
             var edit_v_mature_season = $('#edit_v_mature_season').combobox("getValue");
             var edit_v_mature_end_season = $('#edit_v_mature_end_season').combobox("getValue");
             var edit_v_is_back_season = $('#edit_v_is_back_season').combobox("getValue");
             //var edit_v_del = $('#edit_v_del').combobox("getValue");
             var edit_v_remark = $('#edit_v_remark').textbox("getValue");
-
             var edit_v_sellout = $('#edit_v_sellout').combobox("getValue");
-
             var getRows = $('#dg').datagrid("getSelected"); //获取datagrid选中行
             var obj = {
                 v_id : getRows.v_id,
                 edit_c_id : edit_c_id,
                 edit_s_id : edit_s_id,
+                edit_b_id : edit_b_id,
                 edit_v_name : edit_v_name,
                 edit_v_price : edit_v_price,
+                edit_v_img_url : edit_v_img_url,
+                edit_v_unit : edit_v_unit,
+                edit_v_place_origin : edit_v_place_origin,
                 edit_v_mature_season : edit_v_mature_season,
                 edit_v_mature_end_season : edit_v_mature_end_season,
                 edit_v_is_back_season : edit_v_is_back_season,
