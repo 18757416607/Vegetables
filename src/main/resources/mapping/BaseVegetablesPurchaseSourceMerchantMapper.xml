@@ -35,6 +35,11 @@
         </where>
     </select>
 
+    <!-- 蔬菜进货来源商户下拉列表 -->
+    <select id="getBaseVegetablesPurchaseSourceMerchantCombobox" resultType="java.util.Map">
+        SELECT m_id id,m_name text FROM base_vegetables_purchase_source_merchant
+    </select>
+
 
     <!-- 添加进货来源商户信息 -->
     <insert id="addBaseVegetablesPurchaseSourceMerchant" parameterType="java.util.Map">

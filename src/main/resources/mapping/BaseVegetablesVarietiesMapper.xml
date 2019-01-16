@@ -108,8 +108,8 @@
     
     <!-- 添加蔬菜品种信息 -->
     <insert id="addBaseVegetablesVarieties" parameterType="java.util.Map">
-        INSERT INTO base_vegetables_varieties(c_id,s_id,b_id,v_name,v_img_url,v_price,v_unit,v_place_origin,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_sellout,v_remark,v_updatetime,v_createtime)
-        VALUES (#{add_c_id},#{add_s_id},#{add_b_id},#{add_v_name},#{add_v_img_url},#{add_v_price},#{add_v_unit},#{add_v_place_origin},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00','00',#{add_v_remark},now(),now())
+        INSERT INTO base_vegetables_varieties(c_id,m_id,b_id,v_name,v_img_url,v_price,v_unit,v_place_origin,v_mature_season,v_mature_end_season,v_is_back_season,v_del,v_sellout,v_remark,v_updatetime,v_createtime)
+        VALUES (#{add_c_id},#{add_m_id},#{add_b_id},#{add_v_name},#{add_v_img_url},#{add_v_price},#{add_v_unit},#{add_v_place_origin},#{add_v_mature_season},#{add_v_mature_end_season},#{add_v_is_back_season},'00','00',#{add_v_remark},now(),now())
     </insert>
 
     <!-- 修改蔬菜品种信息 -->
@@ -117,7 +117,7 @@
         UPDATE base_vegetables_varieties
         <set>
             <if test="edit_c_id != null and edit_c_id != ''">c_id = #{edit_c_id},</if>
-            <if test="edit_s_id != null and edit_s_id != ''">s_id = #{edit_s_id},</if>
+            <if test="edit_m_id != null and edit_m_id != ''">m_id = #{edit_m_id},</if>
             <if test="edit_b_id != null and edit_b_id != ''">b_id = #{edit_b_id},</if>
             <if test="edit_v_name != null and edit_v_name != ''">v_name = #{edit_v_name},</if>
             <if test="edit_img_url != null and edit_img_url != ''">img_url = #{edit_img_url},</if>

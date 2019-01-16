@@ -69,7 +69,7 @@ public class BaseVegetablesVarietiesController{
             logger.info("添加蔬菜品种信息-->controller-->[蔬菜类别]为空");
             throw new MyException("请选择蔬菜类别","01");
         }
-        if(paramMap.get("add_s_id")==null||"".equals(paramMap.get("add_s_id"))){
+        if(paramMap.get("add_m_id")==null||"".equals(paramMap.get("add_m_id"))){
             logger.info("添加蔬菜品种信息-->controller-->[进货来源]为空");
             throw new MyException("请选择进货来源","01");
         }
@@ -112,7 +112,7 @@ public class BaseVegetablesVarietiesController{
             logger.info("修改蔬菜品种信息-->controller-->[蔬菜类别]为空");
             throw new MyException("请选择蔬菜类别","01");
         }
-        if(paramMap.get("edit_s_id")==null||"".equals(paramMap.get("edit_s_id"))){
+        if(paramMap.get("edit_m_id")==null||"".equals(paramMap.get("edit_m_id"))){
             logger.info("修改蔬菜品种信息-->controller-->[进货来源]为空");
             throw new MyException("请选择进货来源","01");
         }

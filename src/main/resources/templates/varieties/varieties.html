@@ -216,7 +216,7 @@
 <div id="editDialog" >
     <table id = "detail" style="display: none;padding: 25px 0px 0px 36px;">
         <tr><td>蔬菜种类:</td><td><select class="easyui-combobox" data-options="editable:false,disable:true" id = "edit_c_id" name="edit_c_id" style="width:150px;"></select></td></tr>
-        <tr><td>进货来源：</td><td><select id="edit_s_id" class="easyui-combobox" name="edit_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>进货来源商户：</td><td><select id="edit_m_id" class="easyui-combobox" name="edit_m_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>蔬菜名称：</td><td><input class = "easyui-textbox" id="edit_v_name" name = "edit_v_name"  data-options="width:150"/><br/></td></tr>
         <tr><td>蔬菜品牌：</td><td><input class = "easyui-combobox" id="edit_b_id" name = "edit_b_id" data-options="editable:false,disable:true,valueField:'id',textField:'text',width:150"/><br/></td></tr>
         <tr><td>蔬菜价格(数字)：</td><td><input class = "easyui-textbox" id="edit_v_price" name = "edit_v_price"  data-options="width:150"/><br/></td></tr>
@@ -278,7 +278,7 @@
 <div id="addDialog" >
     <table id = "addDetail" style="display: none;padding: 25px 0px 0px 36px;">
         <tr><td>蔬菜种类:</td><td><input class="easyui-combobox" data-options="editable:false,disable:true,valueField:'id',textField:'text',url:'category/getBaseVegetablesCategoryCombobox'" id = "add_c_id" name="add_c_id" style="width:150px;"/></td></tr>
-        <tr><td>进货来源：</td><td><select id="add_s_id" class="easyui-combobox" name="add_s_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
+        <tr><td>进货来源商户：</td><td><select id="add_m_id" class="easyui-combobox" name="add_m_id" data-options="editable:false,disable:true" style="width:150px;"></select></td></tr>
         <tr><td>蔬菜名称：</td><td><input class = "easyui-textbox" id="add_v_name" name = "add_v_name"  data-options="width:150"/><br/></td></tr>
         <tr><td>蔬菜品牌：</td><td><input class = "easyui-combobox" id="add_b_id" name = "add_b_id"  data-options="editable:false,disable:true,valueField:'id',textField:'text',width:150"/><br/></td></tr>
         <tr><td>蔬菜价格(数字)：</td><td><input class = "easyui-textbox" id="add_v_price" name = "add_v_price"  data-options="width:150"/><br/></td></tr>
@@ -441,8 +441,8 @@
             textField:'text'
         });
 
-        $('#add_s_id').combobox({
-            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+        $('#add_m_id').combobox({
+            url:'purchaseSourceMerchant/getBaseVegetablesPurchaseSourceMerchantCombobox',
             valueField:'id',
             textField:'text'
         });
@@ -497,8 +497,8 @@
             }
         });
 
-        $('#edit_s_id').combobox({
-            url:'purchaseSource/getBaseVegetablesPurchaseSourceCombobox',
+        $('#edit_m_id').combobox({
+            url:'purchaseSourceMerchant/getBaseVegetablesPurchaseSourceMerchantCombobox',
             valueField:'id',
             textField:'text',
             onLoadSuccess: function () { //加载完成后,val[0]写死设置选中第一项
@@ -537,7 +537,7 @@
 
         $('#edit_c_id').combobox("setValue",getRows.c_id);
         $('#edit_b_id').combobox("setValue",getRows.b_id);
-        $('#edit_s_id').textbox("setValue",getRows.s_id);
+        $('#edit_m_id').textbox("setValue",getRows.m_id);
         $('#edit_v_name').textbox("setValue",getRows.v_name);
         $('#edit_v_price').textbox("setValue",getRows.v_price);
         $('#edit_v_mature_season').combobox("setValue",getRows.v_mature_season);
@@ -555,7 +555,7 @@
         if(opt_flag){ //新增
 
             var add_c_id = $('#add_c_id').combobox("getValue");
-            var add_s_id = $('#add_s_id').combobox("getValue");
+            var add_m_id = $('#add_m_id').combobox("getValue");
             var add_b_id = $('#add_b_id').combobox("getValue");
             var add_v_name = $('#add_v_name').textbox("getValue");
             var add_v_price = $('#add_v_price').textbox("getValue");
@@ -571,7 +571,7 @@
 
             var obj = {
                 add_c_id : add_c_id,
-                add_s_id : add_s_id,
+                add_m_id : add_m_id,
                 add_b_id : add_b_id,
                 add_v_name : add_v_name,
                 add_v_price : add_v_price,
@@ -622,7 +622,7 @@
             });
         }else if(!opt_flag){ //修改
             var edit_c_id = $('#edit_c_id').combobox("getValue");
-            var edit_s_id = $('#edit_s_id').combobox("getValue");
+            var edit_m_id = $('#edit_m_id').combobox("getValue");
             var edit_b_id = $('#edit_b_id').combobox("getValue");
             var edit_v_name = $('#edit_v_name').textbox("getValue");
             var edit_v_price = $('#edit_v_price').textbox("getValue");
@@ -639,7 +639,7 @@
             var obj = {
                 v_id : getRows.v_id,
                 edit_c_id : edit_c_id,
-                edit_s_id : edit_s_id,
+                edit_m_id : edit_m_id,
                 edit_b_id : edit_b_id,
                 edit_v_name : edit_v_name,
                 edit_v_price : edit_v_price,

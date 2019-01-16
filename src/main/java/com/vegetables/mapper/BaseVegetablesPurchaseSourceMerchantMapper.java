@@ -25,6 +25,11 @@ public interface BaseVegetablesPurchaseSourceMerchantMapper {
      */
     public List<Map<String,Object>> getBaseVegetablesPurchaseSourceMerchant(Map<String, Object> param);
 
+    /**
+     * 获取进货来源商户下拉列表数据
+     * @return
+     */
+    public List<Map<String,Object>> getBaseVegetablesPurchaseSourceMerchantCombobox();
 
     /**
      * 添加进货来源商户信息

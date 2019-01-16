@@ -42,6 +42,14 @@ public class BaseVegetablesPurchaseSourceMerchantServiceImpl implements BaseVege
         return baseVegetablesPurchaseSourceMerchantMapper.getBaseVegetablesPurchaseSourceMerchant(param);
     }
 
+    /**
+     * 获取进货来源商户下拉列表数据
+     * @return
+     */
+    public List<Map<String,Object>> getBaseVegetablesPurchaseSourceMerchantCombobox(){
+        return baseVegetablesPurchaseSourceMerchantMapper.getBaseVegetablesPurchaseSourceMerchantCombobox();
+    }
+
 
     /**
      * 添加进货来源商户信息

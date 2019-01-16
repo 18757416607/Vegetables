@@ -44,6 +44,15 @@ public class BaseVegetablesPurchaseSourceMerchantController {
         }
     }
 
+    /**
+     * 获取进货来源商户下拉列表数据
+     * @return
+     */
+    @RequestMapping(value = "/getBaseVegetablesPurchaseSourceMerchantCombobox")
+    public List<Map<String,Object>> getBaseVegetablesPurchaseSourceMerchantCombobox(){
+        return baseVegetablesPurchaseSourceMerchantService.getBaseVegetablesPurchaseSourceMerchantCombobox();
+    }
+
 
 
     /**
