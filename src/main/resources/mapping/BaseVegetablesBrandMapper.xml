@@ -5,7 +5,7 @@
 
     <!-- 查询蔬菜品牌信息 -->
     <select id="getBaseVegetablesBrand" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT b_id,b_name,b_phone,b_address,b_address_loc,CASE b_del
+        SELECT b_id,b_name,b_phone,b_address,AsText(b_address_loc) as b_address_loc,CASE b_del
         WHEN '00' THEN '可用'
         WHEN '01' THEN '已删除'
         END b_del_name,b_del,b_remark,
@@ -13,9 +13,10 @@
         <where>
             <if test="b_id != null and b_id != ''">and b_id = #{b_id}</if>
             <if test="b_name !=null and b_name != ''">and b_name like CONCAT('%',#{b_name},'%')</if>
+            <if test="b_phone !=null and b_phone != ''">and b_phone like CONCAT('%',#{b_phone},'%')</if>
+            <if test="b_address !=null and b_address != ''">and b_address like CONCAT('%',#{b_address},'%')</if>
             <if test="b_del != null and b_del != ''">and b_del = #{b_del}</if>
             <if test="b_remark != null and b_remark != ''">and b_remark = #{b_remark}</if>
-
             <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime BETWEEN #{b_start_updatetime} and #{c_end_updatetime}</if>
             <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime == null or b_end_updatetime =='')">and b_updatetime &gt;= #{b_start_updatetime}</if>
             <if test="(b_start_updatetime == null or b_start_updatetime =='') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime &gt;= #{b_end_updatetime}</if>
@@ -35,7 +36,7 @@
     <!-- 添加蔬菜品牌信息 -->
     <insert id="addBaseVegetablesBrand" parameterType="java.util.Map">
         INSERT INTO base_vegetables_brand(b_name,b_phone,b_address,b_address_loc,b_remark,b_del,b_updatetime,b_createtime)
-        VALUES (#{add_b_name},#{add_b_phone},#{add_b_address},#{add_b_address_loc},#{add_b_remark},'00',now(),now())
+        VALUES (#{add_b_name},#{add_b_phone},#{add_b_address},GeomFromText(#{add_b_address_loc}),#{add_b_remark},'00',now(),now())
     </insert>
 
     <!-- 修改蔬菜品牌信息 -->
@@ -45,7 +46,7 @@
             <if test="edit_b_name != null and edit_b_name != ''">b_name = #{edit_b_name},</if>
             <if test="edit_b_phone != null and edit_b_phone != ''">b_phone = #{edit_b_phone},</if>
             <if test="edit_b_address != null and edit_b_address != ''">b_address = #{edit_b_address},</if>
-            <if test="edit_b_address_loc != null and edit_b_address_loc != ''">b_address_loc = #{edit_b_address_loc},</if>
+            <if test="edit_b_address_loc != null and edit_b_address_loc != ''">b_address_loc = GeomFromText(#{edit_b_address_loc}),</if>
             <if test="edit_b_del != null and edit_b_del != ''">b_del = #{edit_b_del},</if>
             <if test="edit_b_remark != null and edit_b_remark != ''">b_remark = #{edit_b_remark},</if>
             b_updatetime = now()

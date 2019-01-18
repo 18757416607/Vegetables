@@ -39,7 +39,9 @@ public class BaseVegetablesBrandController {
         if(paramStr!=null&&!"".equals(paramStr)){
             return brandService.getBaseVegetablesBrand(JacksonUtils.strToMap(paramStr));
         }else{
-            return brandService.getBaseVegetablesBrand(null);
+            List<Map<String,Object>> list = brandService.getBaseVegetablesBrand(null);
+            System.out.println(list);
+            return list;
         }
     }
 
