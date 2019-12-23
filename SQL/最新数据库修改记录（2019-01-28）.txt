@@ -1,0 +1,31 @@
+
+
+一：原有表新增的字段
+商户表  base_vegetables_purchase_source_merchant
+1.m_business_start_date   商户营业开始时间
+2.m_business_end_date     商户营业结束时间
+
+
+
+订单表  base_vegetables_orders
+1.o_distributors 配送员手机号
+2.o_is_refund  是否退款  00:是  01:否
+3.o_is_evaluate  是否评价  00:是  01:否
+4.o_evaluate_content  评价内容
+5.o_is_reserve   是否预定  00:是  01:否
+6.o_reserve_date  预定送达时间
+
+
+
+蔬菜种类表  base_vegetables_varieties
+1.v_is_heat 是否热销  00:是  01:否
+2.v_is_special_sale   是否特价  00:是  01:否
+
+
+
+二:新增的表
+1.优惠券表  已加
+2.优惠券分配记录表   已加
+2.活动表   
+3.支付表
+4.购物车表
