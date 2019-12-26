@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vegetables.mapper.BaseFinanceMapper">
+
+
+    <!-- 查询财务相关信息 -->
+    <select id="getBaseFinance" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT finance_id,user_id,finance_type_id,bft.type_name,
+        finance_amount,
+        CASE finance_reason
+        WHEN '0' THEN '无'
+        WHEN finance_reason THEN finance_reason
+        END finance_reason,
+        CASE finance_is_del
+        WHEN '00' THEN '可用'
+        WHEN '01' THEN '已删除'
+        END finance_is_del_name,finance_is_del,
+        CASE finance_is_update
+        WHEN '00' THEN '可修改'
+        WHEN '01' THEN '不可修改'
+        END finance_is_update_name,finance_is_update,
+        DATE_FORMAT(finance_date,'%Y-%m-%d %H:%i:%S') finance_date,
+        DATE_FORMAT(bf.create_time,'%Y-%m-%d %H:%i:%S') create_time,
+        DATE_FORMAT(bf.update_time,'%Y-%m-%d %H:%i:%S') update_time
+        FROM base_finance bf left JOIN base_finance_type bft on bf.finance_type_id = bft.type_id
+        <where>
+            <if test="user_id != null and user_id != ''">and user_id = #{user_id}</if>
+            <if test="finance_id != null and finance_id != ''">and finance_id = #{finance_id}</if>
+            <if test="finance_type_id != null and finance_type_id != ''">and finance_type_id = #{finance_type_id}</if>
+            <if test="finance_reason !=null and finance_reason != ''">and finance_reason like CONCAT('%',#{finance_reason},'%')</if>
+            <if test="finance_is_del != null and finance_is_del != ''">and finance_is_del = #{finance_is_del}</if>
+
+
+            <if test="(start_finance_amount != null and start_finance_amount != '') and (end_finance_amount != null and end_finance_amount != '')">and finance_amount BETWEEN #{start_finance_amount} AND #{end_finance_amount}</if>
+            <if test="(start_finance_amount != null and start_finance_amount != '') and (end_finance_amount == null or end_finance_amount == '')">and finance_amount >= #{start_finance_amount}</if>
+            <if test="(start_finance_amount == null or start_finance_amount == '') and (end_finance_amount != null and end_finance_amount != '')">and finance_amount <![CDATA[ <= ]]> #{end_finance_amount}</if>
+
+
+            <if test="(f_start_finance_date != null and f_start_finance_date != '') and (f_end_finance_date != null and f_end_finance_date != '')">and finance_date BETWEEN #{f_start_finance_date} and #{f_end_finance_date}</if>
+            <if test="(f_start_finance_date != null and f_start_finance_date != '') and (f_end_finance_date == null or f_end_finance_date =='')">and finance_date &gt;= #{f_start_finance_date}</if>
+            <if test="(f_start_finance_date == null or f_start_finance_date =='') and (f_end_finance_date != null and f_end_finance_date != '')">and finance_date <![CDATA[ <= ]]> #{f_end_finance_date}</if>
+
+            <if test="(f_start_updatetime != null and f_start_updatetime != '') and (f_end_updatetime != null and f_end_updatetime != '')">and updatetime BETWEEN #{f_start_updatetime} and #{f_end_updatetime}</if>
+            <if test="(f_start_updatetime != null and f_start_updatetime != '') and (f_end_updatetime == null or f_end_updatetime =='')">and updatetime &gt;= #{f_start_updatetime}</if>
+            <if test="(f_start_updatetime == null or f_start_updatetime =='') and (f_end_updatetime != null and f_end_updatetime != '')">and updatetime <![CDATA[ <= ]]> #{f_end_updatetime}</if>
+
+            <if test="start_create_time != null and start_create_time !=''">and bf.create_time  between #{start_create_time} and #{end_create_time}</if>
+
+            <if test="month != null and month != ''">and MONTH(bf.create_time) = #{month}</if>
+
+            <if test="quarter != null and quarter != ''">and MONTH(bf.create_time) = #{quarter}</if>
+
+            <if test="year != null and year != ''">and YEAR(bf.create_time) = #{year}</if>
+
+            and bft.type_is_del = '00' and bf.finance_is_del = '00'
+        </where>
+    </select>
+
+    <!-- 修改财务相关信息 -->
+    <update id = "updateBaseFinance" parameterType="java.util.Map">
+        update base_finance
+        <set>
+            <if test="edit_finance_type_id != null and edit_finance_type_id != ''">finance_type_id = #{edit_finance_type_id},</if>
+            <if test="edit_finance_amount != null and edit_finance_amount != ''">finance_amount = #{edit_finance_amount},</if>
+            <if test="edit_finance_reason != null and edit_finance_reason != ''">finance_reason = #{edit_finance_reason},</if>
+            <if test="edit_finance_is_del != null and edit_finance_is_del != ''">finance_is_del = #{edit_finance_is_del},</if>
+            <if test="edit_finance_is_update != null and edit_finance_is_update != ''">finance_is_update = #{edit_finance_is_update},</if>
+            <if test="edit_finance_date != null and edit_finance_date != ''">finance_date = #{edit_finance_date},</if>
+            update_time = now()
+        </set>
+        <where>
+            <if test = "user_id != null and user_id != ''">and user_id = #{user_id}</if>
+             and finance_id = #{finance_id}
+        </where>
+    </update>
+
+    <!-- 添加财务相关信息 -->
+    <insert id="addBaseFinance" parameterType="java.util.Map">
+        insert into base_finance(user_id,finance_type_id,finance_amount,finance_reason,
+        finance_is_del,finance_is_update,finance_date,create_time,update_time)
+        values(#{add_user_id},#{add_finance_type_id},#{add_finance_amount},#{add_finance_reason},'00','00',#{add_finance_date},now(),now())
+    </insert>
+
+    <!-- 获取类型信息 -->
+    <select id="getFinanceTypeList" resultType="java.util.Map">
+        select type_id id,type_name text from base_finance_type where type_is_usable = '00' and type_is_del = '00'
+    </select>
+
+
+</mapper>

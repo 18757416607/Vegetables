@@ -14,7 +14,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://localhost:3306/vegetables?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://47.102.199.142:3306/vegetables?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
     # 使用druid数据源
@@ -46,8 +46,8 @@ mybatis:
 
 
 #日志配置
-logging:
-  config: classpath:logback.xml
+#logging:
+  #config: classpath:logback.xml
 
 config:
   lkl_jgh: DSFLTJG    #上海拉卡拉机构号

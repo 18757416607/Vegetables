@@ -76,7 +76,7 @@
             <if test="v_name != null and v_name != ''">and v_name LIKE CONCAT('%',#{v_name},'%')</if>
             <if test="(v_start_price != null and v_start_price != '') and (v_end_price != null and v_end_price != '')">and v_price BETWEEN #{v_start_price} AND #{v_end_price}</if>
             <if test="(v_start_price != null and v_start_price != '') and (v_end_price == null or v_end_price =='')">and v_price &gt;= #{v_start_price}</if>
-            <if test="(v_start_price == null or v_start_price == '') and (v_end_price != null and v_end_price !='')">and v_price &gt;= #{v_end_price}</if>
+            <if test="(v_start_price == null or v_start_price == '') and (v_end_price != null and v_end_price !='')">and v_price <![CDATA[ <= ]]> #{v_end_price}</if>
             <if test="v_mature_season != null and v_mature_season != ''">and v_mature_season = #{v_mature_season}</if>
             <if test="v_mature_end_season != null and v_mature_end_season != ''">and v_mature_end_season = #{v_mature_end_season}</if>
             <if test="v_is_back_season != null and v_is_back_season != ''">and v_is_back_season = #{v_is_back_season}</if>
@@ -84,7 +84,7 @@
             <if test="v_sellout != null and v_sellout != ''">and v_sellout = #{v_sellout}</if>
             <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime BETWEEN #{v_start_updatetime} and #{v_end_updatetime}</if>
             <if test="(v_start_updatetime != null and v_start_updatetime != '') and (v_end_updatetime == null or v_end_updatetime =='')">and v_updatetime &gt;= #{v_start_updatetime}</if>
-            <if test="(v_start_updatetime == null or v_start_updatetime =='') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime &gt;= #{v_end_updatetime}</if>
+            <if test="(v_start_updatetime == null or v_start_updatetime =='') and (v_end_updatetime != null and v_end_updatetime != '')">and v_updatetime <![CDATA[ <= ]]> #{v_end_updatetime}</if>
             <if test="v_createtime != null">and v_createtime BETWEEN #{v_start_createtime} and #{v_end_createtime}</if>
         </where>
         ) bvv INNER JOIN base_vegetables_category bvc on bvv.c_id = bvc.c_id ) vvvc

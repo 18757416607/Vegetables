@@ -30,7 +30,7 @@
             <if test="m_del !=null and m_del != ''">and m_del = #{m_del}</if>
             <if test="(m_start_updatetime != null and m_start_updatetime != '') and (m_end_updatetime != null and m_end_updatetime != '')">and m_updatetime BETWEEN #{m_start_updatetime} and #{m_end_updatetime}</if>
             <if test="(m_start_updatetime != null and m_start_updatetime != '') and (m_end_updatetime == null or m_end_updatetime =='')">and m_updatetime &gt;= #{m_start_updatetime}</if>
-            <if test="(m_start_updatetime == null or m_start_updatetime =='') and (m_end_updatetime != null and m_end_updatetime != '')">and m_updatetime &gt;= #{m_end_updatetime}</if>
+            <if test="(m_start_updatetime == null or m_start_updatetime =='') and (m_end_updatetime != null and m_end_updatetime != '')">and m_updatetime <![CDATA[ <= ]]> #{m_end_updatetime}</if>
             <if test="m_createtime !=null and m_createtime != ''">and m_createtime BETWEEN #{m_createtime} AND #{m_createtime}</if>
         </where>
     </select>

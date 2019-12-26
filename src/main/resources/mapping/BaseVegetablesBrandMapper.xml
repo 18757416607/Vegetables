@@ -17,7 +17,7 @@
             <if test="b_address !=null and b_address != ''">and b_address like CONCAT('%',#{b_address},'%')</if>
             <if test="b_del != null and b_del != ''">and b_del = #{b_del}</if>
             <if test="b_remark != null and b_remark != ''">and b_remark = #{b_remark}</if>
-            <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime BETWEEN #{b_start_updatetime} and #{c_end_updatetime}</if>
+            <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime BETWEEN #{b_start_updatetime} and #{b_end_updatetime}</if>
             <if test="(b_start_updatetime != null and b_start_updatetime != '') and (b_end_updatetime == null or b_end_updatetime =='')">and b_updatetime &gt;= #{b_start_updatetime}</if>
             <if test="(b_start_updatetime == null or b_start_updatetime =='') and (b_end_updatetime != null and b_end_updatetime != '')">and b_updatetime &gt;= #{b_end_updatetime}</if>
 

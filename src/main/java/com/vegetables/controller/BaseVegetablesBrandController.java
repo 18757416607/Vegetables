@@ -85,7 +85,7 @@ public class BaseVegetablesBrandController {
      */
     @PostMapping(value = "/updateBaseVegetablesBrand")
     public Result updateBaseVegetablesBrand(String paramStr) throws Exception{
-        logger.info("进入蔬菜品牌信息-->controller-->参数:"+paramStr);
+        logger.info("进入修改蔬菜品牌信息-->controller-->参数:"+paramStr);
         Map<String,Object> paramMap = JacksonUtils.strToMap(paramStr);
         if(paramMap.get("edit_b_name")==null||"".equals(paramMap.get("edit_b_name"))){
             logger.info("修改蔬菜品牌信息-->controller-->[品牌名称]为空");

@@ -21,7 +21,7 @@
             <if test="s_del !=null and s_del != ''">and s_del = #{s_del}</if>
             <if test="(s_start_updatetime != null and s_start_updatetime != '') and (s_end_updatetime != null and s_end_updatetime != '')">and s_updatetime BETWEEN #{s_start_updatetime} and #{s_end_updatetime}</if>
             <if test="(s_start_updatetime != null and s_start_updatetime != '') and (s_end_updatetime == null or s_end_updatetime =='')">and s_updatetime &gt;= #{s_start_updatetime}</if>
-            <if test="(s_start_updatetime == null or s_start_updatetime =='') and (s_end_updatetime != null and s_end_updatetime != '')">and s_updatetime &gt;= #{s_end_updatetime}</if>
+            <if test="(s_start_updatetime == null or s_start_updatetime =='') and (s_end_updatetime != null and s_end_updatetime != '')">and s_updatetime <![CDATA[ <= ]]> #{s_end_updatetime}</if>
             <if test="s_createtime !=null and s_createtime != ''">and s_createtime BETWEEN #{s_createtime} AND #{s_createtime}</if>
         </where>
     </select>

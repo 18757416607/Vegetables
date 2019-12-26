@@ -18,7 +18,7 @@
 
             <if test="(c_start_updatetime != null and c_start_updatetime != '') and (c_end_updatetime != null and c_end_updatetime != '')">and c_updatetime BETWEEN #{c_start_updatetime} and #{c_end_updatetime}</if>
             <if test="(c_start_updatetime != null and c_start_updatetime != '') and (c_end_updatetime == null or c_end_updatetime =='')">and c_updatetime &gt;= #{c_start_updatetime}</if>
-            <if test="(c_start_updatetime == null or c_start_updatetime =='') and (c_end_updatetime != null and c_end_updatetime != '')">and c_updatetime &gt;= #{c_end_updatetime}</if>
+            <if test="(c_start_updatetime == null or c_start_updatetime =='') and (c_end_updatetime != null and c_end_updatetime != '')">and c_updatetime <![CDATA[ <= ]]> #{c_end_updatetime}</if>
 
 
             <if test="c_createtime !=null and c_createtime != ''">and c_createtime BETWEEN #{c_start_createtime} AND #{c_end_createtime}</if>
