@@ -52,4 +52,6 @@ public interface BaseVegetablesVarietiesMapper {
 
 
 
+    public List<Map<String,Object>> getTest(Map<String,Object> param);
+
 }
