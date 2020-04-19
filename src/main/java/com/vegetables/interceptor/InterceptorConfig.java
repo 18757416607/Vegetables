@@ -20,6 +20,7 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/test/test")
                 .excludePathPatterns("/demo/test")
+                .excludePathPatterns("/t/t")
                 .excludePathPatterns("/test/t1")
                 .excludePathPatterns("/user/checkLogin")
                 .excludePathPatterns("/user/uploadImg")
